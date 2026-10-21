@@ -21,9 +21,6 @@ export const DASHBOARD_HTML = `<!DOCTYPE html>
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Firebase SDK (v10 compat) -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <link rel="preconnect" href="https://cdn.prod.website-files.com" crossorigin>
   <link rel="preload" href="https://cdn.prod.website-files.com/69654e88dce9154b5f1206dd/698cad1160936ed8972bccfa_the-future-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="https://cdn.prod.website-files.com/69654e88dce9154b5f1206dd/698cad11f5c01ca7fba516ba_the-future-medium.woff2" as="font" type="font/woff2" crossorigin>
@@ -2087,16 +2084,6 @@ export const DASHBOARD_HTML = `<!DOCTYPE html>
       <!-- MAIN CARD CONTAINER (Rounded top-left & top-right border matching images) -->
       <div class="relative border-t border-l border-r border-groq-grayBorder rounded-t-2xl md:rounded-tr-2xl md:rounded-br-none bg-white p-3.5 sm:p-6 md:p-8 mx-0 md:mx-0 mr-0 md:mr-2 flex-1 flex flex-col overflow-visible md:overflow-y-auto shadow-xs min-h-[350px]">
         
-        <!-- DASHBOARD AUTH OVERLAY (Shown when user is not signed in) -->
-        <div id="dash-auth-overlay" class="absolute inset-0 bg-white/90 backdrop-blur-xs rounded-t-2xl md:rounded-tr-2xl z-20 flex flex-col items-center justify-center text-center p-6 transition-all duration-150">
-          <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mb-3 shadow-2xs">
-            <i data-lucide="lock" class="w-5 h-5"></i>
-          </div>
-          <h4 class="text-xs font-semibold text-groq-dark mb-1">Sign in to view Dashboard</h4>
-          <p class="text-[11px] text-groq-textMuted max-w-xs mb-3">API metrics, usage analytics, and request logs are securely tied to your individual account. Please sign in to view your dashboard.</p>
-          <button onclick="openAuthModal()" class="px-3 py-1.5 rounded-lg bg-[#f0523d] hover:bg-[#e0422d] text-white font-medium text-xs shadow-xs transition cursor-pointer">Sign In</button>
-        </div>
-        
         <!-- =================================================================== -->
         <!-- SUBVIEW A: METRICS (Exact 1:1 Match to media_1790456964674.png) -->
         <!-- =================================================================== -->
@@ -3676,133 +3663,9 @@ console.log(data.choices[0].message.content);</div>
     </div>
   </div>
 
-  <!-- ========================================================================= -->
-  <!-- MODAL: FIREBASE AUTHENTICATION (Google + Email/Password) -->
-  <!-- ========================================================================= -->
-  <div id="modal-auth" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white border border-groq-grayBorder rounded-2xl max-w-sm w-full p-5 sm:p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto touch-scroll">
-      <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-groq-textMuted hover:text-groq-dark transition p-1 cursor-pointer">
-        <i data-lucide="x" class="w-4 h-4"></i>
-      </button>
 
-      <div class="text-center mb-5">
-        <span class="font-extrabold text-[22px] tracking-tight text-groq-dark">project<span class="text-[#f0523d]">spg</span></span>
-        <h3 id="auth-modal-title" class="text-sm font-semibold text-groq-dark mt-1">Sign in or create account</h3>
-        <p class="text-xs text-groq-textMuted mt-0.5">Manage your API keys, rate limits, and enterprise vault</p>
-      </div>
 
-      <!-- Google Sign In Button -->
-      <button onclick="handleGoogleSignIn()" class="w-full py-2.5 px-4 border border-groq-grayBorder rounded-xl font-medium text-xs text-groq-dark hover:bg-gray-50 flex items-center justify-center gap-2.5 transition shadow-xs cursor-pointer">
-        <svg class="w-4 h-4" viewBox="0 0 24 24">
-          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-        </svg>
-        <span>Continue with Google</span>
-      </button>
 
-      <div class="relative flex py-4 items-center">
-        <div class="flex-grow border-t border-gray-200"></div>
-        <span class="flex-shrink mx-3 text-gray-400 text-[11px]">or with email</span>
-        <div class="flex-grow border-t border-gray-200"></div>
-      </div>
-
-      <!-- Auth Error Banner -->
-      <div id="auth-error-banner" class="hidden mb-3 p-2.5 bg-red-50 border border-red-200 rounded-lg text-red-600 text-xs text-left leading-tight"></div>
-
-      <!-- Email / Password Form (Auto-Detects Existing vs New Accounts) -->
-      <form onsubmit="handleEmailAuth(event)" class="space-y-3 text-xs text-left">
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <label class="block text-groq-dark font-medium">Email</label>
-            <span id="auth-email-badge" class="hidden text-[10px] font-semibold px-2 py-0.5 rounded-full"></span>
-          </div>
-          <input type="email" id="auth-email" required onblur="checkEmailAccountExists()" oninput="onAuthEmailInput()" placeholder="name@example.com" class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg px-3 py-2 text-groq-dark focus:outline-none focus:border-gray-400 font-sans">
-        </div>
-        <div>
-          <label class="block text-groq-dark font-medium mb-1">Password</label>
-          <input type="password" id="auth-password" required minlength="6" placeholder="••••••••" class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg px-3 py-2 text-groq-dark focus:outline-none focus:border-gray-400 font-sans">
-        </div>
-
-        <button type="submit" id="btn-auth-submit" class="w-full py-2.5 px-4 rounded-xl bg-[#f0523d] hover:bg-[#e0422d] text-white font-semibold transition text-xs shadow-xs cursor-pointer">
-          Continue
-        </button>
-      </form>
-
-      <div class="mt-4 text-center text-xs text-groq-textMuted">
-        <span id="auth-switch-text">New users will be registered automatically.</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================================= -->
-  <!-- MODAL: INVITATION & ORGANIZATION ONBOARDING -->
-  <!-- ========================================================================= -->
-  <div id="modal-invitation" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white border border-groq-grayBorder rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto touch-scroll">
-      <button onclick="closeInvitationModal()" class="absolute top-4 right-4 text-groq-textMuted hover:text-groq-dark transition p-1 cursor-pointer" aria-label="Close modal">
-        <i data-lucide="x" class="w-4 h-4"></i>
-      </button>
-
-      <div class="text-center mb-5">
-        <div class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-orange-50 border border-orange-200/60 text-[#f0523d] mb-2 shadow-2xs">
-          <i data-lucide="sparkles" class="w-5 h-5"></i>
-        </div>
-        <div>
-          <span class="font-extrabold text-[22px] tracking-tight text-groq-dark">project<span class="text-[#f0523d]">spg</span></span>
-        </div>
-        <h3 id="inv-modal-title" class="text-base font-semibold text-groq-dark mt-1">Welcome to ProjectSPG</h3>
-        <p id="inv-modal-subtitle" class="text-xs text-groq-textMuted mt-1 leading-relaxed">
-          Access is currently invitation-only. Please confirm your details and provide your invitation code to unlock full platform capabilities.
-        </p>
-      </div>
-
-      <!-- Subscription Status Panel (Current Tier & Valid Till) -->
-      <div id="inv-current-status-banner" class="hidden mb-4 p-2.5 sm:p-3 rounded-xl border bg-gray-50 border-gray-200 text-xs space-y-2">
-        <div class="flex items-center justify-between">
-          <span class="font-medium text-gray-700">Subscription</span>
-          <span id="inv-current-status-badge" class="font-bold uppercase tracking-wider px-2 py-0.5 rounded text-[10px]"></span>
-        </div>
-        <div id="inv-valid-till-row" class="flex items-center justify-between pt-2 border-t border-gray-200/80">
-          <span class="font-medium text-gray-500">Valid Till</span>
-          <span id="inv-valid-till-date" class="font-semibold text-emerald-800"></span>
-        </div>
-      </div>
-
-      <!-- Feedback / Error Banner -->
-      <div id="inv-error-banner" class="hidden mb-3 p-2.5 bg-red-50 border border-red-200 rounded-lg text-red-600 text-xs text-left leading-tight"></div>
-      <div id="inv-success-banner" class="hidden mb-3 p-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700 text-xs text-left leading-tight"></div>
-
-      <!-- Invitation Code Form -->
-      <form onsubmit="handleInvitationSubmit(event)" class="space-y-3.5 text-xs text-left">
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <label class="block text-groq-dark font-medium">Invitation / Referral Code</label>
-            <span class="text-[10px] text-gray-400">Optional for Free users</span>
-          </div>
-          <div class="relative">
-            <input type="text" id="inv-code" placeholder="e.g. SPG-BETA-2026" class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg pl-3 pr-8 py-2 text-groq-dark uppercase tracking-wider font-mono text-xs focus:outline-none focus:border-[#f0523d]">
-            <i data-lucide="ticket" class="w-3.5 h-3.5 text-gray-400 absolute right-2.5 top-2.5 pointer-events-none"></i>
-          </div>
-          <p class="text-[11px] text-gray-500 mt-1 leading-normal">
-            Entering an invitation code unlocks <strong class="text-emerald-700 font-semibold">1-Year Pro Access</strong>. If you do not have a code, you will continue as a <strong class="text-amber-700 font-semibold">(Free User)</strong>.
-          </p>
-        </div>
-
-        <div class="pt-2 space-y-2">
-          <button type="submit" id="btn-inv-submit" class="w-full py-2.5 px-4 rounded-xl bg-[#f0523d] hover:bg-[#e0422d] text-white font-semibold transition text-xs shadow-xs cursor-pointer flex items-center justify-center gap-2">
-            <span>Confirm & Enter Platform</span>
-            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-          </button>
-
-          <button type="button" onclick="continueWithLimitedAccess()" id="btn-inv-limited" class="w-full py-2.5 px-4 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition text-xs cursor-pointer flex items-center justify-center gap-1.5">
-            <span>Continue as (Free User)</span>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <!-- ========================================================================= -->
   <!-- MODAL: USER ACCOUNT & SECURITY SETTINGS                                   -->
@@ -4114,22 +3977,29 @@ console.log(data.choices[0].message.content);</div>
       germantax: "Audit filing for Hans Gruber (email: hans.gruber@berlin-tech.de, German Tax ID: 04 225 818 316, IBAN: DE89 3704 0044 0532 0130 00)."
     };
 
-    // Firebase Client SDK Config (Obfuscated API Key prefix to pass push protection)
-    const firebaseConfig = {
-      apiKey: "AIza" + "SyBOj278Qpd57Oq0AmRxrcLttokcpjYVeMc",
-      authDomain: "projectspg-global.firebaseapp.com",
-      projectId: "projectspg-global",
-      storageBucket: "projectspg-global.firebasestorage.app",
-      messagingSenderId: "894998832445",
-      appId: "1:894998832445:web:b2a11b9df682eaa7f6d154",
-      measurementId: "G-Y9GQYQGZWG"
-    };
-
+    // Hackathon Mode: Open Access (No Authentication Required)
     let firebaseAuth = null;
-    let currentFirebaseUser = null;
-    let currentUserProfile = null;
-    let currentIdToken = null;
-    let authMode = 'signin'; // 'signin' or 'signup'
+    let currentFirebaseUser = {
+      uid: "hackathon_public",
+      email: "hackathon@demo.ai",
+      displayName: "Public Access",
+      getIdToken: async () => "open_access"
+    };
+    let currentUserProfile = {
+      name: "Hackathon User",
+      email: "hackathon@demo.ai",
+      accessLevel: "Pro",
+      org: "Hackathon"
+    };
+    let currentIdToken = "open_access";
+    let isUserFullyInvited = () => true;
+    function openAuthModal() { switchView('playground'); }
+    function closeAuthModal() {}
+    function handleGoogleSignIn() {}
+    function handleEmailAuth(e) { if(e) e.preventDefault(); }
+    function handleSignOut() {}
+    function checkUserInvitationStatus() {}
+    function closeInvitationModal() {}
 
     let activeView = 'landing'; // Default to ProjectSPG Landing Page for unauthenticated/entry visitors
     let activeDashTab = 'logs';   // Default sub-tab within Dashboard
@@ -4138,7 +4008,7 @@ console.log(data.choices[0].message.content);</div>
 
     let sampleApiKeys = [];
 
-    // Initial logs - strictly account-exclusive
+    // Initial logs - open access
     let localLogs = [];
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -4199,35 +4069,11 @@ console.log(data.choices[0].message.content);</div>
       updateSliderFill(document.getElementById('param-tokens-slider'));
       updateSliderFill(document.getElementById('param-top-p-slider'));
 
-      // Initialize Firebase Authentication
-      if (typeof firebase !== 'undefined') {
-        try {
-          firebase.initializeApp(firebaseConfig);
-          firebaseAuth = firebase.auth();
-          firebaseAuth.onAuthStateChanged(async (user) => {
-            currentFirebaseUser = user;
-            if (user) {
-              try {
-                currentIdToken = await user.getIdToken();
-              } catch (e) {
-                currentIdToken = null;
-              }
-              await checkUserInvitationStatus(user);
-              updateUserUI(user);
-              initByokKeys();
-            } else {
-              currentUserProfile = null;
-              currentIdToken = null;
-              updateUserUI(null);
-              clearByokInputs();
-            }
-            fetchApiKeys();
-            fetchApiLogs();
-          });
-        } catch (e) {
-          console.warn('Firebase init warning:', e);
-        }
-      }
+      // Public Hackathon Mode - Direct Open Access
+      updateUserUI(currentFirebaseUser);
+      initByokKeys();
+      fetchApiKeys();
+      fetchApiLogs();
 
       window.addEventListener('click', (e) => {
         const menu = document.getElementById('user-dropdown-menu');
@@ -4311,11 +4157,6 @@ console.log(data.choices[0].message.content);</div>
 
       if (viewName === 'keys') fetchApiKeys();
       if (viewName === 'dashboard') {
-        const dashOverlay = document.getElementById('dash-auth-overlay');
-        if (dashOverlay) {
-          if (currentFirebaseUser) dashOverlay.classList.add('hidden');
-          else dashOverlay.classList.remove('hidden');
-        }
         switchDashTab(activeDashTab);
       }
       if (viewName === 'admin-invites') {
@@ -5816,27 +5657,7 @@ response = llm.invoke(<span class="syn-string">"Verify order for Alice"</span>)
         const tbody = document.getElementById('api-keys-tbody');
         if (!tbody) return;
 
-        // If not logged in, prompt user to sign in
-        if (!currentFirebaseUser) {
-          tbody.innerHTML = '<tr><td colspan="8" class="text-center py-12"><div class="flex flex-col items-center justify-center text-center"><div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mb-3"><i data-lucide="lock" class="w-5 h-5"></i></div><h4 class="text-xs font-semibold text-groq-dark mb-1">Sign in to manage API keys</h4><p class="text-[11px] text-groq-textMuted max-w-xs mb-3">API keys are securely tied to your individual account. Please sign in to create or view your keys.</p><button onclick="openAuthModal()" class="px-3 py-1.5 rounded-lg bg-[#f0523d] hover:bg-[#e0422d] text-white font-medium text-xs shadow-xs transition cursor-pointer">Sign In</button></div></td></tr>';
-          if (window.lucide) lucide.createIcons();
-          return;
-        }
-
-        const headers = {};
-        let token = currentIdToken;
-        if (!token && currentFirebaseUser) {
-          try {
-            token = await currentFirebaseUser.getIdToken();
-            currentIdToken = token;
-          } catch (e) {
-            token = null;
-          }
-        }
-        if (token) {
-          headers['Authorization'] = 'Bearer ' + token;
-        }
-        const res = await fetch('/api/keys', { headers });
+        const res = await fetch('/api/keys');
         const data = await res.json();
 
         // Account-exclusive: strictly render only the keys for this account
@@ -5968,20 +5789,8 @@ response = llm.invoke(<span class="syn-string">"Verify order for Alice"</span>)
       const byokGroqKey = document.getElementById('new-byok-groq') ? document.getElementById('new-byok-groq').value.trim() : '';
 
       try {
-        let token = currentIdToken;
-        if (currentFirebaseUser) {
-          try {
-            token = await currentFirebaseUser.getIdToken();
-            currentIdToken = token;
-          } catch (e) {}
-        }
-        if (!token) {
-          openAuthModal();
-          return;
-        }
         const headers = { 
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
+          'Content-Type': 'application/json'
         };
         const res = await fetch('/api/keys', {
           method: 'POST',
@@ -6019,18 +5828,7 @@ response = llm.invoke(<span class="syn-string">"Verify order for Alice"</span>)
     }
     async function deleteKey(id) {
       if (!confirm('Are you sure you want to delete this API key?')) return;
-      const headers = {};
-      let token = currentIdToken;
-      if (currentFirebaseUser) {
-        try {
-          token = await currentFirebaseUser.getIdToken();
-          currentIdToken = token;
-        } catch (e) {}
-      }
-      if (token) {
-        headers['Authorization'] = 'Bearer ' + token;
-      }
-      const res = await fetch('/api/keys/' + id, { method: 'DELETE', headers });
+      const res = await fetch('/api/keys/' + id, { method: 'DELETE' });
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
         alert('Failed to revoke key: ' + (errData.error || ('HTTP ' + res.status)));
@@ -6039,29 +5837,10 @@ response = llm.invoke(<span class="syn-string">"Verify order for Alice"</span>)
       await fetchApiKeys();
     }
 
-    // Live API Usage and Telemetry Logs (Account-Exclusive)
+    // Live API Usage and Telemetry Logs (Open Access)
     async function fetchApiLogs() {
       try {
-        if (!currentFirebaseUser) {
-          localLogs = [];
-          updateUsageStats();
-          renderLogsTable();
-          renderMetricsChart();
-          return;
-        }
-
-        let token = currentIdToken;
-        if (!token && currentFirebaseUser) {
-          try {
-            token = await currentFirebaseUser.getIdToken();
-            currentIdToken = token;
-          } catch (e) {
-            token = null;
-          }
-        }
-
-        const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
-        const res = await fetch('/api/logs?limit=50', { headers });
+        const res = await fetch('/api/logs?limit=50');
         if (res.ok) {
           const data = await res.json();
           if (data && Array.isArray(data.logs)) {
@@ -7726,12 +7505,8 @@ response = llm.invoke(<span class="syn-string">"Verify order for Alice"</span>)
         if (createByokLock) createByokLock.classList.add('hidden');
         if (createByokTab) createByokTab.title = "BYOK Tier";
         dismissInvitationToast(true);
-        const dashOverlay = document.getElementById('dash-auth-overlay');
-        if (dashOverlay) dashOverlay.classList.add('hidden');
         renderPlaygroundModelDropdown(FREE_TIER_MODELS);
       } else {
-        const dashOverlay = document.getElementById('dash-auth-overlay');
-        if (dashOverlay) dashOverlay.classList.remove('hidden');
         const adminNav = document.getElementById('nav-admin-invites');
         const adminMobileNav = document.getElementById('nav-mobile-admin-invites');
         const adminMenuBtn = document.getElementById('user-menu-admin-btn');

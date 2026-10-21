@@ -330,9 +330,7 @@ describe("Data De-identification & Reversible Tokenization Engine Routes", () =>
     expect(authData.rehydratedText).toBe(text);
   });
 
-  it("should enforce 1 request per 15s rate limit on /tokenize for free tier requests", async () => {
-    (globalThis as any).__DISABLE_RATE_LIMIT__ = false;
-
+  it("should allow consecutive requests without rate limiting in hackathon mode", async () => {
     // 1st request -> 200 OK
     const res1 = await app.request("/v1/tokenize", {
       method: "POST",
@@ -341,18 +339,12 @@ describe("Data De-identification & Reversible Tokenization Engine Routes", () =>
     });
     expect(res1.status).toBe(200);
 
-    // 2nd request immediately -> 429 Too Many Requests
+    // 2nd request immediately -> 200 OK
     const res2 = await app.request("/v1/tokenize", {
       method: "POST",
       headers: { "Content-Type": "application/json", "cf-connecting-ip": "203.0.113.195" },
       body: JSON.stringify({ text: "Hello again" }),
     });
-    expect(res2.status).toBe(429);
-    expect(res2.headers.get("Retry-After")).toBeDefined();
-    expect(res2.headers.get("x-ratelimit-period")).toBe("15s");
-
-    const errData: any = await res2.json();
-    expect(errData.error.code).toBe("rate_limit_exceeded");
-    expect(errData.error.message).toContain("1 protected request per 15 seconds");
+    expect(res2.status).toBe(200);
   });
 });

@@ -10,23 +10,7 @@ import { INDUSTRIES_BLOG_HTML } from "./blog_industries";
 import { STACK_BLOG_HTML } from "./blog_stack";
 import { PRIVACY_POLICY_HTML } from "./legal_privacy";
 import { TERMS_OF_SERVICE_HTML } from "./legal_terms";
-import {
-  createApiKey,
-  listApiKeys,
-  revokeApiKey,
-  createAuthMiddleware,
-} from "./auth/keys";
 import { getApiCallLogs } from "./audit/logger";
-import { verifyFirebaseIdToken, FIREBASE_CONFIG } from "./auth/firebase";
-import {
-  getUserProfile,
-  saveUserProfile,
-  createInvitationCode,
-  listInvitationCodes,
-  revokeInvitationCode,
-  listAllUserProfiles,
-  isAdminEmail,
-} from "./auth/profile";
 import { LOGO_DATA_URIS, LOGO_FILES } from "./assets/logos";
 import { BLOG_IMAGE_DATA_URIS, BLOG_IMAGE_FILES } from "./assets/images";
 import { PROJECTSPG_LOGO_SVG } from "./assets/brand";
@@ -134,9 +118,6 @@ app.get("/logo.svg", (c) => {
   });
 });
 
-// Mount API Key Authentication Middleware on /v1 routes
-app.use("/v1/*", createAuthMiddleware());
-
 // Mount Data De-identification & Reversible Tokenization Engine on /v1
 app.route("/v1", tokenizationApp);
 
@@ -144,201 +125,36 @@ app.route("/v1", tokenizationApp);
 app.route("/v1", openaiApp);
 app.route("/", openaiApp);
 
-// =========================================================================
-// API Key Management & Firebase Auth REST Endpoints
-// =========================================================================
-app.get("/api/config/firebase", (c) => {
-  return c.json({ config: FIREBASE_CONFIG });
-});
-
-app.get("/api/auth/me", async (c) => {
-  const authHeader = c.req.header("Authorization") || "";
-  if (!authHeader.startsWith("Bearer ")) {
-    return c.json({ user: null });
-  }
-  const token = authHeader.slice(7).trim();
-  const user = await verifyFirebaseIdToken(token);
-  return c.json({ user });
-});
-
-// User Profile & Invitation Access Endpoints
-app.get("/api/user/profile", async (c) => {
-  const authHeader = c.req.header("Authorization") || "";
-  let userId = c.req.query("userId") || "";
-  if (authHeader.startsWith("Bearer ")) {
-    const token = authHeader.slice(7).trim();
-    const user = await verifyFirebaseIdToken(token);
-    if (user) userId = user.uid;
-  }
-  if (!userId) {
-    return c.json({ profile: null, error: "Unauthorized" }, 401);
-  }
-  const profile = await getUserProfile(c.env, userId);
-  return c.json({ profile });
-});
-
-app.post("/api/user/profile", async (c) => {
-  let body: any = {};
-  try {
-    body = await c.req.json();
-  } catch {
-    // empty body fallback
-  }
-  const authHeader = c.req.header("Authorization") || "";
-  let userId = body.userId || "";
-  let email = body.email || "";
-  let name = body.name || "";
-  if (authHeader.startsWith("Bearer ")) {
-    const token = authHeader.slice(7).trim();
-    const user = await verifyFirebaseIdToken(token);
-    if (user) {
-      userId = user.uid;
-      if (!email && user.email) email = user.email;
-      if (!name && user.name) name = user.name;
-    }
-  }
-  if (!userId) {
-    return c.json({ error: "User ID required" }, 400);
-  }
-  const profile = await saveUserProfile(c.env, {
-    userId,
-    name: body.name || name,
-    email: body.email || email,
-    org: body.org,
-    orgWebsite: body.orgWebsite || body.org_website,
-    invitationCode: body.invitationCode || body.invitation_code,
+// Public API Keys route (Hackathon Mode - Open Access)
+app.get("/api/keys", (c) => {
+  return c.json({
+    keys: [
+      {
+        id: "key_open_access",
+        name: "Hackathon Public Key",
+        key_prefix: "spg_open_access",
+        tier: "pro",
+        monthly_quota: 1000000,
+        requests_used: 0,
+        is_active: 1,
+        created_at: new Date().toISOString(),
+      },
+    ],
   });
-  return c.json({ success: true, profile });
 });
-
-// =========================================================================
-// Admin Invitation Management Routes (Restricted to boruahpriyanuj2004@gmail.com)
-// =========================================================================
-async function getAdminUserFromRequest(c: Context) {
-  const authHeader = c.req.header("Authorization") || "";
-  if (authHeader.startsWith("Bearer ") && !authHeader.toLowerCase().startsWith("bearer spg_")) {
-    const token = authHeader.slice(7).trim();
-    const user = await verifyFirebaseIdToken(token);
-    if (user && isAdminEmail(user.email)) {
-      return user;
-    }
-  }
-  return null;
-}
-
-app.get("/api/admin/invitations", async (c) => {
-  const admin = await getAdminUserFromRequest(c);
-  if (!admin) {
-    return c.json({ error: "Unauthorized: Admin access required." }, 403);
-  }
-  const codes = await listInvitationCodes(c.env);
-  return c.json({ codes });
-});
-
-app.get("/api/admin/users", async (c) => {
-  const admin = await getAdminUserFromRequest(c);
-  if (!admin) {
-    return c.json({ error: "Unauthorized: Admin access required." }, 403);
-  }
-  const users = await listAllUserProfiles(c.env);
-  return c.json({ users });
-});
-
-app.post("/api/admin/invitations", async (c) => {
-  const admin = await getAdminUserFromRequest(c);
-  if (!admin) {
-    return c.json({ error: "Unauthorized: Admin access required." }, 403);
-  }
-  let body: any = {};
-  try {
-    body = await c.req.json();
-  } catch {}
-  const record = await createInvitationCode(c.env, {
-    code: body.code,
-    description: body.description,
-    maxUses: typeof body.maxUses === "number" ? body.maxUses : (parseInt(body.maxUses, 10) || 1),
-    createdBy: admin.email || "admin",
-  });
-  return c.json({ success: true, invitation: record }, 201);
-});
-
-app.delete("/api/admin/invitations/:code", async (c) => {
-  const admin = await getAdminUserFromRequest(c);
-  if (!admin) {
-    return c.json({ error: "Unauthorized: Admin access required." }, 403);
-  }
-  const code = c.req.param("code");
-  await revokeInvitationCode(c.env, code);
-  return c.json({ success: true, message: `Invitation code ${code} revoked.` });
-});
-
-app.get("/api/keys", async (c) => {
-  const authHeader = c.req.header("Authorization") || "";
-  let userId: string | undefined = undefined;
-  if (authHeader.startsWith("Bearer ")) {
-    const token = authHeader.slice(7).trim();
-    const user = await verifyFirebaseIdToken(token);
-    if (user) userId = user.uid;
-  }
-  if (!userId) {
-    return c.json({ keys: [] });
-  }
-  const keys = await listApiKeys(c.env, userId);
-  return c.json({ keys });
-});
-
 app.post("/api/keys", async (c) => {
-  let body: any = {};
-  try {
-    body = await c.req.json();
-  } catch {
-    // empty body fallback
-  }
-  const authHeader = c.req.header("Authorization") || "";
-  let userId: string | undefined = undefined;
-  if (authHeader.startsWith("Bearer ")) {
-    const token = authHeader.slice(7).trim();
-    const user = await verifyFirebaseIdToken(token);
-    if (user) userId = user.uid;
-  }
-  if (!userId || userId === "anonymous") {
-    return c.json({ error: "Authentication required to generate an API key. Please sign in." }, 401);
-  }
-  const name = body.name || "Default Key";
-  const profile = await getUserProfile(c.env, userId);
-  const isPro = profile?.accessLevel === "Pro";
-
-  const tier: "pro" | "byok" = body.tier === "byok" ? "byok" : "pro";
-  const defaultQuota = tier === "byok" ? 300_000 : 4_500;
-  const quota = typeof body.monthlyQuota === "number" ? body.monthlyQuota : defaultQuota;
-  const byokKeys = {
-    googleKey: body.byokGoogleKey || body.byok_google_key || "",
-    mistralKey: body.byokMistralKey || body.byok_mistral_key || "",
-    groqKey: body.byokGroqKey || body.byok_groq_key || "",
-  };
-  const result = await createApiKey(name, tier, quota, c.env, userId, byokKeys);
-  return c.json(result, 201);
+  const body: any = await c.req.json().catch(() => ({}));
+  return c.json({
+    id: `key_${Date.now()}`,
+    rawKey: "spg_live_open_access_hackathon",
+    keyPrefix: "spg_live_open",
+    name: body.name || "Hackathon Key",
+    tier: body.tier || "pro",
+    monthlyQuota: 1000000,
+  }, 201);
 });
-
-app.delete("/api/keys/:id", async (c) => {
-  const authHeader = c.req.header("Authorization") || "";
-  let userId: string | undefined = undefined;
-  let userEmail: string | undefined = undefined;
-  if (authHeader.startsWith("Bearer ")) {
-    const token = authHeader.slice(7).trim();
-    const user = await verifyFirebaseIdToken(token);
-    if (user) {
-      userId = user.uid;
-      userEmail = user.email;
-    }
-  }
-  if (!userId) {
-    return c.json({ error: "Authentication required to revoke API keys." }, 401);
-  }
-  const id = c.req.param("id");
-  const isAdmin = userEmail && isAdminEmail(userEmail);
-  await revokeApiKey(id, c.env, isAdmin ? undefined : userId);
-  return c.json({ success: true, message: `API key ${id} revoked.` });
+app.delete("/api/keys/:id", (c) => {
+  return c.json({ success: true, message: "API key removed." });
 });
 
 // =========================================================================
@@ -576,32 +392,17 @@ app.post("/api/byok/models", handleByokModelsDiscovery);
 app.get("/api/byok/models", handleByokModelsDiscovery);
 
 // =========================================================================
-// API Request & Token Usage Logs (Account-Exclusive Telemetry)
+// API Request & Token Usage Logs (Telemetry & Audit Logs)
 // =========================================================================
 app.get("/api/logs", async (c) => {
-  const authHeader = c.req.header("Authorization") || "";
-  let userId: string | undefined = undefined;
-  if (authHeader.startsWith("Bearer ") && !authHeader.toLowerCase().startsWith("bearer spg_")) {
-    const token = authHeader.slice(7).trim();
-    const user = await verifyFirebaseIdToken(token);
-    if (user) userId = user.uid;
-  }
-  if (!userId) {
-    return c.json({ logs: [] });
-  }
-  const apiKeyId = c.req.query("api_key_id");
   const limit = Number(c.req.query("limit")) || 50;
-  const logs = await getApiCallLogs({ apiKeyId, userId, limit }, c.env);
+  const logs = await getApiCallLogs({ limit }, c.env);
   return c.json({ logs });
 });
 
 app.get("/v1/logs", async (c) => {
-  const apiKeyRecord = (c as any).get("apiKeyRecord");
   const limit = Number(c.req.query("limit")) || 50;
-  if (!apiKeyRecord?.id) {
-    return c.json({ object: "list", data: [] });
-  }
-  const logs = await getApiCallLogs({ apiKeyId: apiKeyRecord.id, userId: apiKeyRecord.user_id, limit }, c.env);
+  const logs = await getApiCallLogs({ limit }, c.env);
   return c.json({ object: "list", data: logs });
 });
 

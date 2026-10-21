@@ -3,18 +3,6 @@ import { tokenize, rehydrate } from "../tokenizer/engine";
 import { saveTokenSession, getTokenSession, purgeTokenSession } from "../vault/session";
 import { computeSha256Fingerprint } from "../vault/crypto";
 import { recordAuditEvent, recordApiCallLog, AuditEntitySummary } from "../audit/logger";
-import {
-  resolveClientIdentifier,
-  checkFreeTierRateLimit,
-  checkRateLimit,
-  checkDailyLimit,
-  createRateLimitErrorPayload,
-  createDailyLimitErrorPayload,
-  getRateLimitHeaders,
-  getDailyLimitHeaders,
-} from "../auth/rate_limiter";
-import { verifyFirebaseIdToken } from "../auth/firebase";
-import { getUserProfile } from "../auth/profile";
 
 export interface Env {
   DB?: D1Database;
@@ -110,61 +98,6 @@ tokenizationApp.post("/tokenize", async (c) => {
       );
     }
 
-    // Enforce Rate Limiting: Pro Tier (1 req / 5s) vs Free Tier (1 req / 15s)
-    const apiKeyRecord = (c as any).get("apiKeyRecord");
-    const authHeader = c.req.header("Authorization") || "";
-    let clientUserId = apiKeyRecord?.user_id;
-    if (!clientUserId && authHeader.startsWith("Bearer ") && !authHeader.toLowerCase().startsWith("bearer spg_")) {
-      const token = authHeader.slice(7).trim();
-      const fbUser = await verifyFirebaseIdToken(token);
-      if (fbUser) clientUserId = fbUser.uid;
-    }
-    if (!clientUserId) {
-      const userTokenHeader = c.req.header("x-user-token") || "";
-      if (userTokenHeader) {
-        const fbUser = await verifyFirebaseIdToken(userTokenHeader.replace(/^Bearer /i, "").trim());
-        if (fbUser) clientUserId = fbUser.uid;
-      }
-    }
-
-    let profile: any = null;
-    if (clientUserId) {
-      profile = await getUserProfile(c.env, clientUserId);
-    }
-
-    const isEnterpriseOrByok = apiKeyRecord && (apiKeyRecord.tier === "enterprise" || apiKeyRecord.tier === "byok");
-    const clientId = resolveClientIdentifier(c, apiKeyRecord, clientUserId);
-    const bypassTest = c.req.header("x-test-bypass-rate-limit") === "true";
-
-    if (!isEnterpriseOrByok) {
-      const isPro = apiKeyRecord?.tier === "pro" || profile?.accessLevel === "Pro";
-      const tier = isPro ? "pro" : "free";
-      const rateLimit = await checkRateLimit(clientId, c.env, {
-        tier,
-        bypassTest,
-      });
-      if (!rateLimit.allowed) {
-        return c.json(
-          createRateLimitErrorPayload(rateLimit.retryAfterSec, tier),
-          429,
-          getRateLimitHeaders(rateLimit.retryAfterSec, tier)
-        );
-      }
-    }
-
-    // Enforce daily request limits (150 req/day for platform keys, 10,000 req/day for BYOK)
-    const dailyLimit = await checkDailyLimit(clientId, c.env, {
-      isByok: isEnterpriseOrByok,
-      bypassTest,
-    });
-    if (!dailyLimit.allowed) {
-      return c.json(
-        createDailyLimitErrorPayload(dailyLimit.limit, dailyLimit.used, dailyLimit.resetsInSeconds, isEnterpriseOrByok),
-        429,
-        getDailyLimitHeaders(dailyLimit.limit, dailyLimit.remaining, dailyLimit.resetsInSeconds)
-      );
-    }
-
     const categories = resolveCategories(c, body.categories);
     const ttlSeconds = body.ttlSeconds && body.ttlSeconds > 0 ? Math.min(body.ttlSeconds, 86400) : 300;
     const headerKeywords = resolveCustomKeywords(c);
@@ -227,10 +160,10 @@ tokenizationApp.post("/tokenize", async (c) => {
       executionCtx
     );
 
-    // Record API Call Usage Log (model, token count, protected entity count, timestamp, API key)
-    const apiKeyId = apiKeyRecord?.id || "anonymous";
-    const apiKeyPrefix = apiKeyRecord?.key_prefix || "none";
-    const userId = apiKeyRecord?.user_id || undefined;
+    // Record API Call Usage Log (model, token count, protected entity count, timestamp)
+    const apiKeyId = "anonymous";
+    const apiKeyPrefix = "none";
+    const userId = "hackathon";
     const promptTokens = Math.max(1, Math.ceil(body.text.length / 4));
 
     recordApiCallLog(

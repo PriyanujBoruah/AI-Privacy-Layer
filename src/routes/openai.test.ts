@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { Hono } from "hono";
 import openaiApp from "./openai";
-import { saveUserProfile } from "../auth/profile";
 
 describe("OpenAI Drop-In Wire-Compatible Proxy (/v1/chat/completions)", () => {
   let app: Hono;
@@ -578,9 +577,7 @@ describe("OpenAI Drop-In Wire-Compatible Proxy (/v1/chat/completions)", () => {
     expect(capturedAuth.startsWith("Bearer AQ.")).toBe(true);
   });
 
-  it("should enforce 1 request per 15 seconds rate limit on free tier when enabled", async () => {
-    (globalThis as any).__DISABLE_RATE_LIMIT__ = false;
-
+  it("should allow consecutive requests without rate limiting in hackathon mode", async () => {
     globalThis.fetch = vi.fn().mockImplementation(async () => {
       return new Response(
         JSON.stringify({ choices: [{ message: { content: "OK" } }] }),
@@ -599,7 +596,7 @@ describe("OpenAI Drop-In Wire-Compatible Proxy (/v1/chat/completions)", () => {
     });
     expect(res1.status).toBe(200);
 
-    // 2nd request immediately -> 429 Too Many Requests
+    // 2nd request immediately -> 200 OK
     const res2 = await app.request("/v1/chat/completions", {
       method: "POST",
       headers: { "Content-Type": "application/json", "cf-connecting-ip": "198.51.100.42" },
@@ -608,60 +605,7 @@ describe("OpenAI Drop-In Wire-Compatible Proxy (/v1/chat/completions)", () => {
         messages: [{ role: "user", content: "Test call 2" }],
       }),
     });
-    expect(res2.status).toBe(429);
-    expect(res2.headers.get("Retry-After")).toBeDefined();
-    expect(res2.headers.get("x-ratelimit-period")).toBe("15s");
-
-    const errData: any = await res2.json();
-    expect(errData.error.code).toBe("rate_limit_exceeded");
-    expect(errData.error.message).toContain("1 protected request per 15 seconds");
-  });
-
-  it("should enforce 1 request per 5 seconds rate limit on Pro tier when enabled", async () => {
-    (globalThis as any).__DISABLE_RATE_LIMIT__ = false;
-
-    const testApp = new Hono();
-    testApp.use("*", async (c, next) => {
-      (c as any).set("apiKeyRecord", { id: "test_pro_key_rl", user_id: "test_pro_user_rl", tier: "pro" });
-      await next();
-    });
-    testApp.route("/v1", openaiApp);
-
-    globalThis.fetch = vi.fn().mockImplementation(async () => {
-      return new Response(
-        JSON.stringify({ choices: [{ message: { content: "OK" } }] }),
-        { status: 200, headers: { "Content-Type": "application/json" } }
-      );
-    });
-
-    // 1st request -> 200 OK
-    const res1 = await testApp.request("/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
-        messages: [{ role: "user", content: "Pro call 1" }],
-      }),
-    });
-    expect(res1.status).toBe(200);
-
-    // 2nd request immediately -> 429 Too Many Requests
-    const res2 = await testApp.request("/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
-        messages: [{ role: "user", content: "Pro call 2" }],
-      }),
-    });
-    expect(res2.status).toBe(429);
-    expect(res2.headers.get("Retry-After")).toBeDefined();
-    expect(res2.headers.get("x-ratelimit-period")).toBe("5s");
-
-    const errData: any = await res2.json();
-    expect(errData.error.code).toBe("rate_limit_exceeded");
-    expect(errData.error.tier).toBe("pro");
-    expect(errData.error.message).toContain("1 protected request per 5 seconds");
+    expect(res2.status).toBe(200);
   });
 
   it("should correctly route specific playground models to Groq, Google AI Studio, and Mistral AI", async () => {
@@ -711,13 +655,6 @@ describe("OpenAI Drop-In Wire-Compatible Proxy (/v1/chat/completions)", () => {
   });
 
   it("should allow accounts full access to all models without restriction", async () => {
-    await saveUserProfile({}, {
-      userId: "test_unrestricted_user",
-      name: "Standard User",
-      email: "standard@example.com",
-      invitationCode: "",
-    });
-
     const testApp = new Hono();
     testApp.use("*", async (c, next) => {
       (c as any).set("apiKeyRecord", { user_id: "test_unrestricted_user", tier: "free" });
