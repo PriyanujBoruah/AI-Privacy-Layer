@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "projectspg",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-02-14",
+  "routes": [
+    { "pattern": "projectspg.info/*", "zone_name": "projectspg.info" },
+    { "pattern": "www.projectspg.info/*", "zone_name": "projectspg.info" },
+    { "pattern": "api.projectspg.info", "custom_domain": true }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "projectspg",
+      "database_id": "8c86fd1b-83af-4733-8569-62a5a094e551"
+    }
+  ]
+}

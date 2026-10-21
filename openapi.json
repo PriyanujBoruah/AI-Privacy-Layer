@@ -1,0 +1,446 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Data De-identification and Reversible Tokenization Engine API",
+    "description": "High-performance open-source utility for real-time PII de-identification, format-preserving masking, and reversible tokenization.",
+    "version": "2.0.0",
+    "license": {
+      "name": "Apache-2.0",
+      "url": "https://opensource.org/license/apache-2.0"
+    }
+  },
+  "paths": {
+    "/v1/tokenize": {
+      "post": {
+        "summary": "Anonymize / De-identify Payload",
+        "description": "Interprets input text and replaces sensitive PII, financial identifiers, government IDs, and custom keywords with reversible synthetic tokens.",
+        "parameters": [
+          {
+            "name": "x-vault-encryption-key",
+            "in": "header",
+            "required": false,
+            "description": "Customer BYOK KMS passphrase or secret key for Zero-Knowledge AES-256-GCM vault encryption at rest",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "text"
+                ],
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "example": "Contact Alice Wong (email: alice.w@fintech.sg, SSN: 123-45-6789)."
+                  },
+                  "encryptionKey": {
+                    "type": "string",
+                    "description": "Optional customer BYOK KMS passphrase for AES-256-GCM vault encryption"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "structural",
+                      "fpe"
+                    ],
+                    "default": "structural"
+                  },
+                  "categories": {
+                    "type": "array",
+                    "description": "Optional array of up to 2 Canonical Pack IDs (e.g. ['asia_non_sea', 'north_america']). Individual country codes are not accepted. Defaults to ['global'].",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 2,
+                    "example": [
+                      "asia_non_sea",
+                      "north_america"
+                    ]
+                  },
+                  "customKeywords": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "ProjectNexus"
+                    ]
+                  },
+                  "ttlSeconds": {
+                    "type": "integer",
+                    "default": 300
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully tokenized payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mode": {
+                      "type": "string",
+                      "example": "structural"
+                    },
+                    "sessionId": {
+                      "type": "string",
+                      "example": "sess_tok_efcwiirpiu"
+                    },
+                    "sanitizedText": {
+                      "type": "string"
+                    },
+                    "entitiesCount": {
+                      "type": "integer"
+                    },
+                    "entitiesDetected": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "categoriesApplied": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": [
+                        "global",
+                        "asia_non_sea"
+                      ]
+                    },
+                    "expiresAt": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/detokenize": {
+      "post": {
+        "summary": "Rehydrate / Restore Payload",
+        "description": "Restores synthetic tokens back to original values using the temporary session vault map.",
+        "parameters": [
+          {
+            "name": "x-vault-encryption-key",
+            "in": "header",
+            "required": false,
+            "description": "Customer BYOK KMS passphrase or secret key required to decrypt the vault session",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "sessionId",
+                  "tokenizedText"
+                ],
+                "properties": {
+                  "sessionId": {
+                    "type": "string",
+                    "example": "sess_tok_efcwiirpiu"
+                  },
+                  "encryptionKey": {
+                    "type": "string",
+                    "description": "Customer BYOK KMS passphrase required to decrypt the vault session"
+                  },
+                  "tokenizedText": {
+                    "type": "string",
+                    "example": "Payment confirmed for EMAIL_1."
+                  },
+                  "purgeAfterRead": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully rehydrated text",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rehydratedText": {
+                      "type": "string"
+                    },
+                    "tokensResolved": {
+                      "type": "integer"
+                    },
+                    "sessionStatus": {
+                      "type": "string",
+                      "example": "active"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/chat/completions": {
+      "post": {
+        "summary": "Drop-In OpenAI Wire-Compatible Chat Completion Proxy",
+        "description": "Intercepts OpenAI chat completion requests, neutralizes sovereign PII and confidential terms in prompt messages at the edge, forwards to upstream LLM, and seamlessly rehydrates responses (both standard JSON and streaming SSE).",
+        "parameters": [
+          {
+            "name": "x-vault-encryption-key",
+            "in": "header",
+            "required": false,
+            "description": "Customer BYOK KMS passphrase or secret key for Zero-Knowledge AES-256-GCM vault encryption",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-upstream-base-url",
+            "in": "header",
+            "required": false,
+            "description": "Upstream LLM base URL (e.g. https://api.openai.com/v1 or https://generativelanguage.googleapis.com/v1beta/openai)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-tokenization-mode",
+            "in": "header",
+            "required": false,
+            "description": "Tokenization mode: 'structural' or 'fpe'",
+            "schema": {
+              "type": "string",
+              "enum": ["structural", "fpe"]
+            }
+          },
+          {
+            "name": "x-detection-categories",
+            "in": "header",
+            "required": false,
+            "description": "Comma-separated detection categories (e.g. 'global,north_america')",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-preserve-session",
+            "in": "header",
+            "required": false,
+            "description": "Set to 'true' to keep vault session active across multi-turn requests",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["messages"],
+                "properties": {
+                  "model": { "type": "string", "example": "gpt-4o" },
+                  "messages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "role": { "type": "string" },
+                        "content": { "type": ["string", "array"] }
+                      }
+                    }
+                  },
+                  "stream": { "type": "boolean", "default": false },
+                  "temperature": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Standard OpenAI chat completion response or SSE stream with rehydrated tokens",
+            "content": {
+              "application/json": { "schema": { "type": "object" } },
+              "text/event-stream": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/v1/embeddings": {
+      "post": {
+        "summary": "Vector Embedding De-identification Gateway",
+        "description": "De-identifies string or array text before forwarding to upstream vector embedding models.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["input"],
+                "properties": {
+                  "input": { "type": ["string", "array"] },
+                  "model": { "type": "string", "example": "text-embedding-3-small" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Upstream vector embeddings response",
+            "content": {
+              "application/json": { "schema": { "type": "object" } }
+            }
+          }
+        }
+      }
+    },
+    "/v1/models": {
+      "get": {
+        "summary": "List Available Models",
+        "description": "Returns standard OpenAI model list catalog for SDK compatibility.",
+        "responses": {
+          "200": {
+            "description": "List of models",
+            "content": {
+              "application/json": { "schema": { "type": "object" } }
+            }
+          }
+        }
+      }
+    },
+    "/v1/audit/events": {
+      "get": {
+        "summary": "Compliance SIEM Telemetry Query",
+        "description": "Returns structured non-PII audit telemetry events for SOC2, HIPAA, and GDPR compliance logging. Entities are tracked solely by irreversible SHA-256 fingerprints.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of audit events to return (default 50, max 1000)",
+            "schema": {
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "name": "sessionId",
+            "in": "query",
+            "required": false,
+            "description": "Filter by specific vault session ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "eventType",
+            "in": "query",
+            "required": false,
+            "description": "Filter by event type ('chat_completion', 'embedding', 'tokenize', 'detokenize')",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Structured list of compliance audit events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "object": { "type": "string", "example": "list" },
+                    "total": { "type": "integer", "example": 1 },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "eventId": { "type": "string", "example": "evt_1727361441000_abc123" },
+                          "timestamp": { "type": "string", "example": "2026-09-26T14:40:00.000Z" },
+                          "eventType": { "type": "string", "example": "chat_completion" },
+                          "sessionId": { "type": "string", "example": "sess_tok_efcwiirpiu" },
+                          "kmsStatus": { "type": "string", "enum": ["BYOK-AES-256-GCM", "OFF"] },
+                          "entitiesIntercepted": { "type": "integer", "example": 2 },
+                          "entities": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "ruleId": { "type": "string", "example": "RULE_EMAIL" },
+                                "token": { "type": "string", "example": "EMAIL_1" },
+                                "fingerprint": { "type": "string", "example": "a1b2c3d4e5f67890" }
+                              }
+                            }
+                          },
+                          "model": { "type": "string", "example": "gpt-4o" },
+                          "upstreamBaseUrl": { "type": "string", "example": "https://api.openai.com/v1" },
+                          "latencyUs": { "type": "integer", "example": 450 }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "System Health Check",
+        "responses": {
+          "200": {
+            "description": "Service status and version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "version": {
+                      "type": "string",
+                      "example": "2.0.0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

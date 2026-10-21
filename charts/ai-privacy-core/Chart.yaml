@@ -1,0 +1,21 @@
+apiVersion: v2
+name: ai-privacy-core
+description: Enterprise-grade edge-native de-identification and reversible tokenization gateway for LLM pipelines and RAG workflows.
+type: application
+version: 2.0.0
+appVersion: "2.0.0"
+keywords:
+  - privacy
+  - de-identification
+  - tokenization
+  - llm-security
+  - openai-proxy
+  - data-residency
+  - gdpr
+  - sovereign-ai
+home: https://priyanujboruah.github.io/AI-Privacy-Core
+sources:
+  - https://github.com/priyanujboruah/AI-Privacy-Core
+maintainers:
+  - name: Open AI Privacy Project
+    email: security@ai-privacy-core.dev

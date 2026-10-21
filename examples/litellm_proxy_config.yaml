@@ -1,0 +1,25 @@
+# LiteLLM Proxy Configuration with AI Privacy Core
+# Run with: litellm --config examples/litellm_proxy_config.yaml
+
+model_list:
+  - model_name: gpt-4o
+    litellm_params:
+      model: openai/gpt-4o
+      api_base: http://localhost:8787/v1  # Points to AI Privacy Core Gateway!
+      api_key: os.environ/OPENAI_API_KEY
+      extra_headers:
+        x-detection-categories: "global,north_america,european_union"
+        x-tokenization-mode: "structural"
+        x-vault-encryption-key: os.environ/AI_PRIVACY_KMS_KEY
+
+  - model_name: gemini-2.5-flash
+    litellm_params:
+      model: openai/gemini-2.5-flash
+      api_base: http://localhost:8787/v1  # Automatically routes to Google AI Studio with PII neutralized
+      api_key: os.environ/GEMINI_API_KEY
+      extra_headers:
+        x-detection-categories: "global,asia_non_sea,european_union"
+
+litellm_settings:
+  drop_params: true
+  set_verbose: false
