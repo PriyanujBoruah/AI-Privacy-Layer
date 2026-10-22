@@ -27,6 +27,20 @@ export const ASIA_NON_SEA_RULES: Rule[] = [
     validator: (str) => validateAadhaar(str),
   },
   {
+    id: "RULE_IN_CONTEXT_AADHAAR",
+    type: "GOV_ID_AADHAAR",
+    category: "asia_non_sea",
+    pattern: /(?:Aadhaar|UID|Aadhar)\s*(?:linked|no|number|num)?\s*[:=]?\s*(?:UID:?)?\s*([0-9]{4}\s?[0-9]{4}\s?[0-9]{4})\b/gi,
+    tokenPrefix: "AADHAAR",
+  },
+  {
+    id: "RULE_IN_UPI",
+    type: "FIN_UPI",
+    category: "asia_non_sea",
+    pattern: /(?<![\w@.-])[a-zA-Z0-9._-]+@(ok[a-zA-Z]+|ybl|axl|paytm|upi|ibl|barodampay|federal|hdfcbank|icici|sbi)\b/gi,
+    tokenPrefix: "UPI",
+  },
+  {
     id: "RULE_IN_PAN",
     type: "GOV_ID_PAN",
     category: "asia_non_sea",

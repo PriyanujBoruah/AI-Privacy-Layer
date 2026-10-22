@@ -1,0 +1,42 @@
+[
+  {
+    "standard": "HIPAA Safe Harbor (45 CFR \u00a7 164.514)",
+    "dataset": "ewhauser/outis-synthetic-phi",
+    "samples_evaluated": 25,
+    "ground_truth_entities": 118,
+    "intercepted_entities": 30,
+    "recall_rate": 25.42,
+    "avg_latency_ms": 3.26,
+    "reversibility_rate": 100.0
+  },
+  {
+    "standard": "HIPAA Clinical EHR Notes",
+    "dataset": "temlm-foundation/Technetium-I",
+    "samples_evaluated": 25,
+    "ground_truth_entities": 251,
+    "intercepted_entities": 141,
+    "recall_rate": 56.18,
+    "avg_latency_ms": 3.43,
+    "reversibility_rate": 96.0
+  },
+  {
+    "standard": "GDPR & Global PII (EU / UK / US)",
+    "dataset": "AI4Privacy/openpii-8k",
+    "samples_evaluated": 25,
+    "ground_truth_entities": 152,
+    "intercepted_entities": 31,
+    "recall_rate": 20.39,
+    "avg_latency_ms": 2.05,
+    "reversibility_rate": 96.0
+  },
+  {
+    "standard": "DPDP Act 2023 (Indian PII)",
+    "dataset": "Maskara/Indian-PII-200k",
+    "samples_evaluated": 25,
+    "ground_truth_entities": 80,
+    "intercepted_entities": 40,
+    "recall_rate": 50.0,
+    "avg_latency_ms": 2.24,
+    "reversibility_rate": 100.0
+  }
+]

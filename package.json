@@ -13,7 +13,8 @@
     "test:utility": "node test-utility-apis.js",
     "test:api": "node test_api_connection.js",
     "test:connection": "node test_api_connection.js",
-    "test:dataset": "python test_api_dataset.py"
+    "test:dataset": "python test_api_dataset.py",
+    "benchmark": "python scripts/benchmark_compliance.py"
   },
   "keywords": [
     "privacy",
