@@ -233,10 +233,31 @@ export function tokenize(
       targetVal.length > 2 &&
       /^[A-Z\u00C0-\u00DD\u4E00-\u9FFF]/.test(targetVal)
     ) {
-      const namesToScan = [targetVal];
-      const parts = targetVal.split(/\s+/);
-      if (parts.length >= 2 && parts[0].length >= 3 && !["The", "Sir", "Mr", "Mrs", "Ms", "Dr", "Prof"].includes(parts[0])) {
-        namesToScan.push(parts[0]);
+      const namesToScan: string[] = [targetVal];
+      const cleanParts = targetVal
+        .split(/[\s,]+/)
+        .map((p) => p.trim())
+        .filter(
+          (p) =>
+            p.length >= 3 &&
+            ![
+              "The",
+              "Sir",
+              "Mr",
+              "Mrs",
+              "Ms",
+              "Dr",
+              "Prof",
+              "Attending",
+              "Physician",
+              "Patient",
+              "Name",
+            ].includes(p)
+        );
+      for (const cp of cleanParts) {
+        if (!namesToScan.includes(cp)) {
+          namesToScan.push(cp);
+        }
       }
 
       for (const nameCandidate of namesToScan) {
