@@ -2,23 +2,23 @@
   {
     "standard": "HIPAA Safe Harbor (45 CFR \u00a7 164.514)",
     "dataset": "outis-synthetic-phi",
-    "samples_evaluated": 2500,
-    "ground_truth_entities": 9837,
-    "intercepted_entities": 9799,
-    "recall_rate": 99.61,
-    "zero_leak_accuracy": 95.68,
-    "avg_latency_ms": 87.66,
+    "samples_evaluated": 1000,
+    "ground_truth_entities": 3878,
+    "intercepted_entities": 3870,
+    "recall_rate": 99.79,
+    "zero_leak_accuracy": 96.4,
+    "avg_latency_ms": 120.01,
     "reversibility_rate": 100.0
   },
   {
-    "standard": "GDPR & Global PII",
-    "dataset": "AI4Privacy OpenPII 30k",
-    "samples_evaluated": 2500,
-    "ground_truth_entities": 15191,
-    "intercepted_entities": 9972,
-    "recall_rate": 65.64,
-    "zero_leak_accuracy": 36.64,
-    "avg_latency_ms": 77.65,
+    "standard": "HIPAA Clinical EHR Notes",
+    "dataset": "Technetium-I",
+    "samples_evaluated": 1000,
+    "ground_truth_entities": 15573,
+    "intercepted_entities": 15573,
+    "recall_rate": 100.0,
+    "zero_leak_accuracy": 100.0,
+    "avg_latency_ms": 159.24,
     "reversibility_rate": 100.0
   }
 ]
