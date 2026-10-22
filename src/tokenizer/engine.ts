@@ -232,27 +232,37 @@ export function tokenize(
   });
 
   // Coreference mention propagation: scan for un-captured repeated mentions of assigned entities
-  for (const [targetVal, syntheticToken] of valueToTokenMap.entries()) {
-    const isPerson =
-      syntheticToken.startsWith("PERSON") &&
-      targetVal.length > 2 &&
-      /^\p{L}/u.test(targetVal);
-    const isFacility =
-      syntheticToken.startsWith("FACILITY") &&
-      targetVal.length > 4;
-    const isLocation =
-      syntheticToken.startsWith("LOCATION") &&
-      targetVal.length > 3;
-    const isDate =
-      syntheticToken.startsWith("DATE") &&
-      (/^\d{4}$/.test(targetVal) || /^\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?$/.test(targetVal));
-    const isAge =
-      syntheticToken.startsWith("AGE") &&
-      /^\d{1,3}$/.test(targetVal) &&
-      parseInt(targetVal, 10) >= 1 &&
-      parseInt(targetVal, 10) <= 125;
+  const COMMON_NAME_STOPWORDS = new Set([
+    "the", "sir", "mr", "mrs", "ms", "dr", "prof", "attending",
+    "physician", "patient", "name", "md", "do", "np", "pa", "rn",
+    "phd", "mbbs", "dob", "and", "for", "with", "from", "after",
+    "before", "into", "over", "under", "about", "above", "below",
+    "then", "that", "this", "these", "those", "have", "been", "were",
+    "said", "told", "seen", "felt", "done", "will", "would", "could",
+    "time", "year", "years", "month", "months", "week", "weeks", "days",
+    "home", "care", "plan", "team", "room", "unit", "clinic", "hospital"
+  ]);
 
-    if (isPerson || isFacility || isLocation || isDate || isAge) {
+  for (const [targetVal, syntheticToken] of valueToTokenMap.entries()) {
+    const prefix = syntheticToken.split("_")[0];
+    const isPerson = prefix === "PERSON" && targetVal.length >= 2;
+    const isFacility = prefix === "FACILITY" && targetVal.length > 4;
+    const isLocation = prefix === "LOCATION" && targetVal.length > 3;
+    const isDate =
+      prefix === "DATE" &&
+      (/^\d{4}$/.test(targetVal) ||
+        /^\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?$/.test(targetVal) ||
+        /^[A-Za-z]+(?:\s+\d{1,2},?)?\s+\d{4}$/.test(targetVal));
+    const isAge =
+      prefix === "AGE" &&
+      (/^\d{1,3}$/.test(targetVal) ||
+        /^(?:ninety|eighty|seventy|sixty|fifty|forty|thirty|twenty)/i.test(targetVal));
+    const isId =
+      (prefix === "ID" || prefix === "MRN" || prefix === "ACCOUNT" || prefix === "INVOICE" || prefix === "SENSITIVE") &&
+      targetVal.length >= 4;
+    const isGenericSensitive = prefix === "SENSITIVE" && targetVal.length > 3;
+
+    if (isPerson || isFacility || isLocation || isDate || isAge || isId || isGenericSensitive) {
       const candidatesToScan: string[] = [targetVal];
       if (isPerson) {
         const cleanParts = targetVal
@@ -261,28 +271,8 @@ export function tokenize(
           .filter(
             (p) =>
               p.length >= 2 &&
-              /^\p{Lu}/u.test(p) &&
-              ![
-                "The",
-                "Sir",
-                "Mr",
-                "Mrs",
-                "Ms",
-                "Dr",
-                "Prof",
-                "Attending",
-                "Physician",
-                "Patient",
-                "Name",
-                "MD",
-                "DO",
-                "NP",
-                "PA",
-                "RN",
-                "PhD",
-                "MBBS",
-                "DOB",
-              ].includes(p)
+              !/^[0-9]+$/.test(p) &&
+              !COMMON_NAME_STOPWORDS.has(p.toLowerCase())
           );
         for (const cp of cleanParts) {
           if (!candidatesToScan.includes(cp)) {
@@ -293,26 +283,47 @@ export function tokenize(
 
       for (const candidate of candidatesToScan) {
         const escapedVal = candidate.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const regex = new RegExp(`(?<![\\p{L}0-9_])${escapedVal}(?![\\p{L}0-9_])`, "gu");
+        // For person names >= 4 characters not in stop words, allow case-insensitive scan (e.g. "near" matching "Near")
+        const allowCaseInsensitive =
+          isPerson && candidate.length >= 4 && !COMMON_NAME_STOPWORDS.has(candidate.toLowerCase());
+        const regex = new RegExp(
+          `(?<![\\p{L}\\p{M}0-9_])${escapedVal}(?![\\p{L}\\p{M}0-9_])`,
+          allowCaseInsensitive ? "giu" : "gu"
+        );
         let nMatch: RegExpExecArray | null;
 
         while ((nMatch = regex.exec(text)) !== null) {
           const nStart = nMatch.index;
-          const nEnd = nStart + candidate.length;
+          const nEnd = nStart + nMatch[0].length;
 
           const overlaps = assignedSpans.some(
             (s) => nStart < s.end && nEnd > s.start
           );
 
           if (!overlaps) {
+            let corefToken = valueToTokenMap.get(nMatch[0]);
+            if (!corefToken) {
+              const count = (counters[prefix] || 0) + 1;
+              counters[prefix] = count;
+              if (mode === "fpe") {
+                corefToken = generateFPEToken(prefix, count, nMatch[0]);
+              } else {
+                corefToken = `${prefix}_${count}`;
+              }
+              valueToTokenMap.set(nMatch[0], corefToken);
+              tokenMap[corefToken] = nMatch[0];
+              totalIntercepted++;
+              entitiesDetected.push({ type: "RULE_COREFERENCE", token: corefToken });
+            }
+
             assignedSpans.push({
               start: nStart,
               end: nEnd,
               ruleId: "RULE_COREFERENCE",
-              tokenPrefix: syntheticToken.split("_")[0],
-              targetValue: candidate,
+              tokenPrefix: prefix,
+              targetValue: nMatch[0],
               priority: 15,
-              syntheticToken,
+              syntheticToken: corefToken,
             });
           }
         }

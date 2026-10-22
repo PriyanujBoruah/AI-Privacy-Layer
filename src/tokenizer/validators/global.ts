@@ -222,15 +222,21 @@ export function validatePersonName(nameStr: string): boolean {
   if (trimmed.length < 2 || trimmed.length > 60) return false;
 
   const parts = trimmed.split(/\s+/);
-  for (const part of parts) {
-    if (part.length === 0) continue;
-    const clean = part.toLowerCase().replace(/[^a-z]/g, "");
-    if (clean.length > 0 && NON_PERSON_WORDS.has(clean)) {
-      return false;
+  if (parts.length > 1) {
+    let nonPersonCount = 0;
+    for (const part of parts) {
+      if (part.length === 0) continue;
+      const clean = part.toLowerCase().replace(/[^a-z]/g, "");
+      if (clean.length > 0 && NON_PERSON_WORDS.has(clean)) {
+        nonPersonCount++;
+      }
     }
+    // As long as at least one part is an authentic name token (e.g. "May Huntington", "Rose Huntington", "Hope Addison"), accept it
+    return nonPersonCount < parts.length;
   }
 
-  return true;
+  const clean = trimmed.toLowerCase().replace(/[^a-z]/g, "");
+  return clean.length > 0 && !NON_PERSON_WORDS.has(clean);
 }
 
 

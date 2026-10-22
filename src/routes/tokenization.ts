@@ -36,12 +36,15 @@ function resolveCustomKeywords(c: Context): string[] {
 /**
  * Extract Detection Categories from request body or headers
  */
-function resolveCategories(c: Context, bodyCategories?: string[]): string[] {
+function resolveCategories(c: Context, bodyCategories?: string[], bodyPolicy?: string): string[] {
   if (Array.isArray(bodyCategories) && bodyCategories.length > 0) {
     return bodyCategories;
   }
+  if (bodyPolicy && typeof bodyPolicy === "string") {
+    return ["all"];
+  }
   const headerVal = c.req.header("x-detection-categories") || c.req.header("x-categories");
-  if (!headerVal) return [];
+  if (!headerVal) return ["all"];
 
   try {
     const trimmed = headerVal.trim();
@@ -50,7 +53,7 @@ function resolveCategories(c: Context, bodyCategories?: string[]): string[] {
     }
     return trimmed.split(",").map((s: string) => s.trim()).filter(Boolean);
   } catch {
-    return [];
+    return ["all"];
   }
 }
 
@@ -78,6 +81,7 @@ tokenizationApp.post("/tokenize", async (c) => {
       text: string;
       mode?: "structural" | "fpe";
       categories?: string[];
+      policy?: string;
       customKeywords?: string[];
       ttlSeconds?: number;
       encryptionKey?: string;
@@ -98,7 +102,7 @@ tokenizationApp.post("/tokenize", async (c) => {
       );
     }
 
-    const categories = resolveCategories(c, body.categories);
+    const categories = resolveCategories(c, body.categories, body.policy);
     const ttlSeconds = body.ttlSeconds && body.ttlSeconds > 0 ? Math.min(body.ttlSeconds, 86400) : 300;
     const headerKeywords = resolveCustomKeywords(c);
     const combinedKeywords = Array.from(
