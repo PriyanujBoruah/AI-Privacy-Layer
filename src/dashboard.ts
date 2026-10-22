@@ -498,7 +498,7 @@ export const DASHBOARD_HTML = `<!DOCTYPE html>
           </div>
           <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-50 border border-purple-200 text-purple-800 font-medium hidden md:flex">
             <i data-lucide="cpu" class="w-3.5 h-3.5 text-purple-600"></i>
-            <span>Wire-Compatible OpenAI API</span>
+            <span>Upstream: mistral-large-2512</span>
           </div>
         </div>
       </div>
@@ -645,13 +645,13 @@ export const DASHBOARD_HTML = `<!DOCTYPE html>
                 <div class="flex items-center justify-between pb-3 border-b border-amber-100 mb-3">
                   <div class="flex items-center gap-1.5">
                     <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                    <span class="text-xs font-bold text-amber-950">2. Sanitized Upstream Transit</span>
+                    <span class="text-xs font-bold text-amber-950">2. Sanitized Upstream (mistral-large-2512)</span>
                   </div>
                   <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
                     0 Bytes PII Leaked
                   </span>
                 </div>
-                <p class="text-[11px] text-amber-900/70 mb-2 font-medium">Wire Payload Received by Public LLM:</p>
+                <p class="text-[11px] text-amber-900/70 mb-2 font-medium">Wire Payload Received by Mistral AI (mistral-large-2512):</p>
                 <div id="demo-stage2-content" class="bg-gray-950 border border-gray-800 rounded-xl p-3.5 text-xs text-amber-300/90 font-mono leading-relaxed min-h-[140px] overflow-x-auto">
                   <!-- Dynamic JSON populated by JS -->
                 </div>
@@ -3403,7 +3403,7 @@ console.log(data.choices[0].message.content);</div>
       if (!container) return;
 
       const payload = {
-        model: "gpt-4o",
+        model: "mistral-large-2512",
         messages: [
           { role: "system", content: "You are a specialized enterprise AI assistant." },
           { role: "user", content: sanitizedText }
@@ -3509,7 +3509,7 @@ console.log(data.choices[0].message.content);</div>
       if (!snippet) return;
       const bslash = String.fromCharCode(92);
       const cleanPrompt = (promptText || '').replace(/"/g, '').slice(0, 100);
-      const payload = JSON.stringify({ model: "gemma-4-31b-it", messages: [{ role: "user", content: cleanPrompt + "..." }] });
+      const payload = JSON.stringify({ model: "mistral-large-2512", messages: [{ role: "user", content: cleanPrompt + "..." }] });
       const lines = [
         "curl -X POST https://ai-privacy-layer.boruahpriyanuj2004.workers.dev/v1/chat/completions " + bslash,
         "  -H " + JSON.stringify("Content-Type: application/json") + " " + bslash,
