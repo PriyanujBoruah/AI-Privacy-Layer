@@ -13,7 +13,7 @@ export const GLOBAL_RULES: Rule[] = [
     id: "RULE_DEV_KEYS",
     type: "SECRET_KEY",
     category: "global",
-    pattern: /\b(?:sk-[a-zA-Z0-9]{20,60}|AIza[0-9A-Za-z-_]{35}|AKIA[0-9A-Z]{16}|ghp_[a-zA-Z0-9]{36}|key-[a-zA-Z0-9]{32})\b/g,
+    pattern: /\b(?:sk-(?:proj-)?[a-zA-Z0-9-_]{20,120}|AIza[0-9A-Za-z-_]{35}|AKIA[0-9A-Z]{16}|ghp_[a-zA-Z0-9]{36}|key-[a-zA-Z0-9]{32})\b/g,
     tokenPrefix: "API_KEY",
   },
   {

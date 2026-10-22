@@ -7,7 +7,7 @@
     "intercepted_entities": 3870,
     "recall_rate": 99.79,
     "zero_leak_accuracy": 96.4,
-    "avg_latency_ms": 120.01,
+    "avg_latency_ms": 103.87,
     "reversibility_rate": 100.0
   },
   {
@@ -18,7 +18,29 @@
     "intercepted_entities": 15573,
     "recall_rate": 100.0,
     "zero_leak_accuracy": 100.0,
-    "avg_latency_ms": 159.24,
+    "avg_latency_ms": 130.54,
+    "reversibility_rate": 100.0
+  },
+  {
+    "standard": "GDPR & Global PII",
+    "dataset": "AI4Privacy OpenPII 30k",
+    "samples_evaluated": 1000,
+    "ground_truth_entities": 6107,
+    "intercepted_entities": 4909,
+    "recall_rate": 80.38,
+    "zero_leak_accuracy": 50.2,
+    "avg_latency_ms": 84.84,
+    "reversibility_rate": 100.0
+  },
+  {
+    "standard": "DPDP Act 2023 (Indian PII)",
+    "dataset": "Maskara Indian PII 200k",
+    "samples_evaluated": 1000,
+    "ground_truth_entities": 1919,
+    "intercepted_entities": 1673,
+    "recall_rate": 87.18,
+    "zero_leak_accuracy": 68.4,
+    "avg_latency_ms": 28.02,
     "reversibility_rate": 100.0
   }
 ]
