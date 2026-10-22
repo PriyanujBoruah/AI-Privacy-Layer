@@ -243,13 +243,16 @@ export function tokenize(
     const isLocation =
       syntheticToken.startsWith("LOCATION") &&
       targetVal.length > 3;
+    const isDate =
+      syntheticToken.startsWith("DATE") &&
+      (/^\d{4}$/.test(targetVal) || /^\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?$/.test(targetVal));
     const isAge =
       syntheticToken.startsWith("AGE") &&
       /^\d{1,3}$/.test(targetVal) &&
       parseInt(targetVal, 10) >= 1 &&
       parseInt(targetVal, 10) <= 125;
 
-    if (isPerson || isFacility || isLocation || isAge) {
+    if (isPerson || isFacility || isLocation || isDate || isAge) {
       const candidatesToScan: string[] = [targetVal];
       if (isPerson) {
         const cleanParts = targetVal
@@ -258,7 +261,7 @@ export function tokenize(
           .filter(
             (p) =>
               p.length >= 2 &&
-              /^\p{L}/u.test(p) &&
+              /^\p{Lu}/u.test(p) &&
               ![
                 "The",
                 "Sir",
