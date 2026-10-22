@@ -4,21 +4,21 @@
     "dataset": "outis-synthetic-phi",
     "samples_evaluated": 115615,
     "ground_truth_entities": 1260954,
-    "intercepted_entities": 615711,
-    "recall_rate": 48.83,
-    "zero_leak_accuracy": 13.36,
-    "avg_latency_ms": 33.73,
-    "reversibility_rate": 88.56
+    "intercepted_entities": 756430,
+    "recall_rate": 59.99,
+    "zero_leak_accuracy": 25.59,
+    "avg_latency_ms": 122.5,
+    "reversibility_rate": 77.77
   },
   {
     "standard": "GDPR & Global PII",
     "dataset": "AI4Privacy OpenPII 30k",
     "samples_evaluated": 29908,
     "ground_truth_entities": 189660,
-    "intercepted_entities": 71023,
-    "recall_rate": 37.45,
-    "zero_leak_accuracy": 15.6,
-    "avg_latency_ms": 28.38,
-    "reversibility_rate": 98.55
+    "intercepted_entities": 119161,
+    "recall_rate": 62.83,
+    "zero_leak_accuracy": 33.49,
+    "avg_latency_ms": 169.07,
+    "reversibility_rate": 98.18
   }
 ]
