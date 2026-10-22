@@ -2620,7 +2620,7 @@ console.log(data.choices[0].message.content);</div>
               <span class="text-[10px] text-gray-400 font-mono">gemma-4-*</span>
             </div>
             <div class="relative">
-              <input type="password" id="new-byok-google" placeholder="AIzaSy... (Optional)" class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg pl-3 pr-8 py-2 text-groq-dark placeholder-gray-400 focus:outline-none focus:border-gray-400 font-mono text-xs">
+              <input type="password" id="new-byok-google" autocomplete="new-password" placeholder="AIzaSy... (Optional)" class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg pl-3 pr-8 py-2 text-groq-dark placeholder-gray-400 focus:outline-none focus:border-gray-400 font-mono text-xs">
               <button type="button" onclick="toggleKeyVisibility('new-byok-google', this)" class="absolute right-2.5 top-2 text-gray-400 hover:text-gray-600 cursor-pointer p-0.5">
                 <i data-lucide="eye" class="w-3.5 h-3.5"></i>
               </button>
@@ -2634,7 +2634,7 @@ console.log(data.choices[0].message.content);</div>
               <span class="text-[10px] text-gray-400 font-mono">codestral, ministral</span>
             </div>
             <div class="relative">
-              <input type="password" id="new-byok-mistral" placeholder="api_... (Optional)" class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg pl-3 pr-8 py-2 text-groq-dark placeholder-gray-400 focus:outline-none focus:border-gray-400 font-mono text-xs">
+              <input type="password" id="new-byok-mistral" autocomplete="new-password" placeholder="api_... (Optional)" class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg pl-3 pr-8 py-2 text-groq-dark placeholder-gray-400 focus:outline-none focus:border-gray-400 font-mono text-xs">
               <button type="button" onclick="toggleKeyVisibility('new-byok-mistral', this)" class="absolute right-2.5 top-2 text-gray-400 hover:text-gray-600 cursor-pointer p-0.5">
                 <i data-lucide="eye" class="w-3.5 h-3.5"></i>
               </button>
@@ -2648,7 +2648,7 @@ console.log(data.choices[0].message.content);</div>
               <span class="text-[10px] text-gray-400 font-mono">gpt-oss, qwen3.8</span>
             </div>
             <div class="relative">
-              <input type="password" id="new-byok-groq" placeholder="gsk_... (Optional)" class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg pl-3 pr-8 py-2 text-groq-dark placeholder-gray-400 focus:outline-none focus:border-gray-400 font-mono text-xs">
+              <input type="password" id="new-byok-groq" autocomplete="new-password" placeholder="gsk_... (Optional)" class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg pl-3 pr-8 py-2 text-groq-dark placeholder-gray-400 focus:outline-none focus:border-gray-400 font-mono text-xs">
               <button type="button" onclick="toggleKeyVisibility('new-byok-groq', this)" class="absolute right-2.5 top-2 text-gray-400 hover:text-gray-600 cursor-pointer p-0.5">
                 <i data-lucide="eye" class="w-3.5 h-3.5"></i>
               </button>
@@ -2713,7 +2713,7 @@ console.log(data.choices[0].message.content);</div>
             <span class="text-[10px] text-gray-400 font-mono">gemini-2.0-flash, gemini-1.5-pro, gemma...</span>
           </div>
           <div class="relative">
-            <input type="password" id="byok-key-google" placeholder="AIzaSy..." class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg pl-3 pr-8 py-2 text-groq-dark placeholder-gray-400 focus:outline-none focus:border-gray-400 font-mono text-xs">
+            <input type="password" id="byok-key-google" autocomplete="new-password" placeholder="AIzaSy..." class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg pl-3 pr-8 py-2 text-groq-dark placeholder-gray-400 focus:outline-none focus:border-gray-400 font-mono text-xs">
             <button type="button" onclick="toggleKeyVisibility('byok-key-google', this)" class="absolute right-2.5 top-2 text-gray-400 hover:text-gray-600 cursor-pointer p-0.5" title="Toggle visibility">
               <i data-lucide="eye" class="w-3.5 h-3.5"></i>
             </button>
@@ -2727,7 +2727,7 @@ console.log(data.choices[0].message.content);</div>
             <span class="text-[10px] text-gray-400 font-mono">mistral-large, codestral, ministral...</span>
           </div>
           <div class="relative">
-            <input type="password" id="byok-key-mistral" placeholder="api_..." class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg pl-3 pr-8 py-2 text-groq-dark placeholder-gray-400 focus:outline-none focus:border-gray-400 font-mono text-xs">
+            <input type="password" id="byok-key-mistral" autocomplete="new-password" placeholder="api_..." class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg pl-3 pr-8 py-2 text-groq-dark placeholder-gray-400 focus:outline-none focus:border-gray-400 font-mono text-xs">
             <button type="button" onclick="toggleKeyVisibility('byok-key-mistral', this)" class="absolute right-2.5 top-2 text-gray-400 hover:text-gray-600 cursor-pointer p-0.5" title="Toggle visibility">
               <i data-lucide="eye" class="w-3.5 h-3.5"></i>
             </button>
@@ -2741,7 +2741,7 @@ console.log(data.choices[0].message.content);</div>
             <span class="text-[10px] text-gray-400 font-mono">llama-3.3-70b, deepseek-r1, qwen...</span>
           </div>
           <div class="relative">
-            <input type="password" id="byok-key-groq" placeholder="gsk_..." class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg pl-3 pr-8 py-2 text-groq-dark placeholder-gray-400 focus:outline-none focus:border-gray-400 font-mono text-xs">
+            <input type="password" id="byok-key-groq" autocomplete="new-password" placeholder="gsk_..." class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg pl-3 pr-8 py-2 text-groq-dark placeholder-gray-400 focus:outline-none focus:border-gray-400 font-mono text-xs">
             <button type="button" onclick="toggleKeyVisibility('byok-key-groq', this)" class="absolute right-2.5 top-2 text-gray-400 hover:text-gray-600 cursor-pointer p-0.5" title="Toggle visibility">
               <i data-lucide="eye" class="w-3.5 h-3.5"></i>
             </button>
@@ -3450,23 +3450,34 @@ console.log(data.choices[0].message.content);</div>
 
     function formatSimpleMarkdown(text) {
       if (!text) return '';
-      let html = escapeHtml(text);
-      // Bold
-      html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-gray-950">$1</strong>');
-      // Italic
-      html = html.replace(/\*([^*\n]+)\*/g, '<em class="italic text-gray-800">$1</em>');
-      // Inline code
-      html = html.replace(/\x60([^\x60\n]+)\x60/g, '<code class="bg-gray-100 text-gray-800 px-1 py-0.5 rounded text-[11px] font-mono">$1</code>');
-      // Headers
-      html = html.replace(/^###\s*(.+)$/gm, '<h4 class="font-bold text-gray-950 text-xs mt-3 mb-1.5 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>$1</h4>');
-      html = html.replace(/^##\s*(.+)$/gm, '<h3 class="font-bold text-gray-950 text-sm mt-3.5 mb-1.5 border-b border-gray-100 pb-1">$1</h3>');
-      // Lists
-      html = html.replace(/^-\s*(.+)$/gm, '<li class="ml-4 list-disc text-gray-800 my-0.5">$1</li>');
-      html = html.replace(/^\d+\.\s*(.+)$/gm, '<li class="ml-4 list-decimal text-gray-800 my-0.5">$1</li>');
-      // Paragraph spacing
-      html = html.replace(/\n\n/g, '<div class="h-2"></div>');
-      html = html.replace(/\n/g, '<br/>');
-      return html;
+      const lines = String(text).split(String.fromCharCode(10));
+      let out = '';
+      for (let i = 0; i < lines.length; i++) {
+        let line = escapeHtml(lines[i]).trim();
+        if (!line) {
+          out += '<div class="h-2"></div>';
+          continue;
+        }
+        // Bold formatting: **bold**
+        let bIdx = 0;
+        while ((bIdx = line.indexOf('**')) !== -1) {
+          const endIdx = line.indexOf('**', bIdx + 2);
+          if (endIdx === -1) break;
+          const boldVal = line.substring(bIdx + 2, endIdx);
+          line = line.substring(0, bIdx) + '<strong class="font-semibold text-gray-950">' + boldVal + '</strong>' + line.substring(endIdx + 2);
+        }
+        // Headers and list elements
+        if (line.indexOf('### ') === 0) {
+          out += '<h4 class="font-bold text-gray-950 text-xs mt-3 mb-1 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>' + line.slice(4) + '</h4>';
+        } else if (line.indexOf('## ') === 0) {
+          out += '<h3 class="font-bold text-gray-950 text-sm mt-3.5 mb-1 border-b border-gray-100 pb-1">' + line.slice(3) + '</h3>';
+        } else if (line.indexOf('- ') === 0 || line.indexOf('* ') === 0) {
+          out += '<li class="ml-4 list-disc text-gray-800 my-0.5">' + line.slice(2) + '</li>';
+        } else {
+          out += '<p class="my-0.5">' + line + '</p>';
+        }
+      }
+      return out;
     }
 
     function renderDemoStage3(rehydratedText, entities) {
@@ -4740,65 +4751,71 @@ console.log(data.choices[0].message.content);</div>
       const modeVal = document.getElementById('param-mode') ? document.getElementById('param-mode').value : 'structural';
 
       if (lang === 'python') {
-        box.innerHTML = \`<span class="syn-keyword">from</span> openai <span class="syn-keyword">import</span> OpenAI
-
-<span class="syn-comment"># Universal drop-in privacy gateway (Google Gemma, Mistral, Groq)</span>
-client = OpenAI(
-    base_url=<span class="syn-string">"https://api.projectspg.info/v1"</span>,
-    api_key=<span class="syn-string">"spg_live_your_key"</span>  <span class="syn-comment"># Your ProjectSPG API Key</span>
-)
-
-completion = client.chat.completions.create(
-    model=<span class="syn-string">"\${model}"</span>,
-    messages=[
-        {
-            <span class="syn-string">"role"</span>: <span class="syn-string">"user"</span>,
-            <span class="syn-string">"content"</span>: <span class="syn-string">"\${userPrompt ? userPrompt.slice(0, 30) + '...' : ''}"</span>
-        }
-    ],
-    temperature=<span class="syn-number">\${tempVal}</span>,
-    max_tokens=<span class="syn-number">\${tokensVal}</span>,
-    top_p=<span class="syn-number">\${topPVal}</span>,
-    stream=<span class="syn-bool">\${streamVal}</span>
-)
-
-<span class="syn-keyword">for</span> chunk <span class="syn-keyword">in</span> completion:
-    <span class="syn-keyword">print</span>(chunk.choices[<span class="syn-number">0</span>].delta.content <span class="syn-keyword">or</span> <span class="syn-string">""</span>, end=<span class="syn-string">""</span>)\`;
+        box.innerHTML = [
+          '<span class="syn-keyword">from</span> openai <span class="syn-keyword">import</span> OpenAI',
+          '',
+          '<span class="syn-comment"># Universal drop-in privacy gateway (Google Gemma, Mistral, Groq)</span>',
+          'client = OpenAI(',
+          '    base_url=<span class="syn-string">"https://api.projectspg.info/v1"</span>,',
+          '    api_key=<span class="syn-string">"spg_live_your_key"</span>  <span class="syn-comment"># Your ProjectSPG API Key</span>',
+          ')',
+          '',
+          'completion = client.chat.completions.create(',
+          '    model=<span class="syn-string">"' + model + '"</span>,',
+          '    messages=[',
+          '        {',
+          '            <span class="syn-string">"role"</span>: <span class="syn-string">"user"</span>,',
+          '            <span class="syn-string">"content"</span>: <span class="syn-string">"' + (userPrompt ? userPrompt.slice(0, 30) + '...' : '') + '"</span>',
+          '        }',
+          '    ],',
+          '    temperature=<span class="syn-number">' + tempVal + '</span>,',
+          '    max_tokens=<span class="syn-number">' + tokensVal + '</span>,',
+          '    top_p=<span class="syn-number">' + topPVal + '</span>,',
+          '    stream=<span class="syn-bool">' + streamVal + '</span>',
+          ')',
+          '',
+          '<span class="syn-keyword">for</span> chunk <span class="syn-keyword">in</span> completion:',
+          '    <span class="syn-keyword">print</span>(chunk.choices[<span class="syn-number">0</span>].delta.content <span class="syn-keyword">or</span> <span class="syn-string">""</span>, end=<span class="syn-string">""</span>)'
+        ].join(String.fromCharCode(10));
       } else if (lang === 'curl') {
-        box.innerHTML = \`curl https://api.projectspg.info/v1/chat/completions \\\\
-  -H <span class="syn-string">"Content-Type: application/json"</span> \\\\
-  -H <span class="syn-string">"Authorization: Bearer spg_live_your_key"</span> \\\\
-  -H <span class="syn-string">"x-tokenization-mode: \${modeVal}"</span> \\\\
-  -d '{
-    <span class="syn-string">"model"</span>: <span class="syn-string">"\${model}"</span>,
-    <span class="syn-string">"messages"</span>: [
-      {
-        <span class="syn-string">"role"</span>: <span class="syn-string">"user"</span>,
-        <span class="syn-string">"content"</span>: <span class="syn-string">"\${userPrompt ? userPrompt.slice(0, 30) + '...' : ''}"</span>
-      }
-    ],
-    <span class="syn-string">"temperature"</span>: \${tempVal},
-    <span class="syn-string">"max_completion_tokens"</span>: \${tokensVal},
-    <span class="syn-string">"top_p"</span>: \${topPVal},
-    <span class="syn-string">"stream"</span>: \${streamChecked ? 'true' : 'false'}
-  }'\`;
+        box.innerHTML = [
+          'curl https://api.projectspg.info/v1/chat/completions \\\\',
+          '  -H <span class="syn-string">"Content-Type: application/json"</span> \\\\',
+          '  -H <span class="syn-string">"Authorization: Bearer spg_live_your_key"</span> \\\\',
+          '  -H <span class="syn-string">"x-tokenization-mode: ' + modeVal + '"</span> \\\\',
+          "  -d '{",
+          '    <span class="syn-string">"model"</span>: <span class="syn-string">"' + model + '"</span>,',
+          '    <span class="syn-string">"messages"</span>: [',
+          '      {',
+          '        <span class="syn-string">"role"</span>: <span class="syn-string">"user"</span>,',
+          '        <span class="syn-string">"content"</span>: <span class="syn-string">"' + (userPrompt ? userPrompt.slice(0, 30) + '...' : '') + '"</span>',
+          '      }',
+          '    ],',
+          '    <span class="syn-string">"temperature"</span>: ' + tempVal + ',',
+          '    <span class="syn-string">"max_completion_tokens"</span>: ' + tokensVal + ',',
+          '    <span class="syn-string">"top_p"</span>: ' + topPVal + ',',
+          '    <span class="syn-string">"stream"</span>: ' + (streamChecked ? 'true' : 'false'),
+          "  }'"
+        ].join(String.fromCharCode(10));
       } else if (lang === 'langchain') {
-        box.innerHTML = \`<span class="syn-keyword">from</span> langchain_openai <span class="syn-keyword">import</span> ChatOpenAI
-<span class="syn-keyword">from</span> ai_privacy_core.integrations.langchain <span class="syn-keyword">import</span> PrivacyCallbackHandler
-
-privacy_handler = PrivacyCallbackHandler(
-    base_url=<span class="syn-string">"https://api.projectspg.info/v1"</span>,
-    api_key=<span class="syn-string">"spg_live_your_key"</span>
-)
-
-llm = ChatOpenAI(
-    model=<span class="syn-string">"\${model}"</span>,
-    temperature=<span class="syn-number">\${tempVal}</span>,
-    max_tokens=<span class="syn-number">\${tokensVal}</span>,
-    callbacks=[privacy_handler]
-)
-response = llm.invoke(<span class="syn-string">"Verify order for Alice"</span>)
-<span class="syn-keyword">print</span>(response.content)\`;
+        box.innerHTML = [
+          '<span class="syn-keyword">from</span> langchain_openai <span class="syn-keyword">import</span> ChatOpenAI',
+          '<span class="syn-keyword">from</span> ai_privacy_core.integrations.langchain <span class="syn-keyword">import</span> PrivacyCallbackHandler',
+          '',
+          'privacy_handler = PrivacyCallbackHandler(',
+          '    base_url=<span class="syn-string">"https://api.projectspg.info/v1"</span>,',
+          '    api_key=<span class="syn-string">"spg_live_your_key"</span>',
+          ')',
+          '',
+          'llm = ChatOpenAI(',
+          '    model=<span class="syn-string">"' + model + '"</span>,',
+          '    temperature=<span class="syn-number">' + tempVal + '</span>,',
+          '    max_tokens=<span class="syn-number">' + tokensVal + '</span>,',
+          '    callbacks=[privacy_handler]',
+          ')',
+          'response = llm.invoke(<span class="syn-string">"Verify order for Alice"</span>)',
+          '<span class="syn-keyword">print</span>(response.content)'
+        ].join(String.fromCharCode(10));
       }
     }
 
