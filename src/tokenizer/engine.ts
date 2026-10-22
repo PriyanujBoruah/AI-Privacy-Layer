@@ -99,6 +99,12 @@ export function tokenize(
       if (targetValue !== fullMatchedText) {
         start = match.index + fullMatchedText.indexOf(targetValue);
       }
+      // Cleanly trim leading/trailing whitespace from targetValue
+      const trimmedValue = targetValue.trim();
+      if (trimmedValue.length > 0 && trimmedValue !== targetValue) {
+        start = start + targetValue.indexOf(trimmedValue);
+        targetValue = trimmedValue;
+      }
       const end = start + targetValue.length;
 
       // Validate checksum/format if validator attached
@@ -225,28 +231,34 @@ export function tokenize(
     return { ...span, syntheticToken };
   });
 
-  // Coreference mention propagation: scan for un-captured repeated mentions of assigned person names
+  // Coreference mention propagation: scan for un-captured repeated mentions of assigned entities
   for (const [targetVal, syntheticToken] of valueToTokenMap.entries()) {
-    // Propagate PERSON and AGE mentions across the document
     const isPerson =
       syntheticToken.startsWith("PERSON") &&
       targetVal.length > 2 &&
-      /^[A-Z\u00C0-\u00DD\u4E00-\u9FFF]/.test(targetVal);
+      /^\p{L}/u.test(targetVal);
+    const isFacility =
+      syntheticToken.startsWith("FACILITY") &&
+      targetVal.length > 4;
+    const isLocation =
+      syntheticToken.startsWith("LOCATION") &&
+      targetVal.length > 3;
     const isAge =
       syntheticToken.startsWith("AGE") &&
       /^\d{1,3}$/.test(targetVal) &&
       parseInt(targetVal, 10) >= 1 &&
       parseInt(targetVal, 10) <= 125;
 
-    if (isPerson || isAge) {
-      const namesToScan: string[] = [targetVal];
+    if (isPerson || isFacility || isLocation || isAge) {
+      const candidatesToScan: string[] = [targetVal];
       if (isPerson) {
         const cleanParts = targetVal
-          .split(/[\s,]+/)
+          .split(/[\s,–—-]+/)
           .map((p) => p.trim())
           .filter(
             (p) =>
-              p.length >= 3 &&
+              p.length >= 2 &&
+              /^\p{L}/u.test(p) &&
               ![
                 "The",
                 "Sir",
@@ -259,23 +271,31 @@ export function tokenize(
                 "Physician",
                 "Patient",
                 "Name",
+                "MD",
+                "DO",
+                "NP",
+                "PA",
+                "RN",
+                "PhD",
+                "MBBS",
+                "DOB",
               ].includes(p)
           );
         for (const cp of cleanParts) {
-          if (!namesToScan.includes(cp)) {
-            namesToScan.push(cp);
+          if (!candidatesToScan.includes(cp)) {
+            candidatesToScan.push(cp);
           }
         }
       }
 
-      for (const nameCandidate of namesToScan) {
-        const escapedVal = nameCandidate.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const nameRegex = new RegExp(`(?<![A-Za-z0-9_])${escapedVal}(?![A-Za-z0-9_])`, "g");
+      for (const candidate of candidatesToScan) {
+        const escapedVal = candidate.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const regex = new RegExp(`(?<![\\p{L}0-9_])${escapedVal}(?![\\p{L}0-9_])`, "gu");
         let nMatch: RegExpExecArray | null;
 
-        while ((nMatch = nameRegex.exec(text)) !== null) {
+        while ((nMatch = regex.exec(text)) !== null) {
           const nStart = nMatch.index;
-          const nEnd = nStart + nameCandidate.length;
+          const nEnd = nStart + candidate.length;
 
           const overlaps = assignedSpans.some(
             (s) => nStart < s.end && nEnd > s.start
@@ -286,8 +306,8 @@ export function tokenize(
               start: nStart,
               end: nEnd,
               ruleId: "RULE_COREFERENCE",
-              tokenPrefix: "PERSON",
-              targetValue: nameCandidate,
+              tokenPrefix: syntheticToken.split("_")[0],
+              targetValue: candidate,
               priority: 15,
               syntheticToken,
             });
