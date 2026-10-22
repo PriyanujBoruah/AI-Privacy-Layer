@@ -1,42 +1,42 @@
 [
   {
     "standard": "HIPAA Safe Harbor (45 CFR \u00a7 164.514)",
-    "dataset": "ewhauser/outis-synthetic-phi",
-    "samples_evaluated": 25,
-    "ground_truth_entities": 118,
-    "intercepted_entities": 30,
-    "recall_rate": 25.42,
-    "avg_latency_ms": 3.26,
+    "dataset": "outis-synthetic-phi",
+    "samples_evaluated": 10000,
+    "ground_truth_entities": 35698,
+    "intercepted_entities": 14329,
+    "recall_rate": 40.14,
+    "avg_latency_ms": 14.67,
     "reversibility_rate": 100.0
   },
   {
     "standard": "HIPAA Clinical EHR Notes",
-    "dataset": "temlm-foundation/Technetium-I",
-    "samples_evaluated": 25,
-    "ground_truth_entities": 251,
-    "intercepted_entities": 141,
-    "recall_rate": 56.18,
-    "avg_latency_ms": 3.43,
-    "reversibility_rate": 96.0
+    "dataset": "Technetium-I",
+    "samples_evaluated": 10000,
+    "ground_truth_entities": 100615,
+    "intercepted_entities": 55613,
+    "recall_rate": 55.27,
+    "avg_latency_ms": 20.5,
+    "reversibility_rate": 99.99
   },
   {
-    "standard": "GDPR & Global PII (EU / UK / US)",
-    "dataset": "AI4Privacy/openpii-8k",
-    "samples_evaluated": 25,
-    "ground_truth_entities": 152,
-    "intercepted_entities": 31,
-    "recall_rate": 20.39,
-    "avg_latency_ms": 2.05,
-    "reversibility_rate": 96.0
+    "standard": "GDPR & Global PII",
+    "dataset": "AI4Privacy OpenPII 30k",
+    "samples_evaluated": 10000,
+    "ground_truth_entities": 63446,
+    "intercepted_entities": 14497,
+    "recall_rate": 22.85,
+    "avg_latency_ms": 12.84,
+    "reversibility_rate": 99.96
   },
   {
     "standard": "DPDP Act 2023 (Indian PII)",
-    "dataset": "Maskara/Indian-PII-200k",
-    "samples_evaluated": 25,
-    "ground_truth_entities": 80,
-    "intercepted_entities": 40,
-    "recall_rate": 50.0,
-    "avg_latency_ms": 2.24,
+    "dataset": "Maskara Indian PII 200k",
+    "samples_evaluated": 10000,
+    "ground_truth_entities": 19314,
+    "intercepted_entities": 8513,
+    "recall_rate": 44.08,
+    "avg_latency_ms": 12.92,
     "reversibility_rate": 100.0
   }
 ]

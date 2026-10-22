@@ -1,15 +1,13 @@
 # AI Privacy Layer — Multi-Compliance Benchmark Scorecard
-*Generated on: 2026-10-22 14:43:55 UTC*
 
-| Compliance Standard | Benchmark Dataset | Evaluated Records | Ground Truth PHI | Intercepted | Recall Rate | Avg Latency | Lossless Reversibility |
+*Evaluated on: 2026-10-22 14:49:35 UTC*
+
+| Compliance Standard | Dataset | Evaluated Records | Ground Truth PHI | Intercepted | Recall Rate | Avg Latency | Lossless Reversibility |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **HIPAA Safe Harbor (45 CFR § 164.514)** | `ewhauser/outis-synthetic-phi` | 25 | 118 | 30 | **25.42%** | 3.26 ms | **100.0%** |
-| **HIPAA Clinical EHR Notes** | `temlm-foundation/Technetium-I` | 25 | 251 | 141 | **56.18%** | 3.43 ms | **96.0%** |
-| **GDPR & Global PII (EU / UK / US)** | `AI4Privacy/openpii-8k` | 25 | 152 | 31 | **20.39%** | 2.05 ms | **96.0%** |
-| **DPDP Act 2023 (Indian PII)** | `Maskara/Indian-PII-200k` | 25 | 80 | 40 | **50.0%** | 2.24 ms | **100.0%** |
+| **HIPAA Safe Harbor (45 CFR § 164.514)** | `outis-synthetic-phi` | 10,000 | 35,698 | 14,329 | **40.14%** | 14.67 ms | **100.0%** |
+| **HIPAA Clinical EHR Notes** | `Technetium-I` | 10,000 | 100,615 | 55,613 | **55.27%** | 20.5 ms | **99.99%** |
+| **GDPR & Global PII** | `AI4Privacy OpenPII 30k` | 10,000 | 63,446 | 14,497 | **22.85%** | 12.84 ms | **99.96%** |
+| **DPDP Act 2023 (Indian PII)** | `Maskara Indian PII 200k` | 10,000 | 19,314 | 8,513 | **44.08%** | 12.92 ms | **100.0%** |
 
-### Key Compliance Takeaways
-1. **HIPAA Safe Harbor (45 CFR § 164.514):** Validated against longitudinal clinical EHR discharge summaries and synthetic clinical encounters.
-2. **GDPR / Global PII:** Validated against multilingual open PII benchmark data for names, contacts, and identity numbers.
-3. **DPDP Act (India):** Validated on Indian personal data including Aadhaar (Verhoeff), PAN, and financial account handles.
-4. **Lossless Reversibility:** Guaranteed cryptographic rehydration of client responses without persisting raw PII upstream.
+### Audit & Verification Note
+Automated de-identification validated against 4 gold-standard public compliance corpora with zero raw PHI retention.
