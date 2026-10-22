@@ -208,7 +208,8 @@ const NON_PERSON_WORDS = new Set([
   // Common False Positive Entities
   "product", "expense", "report", "file", "table", "group", "domain", "brand", "field",
   "server", "database", "host", "folder", "project", "item", "device", "model", "service",
-  "account", "order", "invoice", "payment", "transaction", "amount", "total", "balance"
+  "account", "order", "invoice", "payment", "transaction", "amount", "total", "balance",
+  "name", "patient", "attending", "physician", "doctor", "surgeon", "hospital", "clinic", "department"
 ]);
 
 /**
