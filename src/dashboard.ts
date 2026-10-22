@@ -3200,7 +3200,7 @@ console.log(data.choices[0].message.content);</div>
           { token: "EMAIL_1", original: "alice.smith@healthcorp.org", rule: "RULE_EMAIL", type: "Patient Email" }
         ],
         llmResponseTemplate: "Clinical confirmation for patient <PERSON_2> (SSN: <SSN_1>): Metoprolol tartrate 50mg BID ordered as evaluated by <PERSON_1>. Electronic prescription dispatched and confirmation sent to <EMAIL_1>.",
-        categories: ["global", "north_america", "healthcare"]
+        categories: ["global", "north_america", "corporate"]
       },
       fintech: {
         name: "Fintech & Banking",
@@ -3212,7 +3212,7 @@ console.log(data.choices[0].message.content);</div>
           { token: "CVV_1", original: "842", rule: "RULE_CVV", type: "Card Verification Value" }
         ],
         llmResponseTemplate: "Transaction review complete for <PERSON_1>. The dispute of $4,850.00 has been verified. Settlement credit applied to Visa <CARD_1>.",
-        categories: ["global", "north_america", "financial"]
+        categories: ["global", "north_america", "corporate"]
       },
       enterprise: {
         name: "HR & Payroll",
@@ -3232,7 +3232,7 @@ console.log(data.choices[0].message.content);</div>
         prompt: "Contact CTO Sarah Connor at sarah.connor@cyberdyne.com (SSN: 987-65-4321) regarding confidential Project Titan budget of $1,250,000.",
         expectedTokens: [],
         llmResponseTemplate: "Notification confirmed for <PERSON_1> at <EMAIL_1>. Project details successfully logged with SSN <SSN_1>.",
-        categories: ["global", "north_america", "corporate", "financial", "healthcare"]
+        categories: ["global", "north_america", "corporate"]
       }
     };
 

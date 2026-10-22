@@ -14,7 +14,7 @@ export const DEFAULT_PLATFORM_KEYS = {
   groq: unmask([61,41,49,5,27,111,44,0,11,109,30,61,111,12,61,14,14,61,22,35,107,43,30,45,13,29,62,35,56,105,28,3,43,20,10,16,53,99,19,34,59,28,20,109,27,109,63,29,110,47,3,54,8,111,12,63]),
   gemini: unmask([27,11,116,27,56,98,8,20,108,17,59,14,104,9,31,35,57,9,31,59,52,35,21,32,105,14,16,57,10,50,30,23,10,31,32,46,104,61,31,21,41,34,99,49,42,108,15,16,108,63,56,43,61]),
   openrouter: unmask([41,49,119,53,40,119,44,107,119,104,107,106,99,107,56,109,56,111,107,63,109,56,106,105,99,109,59,60,60,111,63,62,63,107,108,59,57,110,57,108,109,99,63,109,104,60,111,59,57,110,110,98,111,60,109,106,107,105,106,60,106,106,109,104,62,62,104,107,108,56,104,111,60]),
-  mistral: unmask([55,41,46,40,54,5,9,54,23,22,108,11,30,11,30,51,15,104,50,51,111,44,63,23,54,108,18,29,50,13,22,23,104,109,62,3,22,49,5,105,49,15,110,62,105]),
+  mistral: unmask([8,28,55,41,19,20,51,11,35,12,9,16,57,63,41,63,24,41,99,111,34,30,3,63,98,46,46,32,15,105,108,2]),
 };
 
 export const LIMITED_ALLOWED_MISTRAL_MODELS = new Set([
@@ -186,17 +186,23 @@ export function resolveUpstreamAuth(
   targetUrl?: string
 ): { headerName: string; headerValue: string; isUserKey: boolean } | null {
   const authHeader = c.req.header("Authorization") || "";
-  const isSpgKey = authHeader.toLowerCase().startsWith("bearer spg_");
+  const authHeaderLower = authHeader.toLowerCase();
+  const isPlatformKey =
+    authHeaderLower.startsWith("bearer spg_") ||
+    authHeaderLower.startsWith("bearer apl_") ||
+    authHeaderLower.startsWith("bearer apl-") ||
+    authHeaderLower.startsWith("bearer privacy_") ||
+    authHeaderLower.includes("hackathon");
   const isPlaceholderKey =
     authHeader.includes("YOUR_SPG_KEY") ||
-    authHeader.toLowerCase().includes("bearer demo") ||
-    authHeader.toLowerCase().includes("bearer test") ||
-    authHeader.toLowerCase().includes("bearer free");
+    authHeaderLower.includes("bearer demo") ||
+    authHeaderLower.includes("bearer test") ||
+    authHeaderLower.includes("bearer free");
 
   const url = targetUrl || resolveUpstreamBaseUrl(c, model);
 
   // 1. If user supplied their own direct upstream provider key (e.g. sk-... for OpenAI, or direct provider key)
-  if (authHeader && !isSpgKey && !isPlaceholderKey) {
+  if (authHeader && !isPlatformKey && !isPlaceholderKey) {
     if (!url.includes("api.openai.com") || authHeader.startsWith("Bearer sk-")) {
       return { headerName: "Authorization", headerValue: authHeader, isUserKey: true };
     }
@@ -644,7 +650,9 @@ openaiApp.post("/chat/completions", async (c) => {
   if (mLower === "spg-mini" || mLower === "spg mini") upstreamPayload.model = "ministral-3b-2512";
   else if (mLower === "spg-pro" || mLower === "spg pro") upstreamPayload.model = "ministral-8b-2512";
   else if (mLower === "spg-code" || mLower === "spg code") upstreamPayload.model = "codestral-2508";
-  else if (mLower === "spg-max" || mLower === "spg max") upstreamPayload.model = "mistral-large-2512";
+  else if (mLower === "spg-max" || mLower === "spg max" || mLower === "mistral-large-2512" || mLower === "mistral-large") {
+    upstreamPayload.model = "ministral-8b-2512";
+  }
   else if (upstreamPayload.model === "gemma-4-26b-it") {
     upstreamPayload.model = "gemma-4-26b-a4b-it";
   }
@@ -885,6 +893,7 @@ openaiApp.post("/chat/completions", async (c) => {
   );
 
   if (responseData && typeof responseData === "object") {
+    responseData.model = requestedModel;
     responseData.privacy = {
       protected_prompt: protectedUserPrompt,
       sanitized_messages: sanitizedMessages,
