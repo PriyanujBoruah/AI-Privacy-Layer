@@ -227,36 +227,44 @@ export function tokenize(
 
   // Coreference mention propagation: scan for un-captured repeated mentions of assigned person names
   for (const [targetVal, syntheticToken] of valueToTokenMap.entries()) {
-    // Only propagate PERSON entities with length > 2
-    if (
+    // Propagate PERSON and AGE mentions across the document
+    const isPerson =
       syntheticToken.startsWith("PERSON") &&
       targetVal.length > 2 &&
-      /^[A-Z\u00C0-\u00DD\u4E00-\u9FFF]/.test(targetVal)
-    ) {
+      /^[A-Z\u00C0-\u00DD\u4E00-\u9FFF]/.test(targetVal);
+    const isAge =
+      syntheticToken.startsWith("AGE") &&
+      /^\d{1,3}$/.test(targetVal) &&
+      parseInt(targetVal, 10) >= 1 &&
+      parseInt(targetVal, 10) <= 125;
+
+    if (isPerson || isAge) {
       const namesToScan: string[] = [targetVal];
-      const cleanParts = targetVal
-        .split(/[\s,]+/)
-        .map((p) => p.trim())
-        .filter(
-          (p) =>
-            p.length >= 3 &&
-            ![
-              "The",
-              "Sir",
-              "Mr",
-              "Mrs",
-              "Ms",
-              "Dr",
-              "Prof",
-              "Attending",
-              "Physician",
-              "Patient",
-              "Name",
-            ].includes(p)
-        );
-      for (const cp of cleanParts) {
-        if (!namesToScan.includes(cp)) {
-          namesToScan.push(cp);
+      if (isPerson) {
+        const cleanParts = targetVal
+          .split(/[\s,]+/)
+          .map((p) => p.trim())
+          .filter(
+            (p) =>
+              p.length >= 3 &&
+              ![
+                "The",
+                "Sir",
+                "Mr",
+                "Mrs",
+                "Ms",
+                "Dr",
+                "Prof",
+                "Attending",
+                "Physician",
+                "Patient",
+                "Name",
+              ].includes(p)
+          );
+        for (const cp of cleanParts) {
+          if (!namesToScan.includes(cp)) {
+            namesToScan.push(cp);
+          }
         }
       }
 
