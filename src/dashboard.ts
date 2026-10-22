@@ -3307,10 +3307,12 @@ console.log(data.choices[0].message.content);</div>
             messages: [
               {
                 role: 'system',
-                content: 'You are a specialized enterprise AI assistant. Analyze the user request thoroughly, accurately, and provide a clear, professional response.'
+                content: 'You are a concise enterprise AI assistant. Provide a brief, direct 2-3 sentence confirmation and action summary. Never write long essays or boilerplate notes.'
               },
               { role: 'user', content: text }
             ],
+            max_tokens: 150,
+            temperature: 0.1,
             categories: scenario.categories || ['all']
           })
         });
@@ -3435,10 +3437,11 @@ console.log(data.choices[0].message.content);</div>
       const payload = {
         model: "mistral-large-2512",
         messages: [
-          { role: "system", content: "You are a specialized enterprise AI assistant. Analyze the user request thoroughly, accurately, and provide a clear, professional response." },
+          { role: "system", content: "You are a concise enterprise AI assistant. Provide a brief, direct 2-3 sentence confirmation and action summary. Never write long essays or boilerplate notes." },
           { role: "user", content: sanitizedText }
         ],
-        temperature: 0.2
+        max_tokens: 150,
+        temperature: 0.1
       };
 
       const jsonStr = JSON.stringify(payload, null, 2);
@@ -3552,7 +3555,11 @@ console.log(data.choices[0].message.content);</div>
       if (!snippet) return;
       const bslash = String.fromCharCode(92);
       const cleanPrompt = (promptText || '').replace(/"/g, '').slice(0, 100);
-      const payload = JSON.stringify({ model: "mistral-large-2512", messages: [{ role: "user", content: cleanPrompt + "..." }] });
+      const payload = JSON.stringify({
+        model: "mistral-large-2512",
+        messages: [{ role: "user", content: cleanPrompt + "..." }],
+        max_tokens: 150
+      });
       const lines = [
         "curl -X POST https://ai-privacy-layer.boruahpriyanuj2004.workers.dev/v1/chat/completions " + bslash,
         "  -H " + JSON.stringify("Content-Type: application/json") + " " + bslash,
