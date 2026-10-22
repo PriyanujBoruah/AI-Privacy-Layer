@@ -356,7 +356,7 @@ def main():
     parser = argparse.ArgumentParser(description="Multi-Compliance Standardized Benchmark Suite")
     parser.add_argument("--rows-per-dataset", type=int, default=0, help="Rows per dataset (0 = complete dataset)")
     parser.add_argument("--complete", action="store_true", help="Run complete dataset across all corpora")
-    parser.add_argument("--dataset", type=str, default="all", choices=["all", "outis", "technetium", "ai4privacy", "maskara"], help="Specific dataset to benchmark (default: all)")
+    parser.add_argument("--dataset", type=str, default="all", help="Specific dataset(s) to benchmark, comma-separated e.g. 'outis,ai4privacy' (default: all)")
     parser.add_argument("--update-interval", type=int, default=5000, help="Progress update frequency (default: 5000)")
     parser.add_argument("--workers", type=int, default=16, help="Concurrent HTTP worker threads (default: 16)")
     parser.add_argument("--url", type=str, default="http://localhost:8787", help="Gateway endpoint URL")
@@ -369,9 +369,10 @@ def main():
         w = args.workers
 
         is_complete = args.complete or (args.rows_per_dataset == 0)
+        selected = [d.strip().lower() for d in args.dataset.split(",")]
 
         # 1. Outis (HIPAA Safe Harbor)
-        if args.dataset in ["all", "outis"]:
+        if "all" in selected or "outis" in selected:
             rows_outis = TOTAL_DATASET_ROWS["outis"] if is_complete else args.rows_per_dataset
             results.append(run_dataset_benchmark(
                 "outis-synthetic-phi", "HIPAA Safe Harbor (45 CFR § 164.514)",
@@ -379,7 +380,7 @@ def main():
             ))
 
         # 2. Technetium-I (HIPAA Clinical Notes)
-        if args.dataset in ["all", "technetium"]:
+        if "all" in selected or "technetium" in selected:
             rows_tech = TOTAL_DATASET_ROWS["technetium"] if is_complete else args.rows_per_dataset
             results.append(run_dataset_benchmark(
                 "Technetium-I", "HIPAA Clinical EHR Notes",
@@ -387,7 +388,7 @@ def main():
             ))
 
         # 3. AI4Privacy (GDPR & Global PII)
-        if args.dataset in ["all", "ai4privacy"]:
+        if "all" in selected or "ai4privacy" in selected:
             rows_ai4 = TOTAL_DATASET_ROWS["ai4privacy"] if is_complete else args.rows_per_dataset
             results.append(run_dataset_benchmark(
                 "AI4Privacy OpenPII 30k", "GDPR & Global PII",
@@ -395,7 +396,7 @@ def main():
             ))
 
         # 4. Maskara (DPDP Act India)
-        if args.dataset in ["all", "maskara"]:
+        if "all" in selected or "maskara" in selected:
             rows_maskara = TOTAL_DATASET_ROWS["maskara"] if is_complete else args.rows_per_dataset
             results.append(run_dataset_benchmark(
                 "Maskara Indian PII 200k", "DPDP Act 2023 (Indian PII)",

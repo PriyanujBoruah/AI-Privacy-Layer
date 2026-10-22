@@ -1,10 +1,11 @@
 # AI Privacy Layer — Full Multi-Compliance Benchmark Scorecard
 
-*Evaluated on: 2026-10-22 15:57:55 UTC*
+*Evaluated on: 2026-10-22 16:09:46 UTC*
 
 | Compliance Standard | Dataset | Evaluated Records | Ground Truth Entities | Intercepted | Entity Recall | Zero-Leak Accuracy | Avg Latency | Lossless Reversibility |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **HIPAA Clinical EHR Notes** | `Technetium-I` | 74,700 | 1,161,437 | 1,161,437 | **100.0%** | **100.0%** | 44.77 ms | **100.0%** |
+| **HIPAA Safe Harbor (45 CFR § 164.514)** | `outis-synthetic-phi` | 115,615 | 1,260,954 | 615,711 | **48.83%** | **13.36%** | 33.73 ms | **88.56%** |
+| **GDPR & Global PII** | `AI4Privacy OpenPII 30k` | 29,908 | 189,660 | 71,023 | **37.45%** | **15.6%** | 28.38 ms | **98.55%** |
 
 ### Audit & Verification Note
 Automated de-identification validated against 4 gold-standard public compliance corpora with zero raw PHI retention.
