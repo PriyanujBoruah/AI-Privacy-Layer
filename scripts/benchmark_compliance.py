@@ -16,6 +16,7 @@ Features:
 import sys
 import io
 import os
+import re
 import time
 import json
 import argparse
@@ -97,9 +98,17 @@ def process_single_row(session, base_url, text, gt_values, test_reversibility=Fa
     sanitized = data.get("sanitizedText", text)
     sess_id = data.get("sessionId")
 
-    # Evaluate ground truth interception
+    # Evaluate ground truth interception with boundary awareness
     gt_count = len(gt_values)
-    intercepted = sum(1 for val in gt_values if val not in sanitized)
+    intercepted = 0
+    for val in gt_values:
+        if len(val) < 2:
+            if val not in sanitized:
+                intercepted += 1
+        else:
+            rx = re.compile(r'(?<![A-Za-z0-9])' + re.escape(val) + r'(?![A-Za-z0-9])')
+            if not rx.search(sanitized):
+                intercepted += 1
 
     # Record-Level Zero-Leak Accuracy:
     # If text had PII, did all ground-truth entities get intercepted?
@@ -347,6 +356,7 @@ def main():
     parser = argparse.ArgumentParser(description="Multi-Compliance Standardized Benchmark Suite")
     parser.add_argument("--rows-per-dataset", type=int, default=0, help="Rows per dataset (0 = complete dataset)")
     parser.add_argument("--complete", action="store_true", help="Run complete dataset across all corpora")
+    parser.add_argument("--dataset", type=str, default="all", choices=["all", "outis", "technetium", "ai4privacy", "maskara"], help="Specific dataset to benchmark (default: all)")
     parser.add_argument("--update-interval", type=int, default=5000, help="Progress update frequency (default: 5000)")
     parser.add_argument("--workers", type=int, default=16, help="Concurrent HTTP worker threads (default: 16)")
     parser.add_argument("--url", type=str, default="http://localhost:8787", help="Gateway endpoint URL")
@@ -361,32 +371,36 @@ def main():
         is_complete = args.complete or (args.rows_per_dataset == 0)
 
         # 1. Outis (HIPAA Safe Harbor)
-        rows_outis = TOTAL_DATASET_ROWS["outis"] if is_complete else args.rows_per_dataset
-        results.append(run_dataset_benchmark(
-            "outis-synthetic-phi", "HIPAA Safe Harbor (45 CFR § 164.514)",
-            iter_outis(rows_outis), rows_outis, args.url, interval, w
-        ))
+        if args.dataset in ["all", "outis"]:
+            rows_outis = TOTAL_DATASET_ROWS["outis"] if is_complete else args.rows_per_dataset
+            results.append(run_dataset_benchmark(
+                "outis-synthetic-phi", "HIPAA Safe Harbor (45 CFR § 164.514)",
+                iter_outis(rows_outis), rows_outis, args.url, interval, w
+            ))
 
         # 2. Technetium-I (HIPAA Clinical Notes)
-        rows_tech = TOTAL_DATASET_ROWS["technetium"] if is_complete else args.rows_per_dataset
-        results.append(run_dataset_benchmark(
-            "Technetium-I", "HIPAA Clinical EHR Notes",
-            iter_technetium(rows_tech), rows_tech, args.url, interval, w
-        ))
+        if args.dataset in ["all", "technetium"]:
+            rows_tech = TOTAL_DATASET_ROWS["technetium"] if is_complete else args.rows_per_dataset
+            results.append(run_dataset_benchmark(
+                "Technetium-I", "HIPAA Clinical EHR Notes",
+                iter_technetium(rows_tech), rows_tech, args.url, interval, w
+            ))
 
         # 3. AI4Privacy (GDPR & Global PII)
-        rows_ai4 = TOTAL_DATASET_ROWS["ai4privacy"] if is_complete else args.rows_per_dataset
-        results.append(run_dataset_benchmark(
-            "AI4Privacy OpenPII 30k", "GDPR & Global PII",
-            iter_ai4privacy(rows_ai4), rows_ai4, args.url, interval, w
-        ))
+        if args.dataset in ["all", "ai4privacy"]:
+            rows_ai4 = TOTAL_DATASET_ROWS["ai4privacy"] if is_complete else args.rows_per_dataset
+            results.append(run_dataset_benchmark(
+                "AI4Privacy OpenPII 30k", "GDPR & Global PII",
+                iter_ai4privacy(rows_ai4), rows_ai4, args.url, interval, w
+            ))
 
         # 4. Maskara (DPDP Act India)
-        rows_maskara = TOTAL_DATASET_ROWS["maskara"] if is_complete else args.rows_per_dataset
-        results.append(run_dataset_benchmark(
-            "Maskara Indian PII 200k", "DPDP Act 2023 (Indian PII)",
-            iter_maskara(rows_maskara), rows_maskara, args.url, interval, w
-        ))
+        if args.dataset in ["all", "maskara"]:
+            rows_maskara = TOTAL_DATASET_ROWS["maskara"] if is_complete else args.rows_per_dataset
+            results.append(run_dataset_benchmark(
+                "Maskara Indian PII 200k", "DPDP Act 2023 (Indian PII)",
+                iter_maskara(rows_maskara), rows_maskara, args.url, interval, w
+            ))
 
         print_final_summary(results)
 
