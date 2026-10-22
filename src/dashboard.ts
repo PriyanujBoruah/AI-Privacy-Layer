@@ -2295,7 +2295,7 @@ console.log(data.choices[0].message.content);</div>
       </div>
       <p class="text-xs text-groq-textMuted">Generate a ProjectSPG key for wire-compatible AI privacy proxying.</p>
 
-      <div class="mt-4 space-y-4 text-xs">
+      <form onsubmit="submitCreateKey(); return false;" class="mt-4 space-y-4 text-xs">
         <div>
           <label class="block text-groq-dark font-medium mb-1">Key Name</label>
           <input type="text" id="new-key-name" placeholder="e.g. Production Backend" class="w-full bg-[#f9fafb] border border-groq-grayBorder rounded-lg px-3 py-2 text-groq-dark focus:border-gray-400 focus:outline-none font-sans text-xs">
@@ -2376,10 +2376,11 @@ console.log(data.choices[0].message.content);</div>
         </div>
       </div>
 
-      <div class="mt-6 pt-4 border-t border-gray-100 flex justify-end gap-2 text-xs">
-        <button onclick="closeCreateKeyModal()" class="px-4 py-2 rounded-lg bg-gray-100 text-groq-dark font-medium cursor-pointer">Cancel</button>
-        <button onclick="submitCreateKey()" class="px-4 py-2 rounded-lg bg-black hover:bg-gray-800 text-white font-semibold shadow-xs transition cursor-pointer">Create API Key</button>
-      </div>
+        <div class="mt-6 pt-4 border-t border-gray-100 flex justify-end gap-2 text-xs">
+          <button type="button" onclick="closeCreateKeyModal()" class="px-4 py-2 rounded-lg bg-gray-100 text-groq-dark font-medium cursor-pointer">Cancel</button>
+          <button type="submit" class="px-4 py-2 rounded-lg bg-black hover:bg-gray-800 text-white font-semibold shadow-xs transition cursor-pointer">Create API Key</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -2422,7 +2423,7 @@ console.log(data.choices[0].message.content);</div>
         Configure your direct provider API keys. In BYOK mode, adding your keys automatically unlocks and populates all available models directly from Groq Cloud, Google AI Studio, and Mistral AI with zero platform rate limits.
       </p>
 
-      <div class="mt-5 space-y-4 text-xs">
+      <form onsubmit="saveByokKeys(); return false;" class="mt-5 space-y-4 text-xs">
         
         <!-- Google AI Studio API Key -->
         <div>
@@ -2469,13 +2470,14 @@ console.log(data.choices[0].message.content);</div>
         <div id="byok-sync-status" class="hidden p-2.5 rounded-lg text-xs flex items-center gap-2"></div>
       </div>
 
-      <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs">
-        <button onclick="clearByokKeys()" class="text-xs text-gray-400 hover:text-rose-600 transition cursor-pointer font-medium">Clear All</button>
-        <div class="flex items-center gap-2">
-          <button onclick="closeByokKeysModal()" class="px-3 py-1.5 rounded-lg text-gray-600 hover:bg-gray-100 transition cursor-pointer font-medium">Cancel</button>
-          <button onclick="saveByokKeys()" class="px-4 py-1.5 rounded-lg bg-black hover:bg-gray-800 text-white font-semibold shadow-xs transition cursor-pointer">Save Keys</button>
+        <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs">
+          <button type="button" onclick="clearByokKeys()" class="text-xs text-gray-400 hover:text-rose-600 transition cursor-pointer font-medium">Clear All</button>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="closeByokKeysModal()" class="px-3 py-1.5 rounded-lg text-gray-600 hover:bg-gray-100 transition cursor-pointer font-medium">Cancel</button>
+            <button type="submit" class="px-4 py-1.5 rounded-lg bg-black hover:bg-gray-800 text-white font-semibold shadow-xs transition cursor-pointer">Save Keys</button>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 
@@ -2808,7 +2810,7 @@ console.log(data.choices[0].message.content);</div>
       org: "Hackathon"
     };
     let currentIdToken = "open_access";
-    let isUserFullyInvited = () => true;
+    // isUserFullyInvited hoisted below
     function openAuthModal() { switchView('playground'); }
     function closeAuthModal() {}
     function handleGoogleSignIn() {}
@@ -2849,8 +2851,6 @@ console.log(data.choices[0].message.content);</div>
         sessionStorage.setItem('pendingInviteCode', cleanCode);
         const invCode = document.getElementById('inv-code');
         if (invCode) invCode.value = cleanCode;
-      });
-        }, 200);
       }
 
       // Initialize parameter slider fills
@@ -2954,7 +2954,6 @@ console.log(data.choices[0].message.content);</div>
       if (typeof lucide !== 'undefined') {
         setTimeout(() => lucide.createIcons(), 10);
       }
-    }
     }
 
     function switchDashTab(tabName) {
