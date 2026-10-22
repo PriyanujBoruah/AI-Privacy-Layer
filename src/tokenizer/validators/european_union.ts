@@ -281,6 +281,12 @@ export function validateCzechBirthNumber(rcStr: string): boolean {
   const clean = rcStr.replace(/[\s/]/g, "");
   if (!/^\d{9,10}$/.test(clean)) return false;
 
+  const month = parseInt(clean.substring(2, 4), 10);
+  const day = parseInt(clean.substring(4, 6), 10);
+  const validMonth = (month >= 1 && month <= 12) || (month >= 51 && month <= 62) || (month >= 21 && month <= 32) || (month >= 71 && month <= 82);
+  const validDay = day >= 1 && day <= 31;
+  if (!validMonth || !validDay) return false;
+
   if (clean.length === 10) {
     const num = parseInt(clean, 10);
     return num % 11 === 0;

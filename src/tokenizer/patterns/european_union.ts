@@ -24,7 +24,7 @@ export const EUROPEAN_UNION_RULES: Rule[] = [
     id: "RULE_DE_STEUER_ID",
     type: "FIN_STEUER_ID",
     category: "european_union",
-    pattern: /\b\d{2}\s?\d{3}\s?\d{3}\s?\d{3}\b/g,
+    pattern: /(?<!(?:Order|Bank\s*account|account|Extension)\s*(?:number|no|code|id)?\s*[:=]?\s*)\b\d{2}\s?\d{3}\s?\d{3}\s?\d{3}\b/gi,
     tokenPrefix: "STEUER_ID",
   },
   {
@@ -260,7 +260,7 @@ export const EUROPEAN_UNION_RULES: Rule[] = [
     id: "RULE_HR_OIB",
     type: "GOV_ID_HR_OIB",
     category: "european_union",
-    pattern: /\b\d{11}\b/g,
+    pattern: /(?<!(?:Order|Bank\s*account|account|Extension)\s*(?:number|no|code|id)?\s*[:=]?\s*)\b\d{11}\b/gi,
     tokenPrefix: "HR_OIB",
     validator: (oib) => validateCroatiaOIB(oib),
   },

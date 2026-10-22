@@ -80,12 +80,12 @@ def ensure_server(base_url):
         raise RuntimeError("Failed to launch local server on " + base_url)
     return None
 
-def process_single_row(session, base_url, text, gt_values, test_reversibility=False):
+def process_single_row(session, base_url, text, gt_values, test_reversibility=False, policy="GDPR_GLOBAL"):
     t0 = time.perf_counter()
     try:
         res = session.post(
             f"{base_url}/v1/tokenize",
-            json={"text": text, "categories": ["all"]},
+            json={"text": text, "policy": policy},
             timeout=8
         )
         latency_ms = (time.perf_counter() - t0) * 1000
@@ -142,9 +142,9 @@ def process_single_row(session, base_url, text, gt_values, test_reversibility=Fa
         "tested_reversibility": (test_reversibility and sanitized != text)
     }
 
-def run_dataset_benchmark(dataset_name, display_standard, items_generator, total_rows, base_url, update_interval=5000, workers=16):
+def run_dataset_benchmark(dataset_name, display_standard, items_generator, total_rows, base_url, update_interval=5000, workers=16, policy="GDPR_GLOBAL"):
     print(f"\n" + "=" * 80)
-    print(f"[*] BENCHMARKING: {display_standard}")
+    print(f"[*] BENCHMARKING: {display_standard} (Policy: {policy})")
     print(f"[*] Dataset: {dataset_name} | Target: {total_rows:,} rows | Workers: {workers}")
     print("=" * 80, flush=True)
 
@@ -172,7 +172,8 @@ def run_dataset_benchmark(dataset_name, display_standard, items_generator, total
                     base_url,
                     item["text"],
                     item["gt"],
-                    (idx % 20 == 0) # Test reversibility on 5% sample
+                    (idx % 20 == 0), # Test reversibility on 5% sample
+                    policy
                 )
                 for idx, item in enumerate(b)
             ]
@@ -376,7 +377,7 @@ def main():
             rows_outis = TOTAL_DATASET_ROWS["outis"] if is_complete else args.rows_per_dataset
             results.append(run_dataset_benchmark(
                 "outis-synthetic-phi", "HIPAA Safe Harbor (45 CFR § 164.514)",
-                iter_outis(rows_outis), rows_outis, args.url, interval, w
+                iter_outis(rows_outis), rows_outis, args.url, interval, w, policy="HIPAA_DEID"
             ))
 
         # 2. Technetium-I (HIPAA Clinical Notes)
@@ -384,7 +385,7 @@ def main():
             rows_tech = TOTAL_DATASET_ROWS["technetium"] if is_complete else args.rows_per_dataset
             results.append(run_dataset_benchmark(
                 "Technetium-I", "HIPAA Clinical EHR Notes",
-                iter_technetium(rows_tech), rows_tech, args.url, interval, w
+                iter_technetium(rows_tech), rows_tech, args.url, interval, w, policy="HIPAA_DEID"
             ))
 
         # 3. AI4Privacy (GDPR & Global PII)
@@ -392,7 +393,7 @@ def main():
             rows_ai4 = TOTAL_DATASET_ROWS["ai4privacy"] if is_complete else args.rows_per_dataset
             results.append(run_dataset_benchmark(
                 "AI4Privacy OpenPII 30k", "GDPR & Global PII",
-                iter_ai4privacy(rows_ai4), rows_ai4, args.url, interval, w
+                iter_ai4privacy(rows_ai4), rows_ai4, args.url, interval, w, policy="GDPR_GLOBAL"
             ))
 
         # 4. Maskara (DPDP Act India)
@@ -400,7 +401,7 @@ def main():
             rows_maskara = TOTAL_DATASET_ROWS["maskara"] if is_complete else args.rows_per_dataset
             results.append(run_dataset_benchmark(
                 "Maskara Indian PII 200k", "DPDP Act 2023 (Indian PII)",
-                iter_maskara(rows_maskara), rows_maskara, args.url, interval, w
+                iter_maskara(rows_maskara), rows_maskara, args.url, interval, w, policy="DPDP_INDIA"
             ))
 
         print_final_summary(results)

@@ -41,7 +41,16 @@ function resolveCategories(c: Context, bodyCategories?: string[], bodyPolicy?: s
     return bodyCategories;
   }
   if (bodyPolicy && typeof bodyPolicy === "string") {
-    return ["all"];
+    switch (bodyPolicy.toUpperCase()) {
+      case "DPDP_INDIA":
+        return ["asia_non_sea", "global"];
+      case "HIPAA_DEID":
+        return ["north_america", "global"];
+      case "GDPR_GLOBAL":
+        return ["european_union", "europe_non_eu", "global", "north_america", "asia_non_sea", "south_east_asia", "south_america", "africa", "oceania", "corporate"];
+      default:
+        return ["all"];
+    }
   }
   const headerVal = c.req.header("x-detection-categories") || c.req.header("x-categories");
   if (!headerVal) return ["all"];
