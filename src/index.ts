@@ -3,11 +3,6 @@ import { cors } from "hono/cors";
 import tokenizationApp from "./routes/tokenization";
 import openaiApp from "./routes/openai";
 import { DASHBOARD_HTML } from "./dashboard";
-import { HOME_HTML } from "./home";
-import { BENCHMARK_BLOG_HTML } from "./blog_benchmark";
-import { COUNTRIES_BLOG_HTML } from "./blog_countries";
-import { INDUSTRIES_BLOG_HTML } from "./blog_industries";
-import { STACK_BLOG_HTML } from "./blog_stack";
 import { PRIVACY_POLICY_HTML } from "./legal_privacy";
 import { TERMS_OF_SERVICE_HTML } from "./legal_terms";
 import { getApiCallLogs } from "./audit/logger";
@@ -60,31 +55,20 @@ app.options("*", (c) => c.body(null, 204));
 app.get("/", (c) => c.html(DASHBOARD_HTML));
 app.get("/dashboard", (c) => c.html(DASHBOARD_HTML));
 
-// Serve Modern Developer-First Home Landing Page (Interactive Hero Demo & Lead Capture)
-app.get("/home", (c) => c.html(HOME_HTML));
+// Direct Console Routes
+app.get("/playground", (c) => c.redirect("/#playground"));
+app.get("/home", (c) => c.redirect("/"));
 
-// Serve Technical Benchmark & Empirical Reliability Blog
-app.get("/blog", (c) => c.redirect("/blog/benchmark"));
-app.get("/blog/benchmark", (c) => c.html(BENCHMARK_BLOG_HTML));
-app.get("/test-results", (c) => c.html(BENCHMARK_BLOG_HTML));
-app.get("/test-results.html", (c) => c.html(BENCHMARK_BLOG_HTML));
-
-// Serve Global Sovereign AI Privacy & Supported Countries Blog
-app.get("/blog/countries", (c) => c.html(COUNTRIES_BLOG_HTML));
-app.get("/countries", (c) => c.html(COUNTRIES_BLOG_HTML));
-app.get("/supported-countries", (c) => c.html(COUNTRIES_BLOG_HTML));
-
-// Serve Enterprise Guardrails for Regulated Industries Blog
-app.get("/blog/industries", (c) => c.html(INDUSTRIES_BLOG_HTML));
-app.get("/industries", (c) => c.html(INDUSTRIES_BLOG_HTML));
-app.get("/supported-industries", (c) => c.html(INDUSTRIES_BLOG_HTML));
-
-// Serve Open Model AI Stack & Ranked Market Leader Blog
-app.get("/blog/stack", (c) => c.html(STACK_BLOG_HTML));
-app.get("/blog/comparison", (c) => c.html(STACK_BLOG_HTML));
-app.get("/blog/best-ai-privacy", (c) => c.html(STACK_BLOG_HTML));
-app.get("/stack", (c) => c.html(STACK_BLOG_HTML));
-app.get("/comparison", (c) => c.html(STACK_BLOG_HTML));
+// Redirect legacy marketing/blog routes straight to console
+app.get("/blog/*", (c) => c.redirect("/"));
+app.get("/blog", (c) => c.redirect("/"));
+app.get("/test-results*", (c) => c.redirect("/"));
+app.get("/countries", (c) => c.redirect("/"));
+app.get("/supported-countries", (c) => c.redirect("/"));
+app.get("/industries", (c) => c.redirect("/"));
+app.get("/supported-industries", (c) => c.redirect("/"));
+app.get("/stack", (c) => c.redirect("/"));
+app.get("/comparison", (c) => c.redirect("/"));
 
 // Serve Legal & Compliance Pages (Privacy Policy, Terms of Service)
 app.get("/privacy", (c) => c.html(PRIVACY_POLICY_HTML));

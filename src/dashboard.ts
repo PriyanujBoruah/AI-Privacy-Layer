@@ -340,18 +340,18 @@ export const DASHBOARD_HTML = `<!DOCTYPE html>
   </style>
 </head>
 
-<body class="min-h-screen flex flex-col bg-white text-groq-dark antialiased overflow-y-auto overflow-x-hidden w-full max-w-full selection:bg-[#f0523d]/20 selection:text-[#f0523d]">
+<body class="h-screen flex flex-col bg-white text-groq-dark antialiased overflow-hidden w-full max-w-full selection:bg-[#f0523d]/20 selection:text-[#f0523d]">
 
   <!-- ========================================================================= -->
   <!-- TOP GLOBAL NAVBAR (Exact 52px height + Mobile Tab Strip) -->
   <!-- ========================================================================= -->
-  <header id="global-header" class="sticky top-0 bg-white z-40 hidden border-b border-gray-100 shadow-2xs">
+  <header id="global-header" class="sticky top-0 bg-white z-40 border-b border-gray-100 shadow-2xs">
     
     <!-- Main Top Row (52px) -->
     <div class="h-[52px] px-3 sm:px-4 lg:px-6 flex items-center justify-between">
       <!-- Left: Brand Logo + Project Selector -->
       <div class="flex items-center gap-2 sm:gap-3.5">
-        <a href="#landing" onclick="switchView('landing')" class="flex items-center gap-2 group cursor-pointer" title="Return to Landing Page">
+        <a href="#playground" onclick="switchView('playground')" class="flex items-center gap-2 group cursor-pointer" title="AI Privacy Layer Console">
           <div class="w-6 h-6 shrink-0 flex items-center justify-center">
             <svg viewBox="0 0 1024 1024" fill="none" class="w-full h-full">
               <rect x="307" y="486" width="410" height="52" rx="26" fill="#000000" />
@@ -361,7 +361,7 @@ export const DASHBOARD_HTML = `<!DOCTYPE html>
               <circle cx="787.5" cy="511.5" r="68.5" fill="#F0523D" />
             </svg>
           </div>
-          <span class="font-extrabold text-[20px] sm:text-[22px] tracking-tight text-groq-dark">project<span class="text-[#f0523d]">spg</span></span>
+          <span class="font-extrabold text-[18px] sm:text-[20px] tracking-tight text-groq-dark">ai<span class="text-[#f0523d]">privacy</span><span class="text-[10px] font-bold text-gray-500 ml-1.5 px-2 py-0.5 bg-gray-100 rounded-md tracking-wider uppercase">CONSOLE</span></span>
         </a>
 
         <!-- Workspace / Tier Pill -->
@@ -377,9 +377,9 @@ export const DASHBOARD_HTML = `<!DOCTYPE html>
       <!-- Center: Desktop Navigation Tabs (Hidden on < sm) -->
       <div class="hidden sm:flex items-center gap-6 text-xs">
         <nav class="flex items-center gap-6 font-medium text-xs">
-          <button onclick="switchView('playground')" id="nav-playground" class="nav-item text-groq-textMuted hover:text-groq-dark transition whitespace-nowrap cursor-pointer">Playground</button>
+          <button onclick="switchView('playground')" id="nav-playground" class="nav-item text-[#f0523d] font-semibold transition whitespace-nowrap cursor-pointer">Playground</button>
           <button onclick="switchView('keys')" id="nav-keys" class="nav-item text-groq-textMuted hover:text-groq-dark transition whitespace-nowrap cursor-pointer">API Keys</button>
-          <button onclick="switchView('dashboard')" id="nav-dashboard" class="nav-item text-[#f0523d] font-semibold transition whitespace-nowrap cursor-pointer">Dashboard</button>
+          <button onclick="switchView('dashboard')" id="nav-dashboard" class="nav-item text-groq-textMuted hover:text-groq-dark transition whitespace-nowrap cursor-pointer">Dashboard</button>
           <button onclick="switchView('docs')" id="nav-docs" class="nav-item text-groq-textMuted hover:text-groq-dark transition whitespace-nowrap cursor-pointer">Docs</button>
           <button onclick="switchView('admin-invites')" id="nav-admin-invites" class="nav-item hidden text-purple-600 font-semibold hover:text-purple-800 transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 px-2 py-0.5 rounded-lg hover:bg-purple-50">
             <i data-lucide="ticket" class="w-3.5 h-3.5 text-purple-600"></i>
@@ -445,9 +445,9 @@ export const DASHBOARD_HTML = `<!DOCTYPE html>
 
     <!-- Mobile Sub-Header Navigation Strip (Visible on mobile screens < sm) -->
     <div class="sm:hidden px-2 py-1.5 bg-[#fafafa] border-t border-gray-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar touch-scroll">
-      <button onclick="switchView('playground')" id="nav-mobile-playground" class="nav-mobile-item flex-1 py-1.5 px-2 text-center rounded-lg text-xs font-medium whitespace-nowrap transition cursor-pointer text-groq-textMuted bg-white border border-gray-200/70 shadow-2xs">Playground</button>
+      <button onclick="switchView('playground')" id="nav-mobile-playground" class="nav-mobile-item flex-1 py-1.5 px-2 text-center rounded-lg text-xs font-semibold whitespace-nowrap transition cursor-pointer text-[#f0523d] bg-orange-50 border border-[#f0523d]/30 shadow-2xs">Playground</button>
       <button onclick="switchView('keys')" id="nav-mobile-keys" class="nav-mobile-item flex-1 py-1.5 px-2 text-center rounded-lg text-xs font-medium whitespace-nowrap transition cursor-pointer text-groq-textMuted bg-white border border-gray-200/70 shadow-2xs">API Keys</button>
-      <button onclick="switchView('dashboard')" id="nav-mobile-dashboard" class="nav-mobile-item flex-1 py-1.5 px-2 text-center rounded-lg text-xs font-semibold whitespace-nowrap transition cursor-pointer text-[#f0523d] bg-orange-50 border border-[#f0523d]/30 shadow-2xs">Dashboard</button>
+      <button onclick="switchView('dashboard')" id="nav-mobile-dashboard" class="nav-mobile-item flex-1 py-1.5 px-2 text-center rounded-lg text-xs font-medium whitespace-nowrap transition cursor-pointer text-groq-textMuted bg-white border border-gray-200/70 shadow-2xs">Dashboard</button>
       <button onclick="switchView('docs')" id="nav-mobile-docs" class="nav-mobile-item flex-1 py-1.5 px-2 text-center rounded-lg text-xs font-medium whitespace-nowrap transition cursor-pointer text-groq-textMuted bg-white border border-gray-200/70 shadow-2xs">Docs</button>
       <button onclick="switchView('admin-invites')" id="nav-mobile-admin-invites" class="nav-mobile-item hidden flex-1 py-1.5 px-2 text-center rounded-lg text-xs font-semibold whitespace-nowrap transition cursor-pointer text-purple-700 bg-purple-50 border border-purple-200 shadow-2xs">Admin Invites</button>
     </div>
@@ -460,1193 +460,9 @@ export const DASHBOARD_HTML = `<!DOCTYPE html>
   <main class="flex-1 flex flex-col w-full min-w-0 max-w-full overflow-visible">
 
     <!-- ======================================================================= -->
-    <!-- VIEW 0: LANDING PAGE (ProjectSPG Enterprise Platform) -->
-    <!-- ======================================================================= -->
-    <div id="view-landing" class="view-panel flex-1 flex flex-col w-full bg-white relative">
-      
-
-      <!-- Floating Header (ProjectSPG Floating Navbar) -->
-      <header class="fixed top-0 left-0 right-0 w-full max-w-[1440px] mx-auto pt-3 sm:pt-4 px-2 sm:px-4 lg:px-6 z-50 pointer-events-none">
-        <div class="pointer-events-auto bg-white border border-gray-200/80 rounded-full px-4 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between shadow-sm" style="background-color: #FFFFFF;">
-          
-          <!-- Left: Brand Emblem + Name -->
-          <div class="flex items-center gap-2 sm:gap-2.5 cursor-pointer" onclick="switchView('landing')">
-            <div class="w-7 h-7 shrink-0 flex items-center justify-center">
-              <svg viewBox="0 0 1024 1024" fill="none" class="w-full h-full">
-                <rect x="307" y="486" width="410" height="52" rx="26" fill="#000000" />
-                <rect x="16" y="233" width="441" height="557" rx="80" fill="#F0523D" />
-                <rect x="567" y="233" width="441" height="557" rx="80" fill="#2663EA" />
-                <circle cx="236.5" cy="511.5" r="68.5" fill="#2663EA" />
-                <circle cx="787.5" cy="511.5" r="68.5" fill="#F0523D" />
-              </svg>
-            </div>
-            <span class="font-bold text-[17px] tracking-tight text-gray-900">project<span class="text-[#f0523d]">spg</span></span>
-          </div>
-
-          <!-- Middle: Navigation Links -->
-          <nav class="hidden md:flex items-center gap-6 lg:gap-7 text-[13px] font-medium text-gray-600">
-            <a href="#platform-section" class="hover:text-gray-950 transition">Platform</a>
-            <a href="#research-section" class="hover:text-gray-950 transition">Research</a>
-            <a href="#news-section" class="hover:text-gray-950 transition">Blog</a>
-          </nav>
-
-          <!-- Right: Actions -->
-          <div class="flex items-center gap-2.5 sm:gap-4 text-xs font-semibold">
-            <button onclick="switchView('playground')" class="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-black hover:bg-gray-800 text-white text-[11px] font-bold tracking-wider uppercase transition shadow-xs cursor-pointer flex items-center gap-1.5">
-              <span id="btn-landing-signin-text">Open Console</span>
-              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-            </button>
-            <!-- Mobile Menu Hamburger Button -->
-            <button onclick="toggleLandingMobileMenu()" id="btn-landing-mobile-menu" class="md:hidden p-1.5 rounded-full hover:bg-gray-100 text-gray-700 hover:text-gray-950 transition cursor-pointer flex items-center justify-center" aria-label="Toggle navigation menu">
-              <i data-lucide="menu" id="landing-mobile-icon-menu" class="w-5 h-5"></i>
-              <i data-lucide="x" id="landing-mobile-icon-close" class="w-5 h-5 hidden"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Mobile Dropdown Navigation Menu Sheet -->
-        <div id="landing-mobile-menu" class="pointer-events-auto hidden md:hidden mt-2 bg-white border border-gray-200/90 rounded-2xl p-4 sm:p-5 shadow-xl transition-all duration-300 max-h-[85vh] overflow-y-auto" style="background-color: #FFFFFF;">
-          <nav class="flex flex-col gap-1 text-sm font-medium text-gray-800">
-            <a href="#platform-section" onclick="closeLandingMobileMenu()" class="flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 hover:text-[#f0523d] transition">
-              <span class="flex items-center gap-2.5"><i data-lucide="layers" class="w-4 h-4 text-gray-400"></i> Platform</span>
-              <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
-            </a>
-            <a href="#research-section" onclick="closeLandingMobileMenu()" class="flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 hover:text-[#f0523d] transition">
-              <span class="flex items-center gap-2.5"><i data-lucide="sparkles" class="w-4 h-4 text-gray-400"></i> Research</span>
-              <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
-            </a>
-            <a href="#news-section" onclick="closeLandingMobileMenu()" class="flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 hover:text-[#f0523d] transition">
-              <span class="flex items-center gap-2.5"><i data-lucide="newspaper" class="w-4 h-4 text-gray-400"></i> Blog</span>
-              <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
-            </a>
-            <div class="pt-2 flex flex-col gap-2">
-              <button onclick="closeLandingMobileMenu(); switchView('playground')" class="w-full py-2.5 rounded-xl bg-black hover:bg-gray-800 text-white text-xs font-bold uppercase tracking-wider transition shadow-sm flex items-center justify-center gap-1.5">
-                <span id="btn-landing-mobile-signin-text">Open Console</span>
-                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-              </button>
-            </div>
-          </nav>
-        </div>
-      </header>
-
-      <!-- HERO SECTION -->
-      <section class="w-full border-b border-blue-200/50 relative z-10 flex flex-col justify-between min-h-screen min-h-[100dvh] pt-20 sm:pt-24 lg:pt-24 overflow-hidden" style="background: radial-gradient(circle at 82% 28%, #F2F9FE 0%, transparent 65%), linear-gradient(135deg, #E1EFFB 0%, #F2F9FE 62%, #E1EFFB 100%);">
-        <div class="w-full max-w-[1440px] mx-auto px-2.5 sm:px-4 lg:px-6 flex-1 flex flex-col justify-between pt-2 sm:pt-4 pb-2 sm:pb-4">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center my-auto py-2 sm:py-4">
-            
-            <!-- Left Column (Text & CTAs) -->
-            <div class="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left pr-0 lg:pr-4">
-              
-              <!-- Tech Badge Pill -->
-              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 border border-blue-200/80 text-blue-700 text-[10.5px] sm:text-[11px] font-semibold tracking-wide uppercase mb-5 sm:mb-6 shadow-2xs">
-                <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
-                <span>Next-Gen Zero-Trust AI Gateway</span>
-              </div>
-
-              <!-- Main Headline matching ProjectSPG -->
-              <h1 class="text-3xl sm:text-5xl lg:text-[54px] xl:text-[62px] leading-[1.12] sm:leading-[1.08] font-medium tracking-tight text-gray-950 mb-5 sm:mb-6 font-sans" style="font-weight: 500;">
-                Deploy private AI <br/>
-                <span class="text-slate-500 font-medium" style="font-weight: 500;">with zero data footprint</span>
-              </h1>
-
-              <!-- Subtitle -->
-              <p class="text-sm sm:text-base lg:text-lg text-slate-700 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0 mb-7 sm:mb-8" style="font-weight: 400;">
-                Zero-knowledge AI privacy routing with instant multi-provider compliance orchestration.
-              </p>
-
-              <!-- CTA Button Group -->
-              <div class="flex flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-3 w-full sm:w-auto max-w-sm sm:max-w-none mx-auto lg:mx-0 mb-4 sm:mb-0">
-                <button onclick="switchView('playground')" class="flex-1 sm:flex-none px-4 sm:px-6 py-3 sm:py-3.5 rounded-full bg-black hover:bg-gray-800 text-white text-[11px] sm:text-xs font-bold tracking-wider uppercase transition shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 sm:gap-2 group cursor-pointer whitespace-nowrap">
-                  <span>Try Playground</span>
-                  <i data-lucide="arrow-right" class="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-0.5 transition-transform"></i>
-                </button>
-                
-                <button onclick="switchView('playground')" class="flex-1 sm:flex-none px-4 sm:px-6 py-3 sm:py-3.5 rounded-full bg-white hover:bg-slate-50 text-gray-800 text-[11px] sm:text-xs font-bold tracking-wider uppercase transition border border-gray-300 shadow-2xs flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer whitespace-nowrap">
-                  <span>Open Console</span>
-                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#f0523d]"></i>
-                </button>
-              </div>
-
-            </div>
-
-            <!-- Right Column (3D Isometric Architectural Artwork matching ProjectSPG) -->
-            <div class="lg:col-span-6 flex items-center justify-center lg:justify-end relative w-full">
-              <div class="relative w-full max-w-full flex items-center justify-center lg:justify-end mx-auto">
-                <img 
-                  src="/images/hero-illustration.png" 
-                  alt="ProjectSPG Architecture: Zero-Trust De-Identification, Sub-Millisecond Latency, 10+ Sovereign Regulatory Packs, Tested Across 1.94 Billion Tokens" 
-                  class="w-full max-w-full h-auto object-contain drop-shadow-2xl select-none" 
-                  loading="eager"
-                />
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Brand Marquee Section with SVG Color Tint Filter -->
-          <svg class="sr-only absolute pointer-events-none" width="0" height="0" aria-hidden="true">
-            <filter id="logo-tint-949698" color-interpolation-filters="sRGB">
-              <feColorMatrix type="matrix" values="
-                0 0 0 0.5804 0
-                0 0 0 0.5882 0
-                0 0 0 0.5961 0
-                0 0 0 1 0" />
-            </filter>
-          </svg>
-
-          <div class="marquee-container w-full pt-3 pb-1.5 overflow-hidden mt-auto mb-1 relative">
-            <div class="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-[#E1EFFB] to-transparent z-10 pointer-events-none"></div>
-            <div class="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-[#E1EFFB] to-transparent z-10 pointer-events-none"></div>
-
-          <!-- Infinite Sliding Marquee Track -->
-          <div class="flex overflow-hidden relative w-full select-none py-2 items-center">
-            <!-- Group 1 -->
-            <div class="animate-marquee">
-              <!-- Groq -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Groq-Logo.png?v=949698" alt="Groq" title="Groq LPU" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- Mistral AI -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Mistral-AI-Logo.png?v=949698" alt="Mistral AI" title="Mistral AI" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- Google DeepMind -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Google-DeepMind-Logo.png?v=949698" alt="Google DeepMind" title="Google DeepMind" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- OpenAI -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/OpenAI-Logo.png?v=949698" alt="OpenAI" title="OpenAI API" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- Anthropic -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Anthropic-Logo.png?v=949698" alt="Anthropic" title="Anthropic" class="brand-logo-dyed h-3.5 sm:h-4 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- Google Gemini -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Google-Gemini-Logo.png?v=949698" alt="Google Gemini" title="Google Gemini" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- OpenRouter -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/OpenRouter-Logo.png?v=949698" alt="OpenRouter" title="OpenRouter" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-            </div>
-
-            <!-- Group 2 (Duplicate for Seamless Infinite Loop) -->
-            <div class="animate-marquee" aria-hidden="true">
-              <!-- Groq -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Groq-Logo.png?v=949698" alt="Groq" title="Groq LPU" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- Mistral AI -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Mistral-AI-Logo.png?v=949698" alt="Mistral AI" title="Mistral AI" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- Google DeepMind -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Google-DeepMind-Logo.png?v=949698" alt="Google DeepMind" title="Google DeepMind" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- OpenAI -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/OpenAI-Logo.png?v=949698" alt="OpenAI" title="OpenAI API" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- Anthropic -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Anthropic-Logo.png?v=949698" alt="Anthropic" title="Anthropic" class="brand-logo-dyed h-3.5 sm:h-4 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- Google Gemini -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Google-Gemini-Logo.png?v=949698" alt="Google Gemini" title="Google Gemini" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- OpenRouter -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/OpenRouter-Logo.png?v=949698" alt="OpenRouter" title="OpenRouter" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-            </div>
-
-            <!-- Group 3 (Extended Buffer for Ultrawide Screens) -->
-            <div class="animate-marquee" aria-hidden="true">
-              <!-- Groq -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Groq-Logo.png?v=949698" alt="Groq" title="Groq LPU" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- Mistral AI -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Mistral-AI-Logo.png?v=949698" alt="Mistral AI" title="Mistral AI" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- Google DeepMind -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Google-DeepMind-Logo.png?v=949698" alt="Google DeepMind" title="Google DeepMind" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- OpenAI -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/OpenAI-Logo.png?v=949698" alt="OpenAI" title="OpenAI API" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- Anthropic -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Anthropic-Logo.png?v=949698" alt="Anthropic" title="Anthropic" class="brand-logo-dyed h-3.5 sm:h-4 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- Google Gemini -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/Google-Gemini-Logo.png?v=949698" alt="Google Gemini" title="Google Gemini" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-              <!-- OpenRouter -->
-              <div class="flex items-center shrink-0">
-                <img src="/logos/OpenRouter-Logo.png?v=949698" alt="OpenRouter" title="OpenRouter" class="brand-logo-dyed h-5 sm:h-6 w-auto object-contain opacity-85 hover:opacity-100" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-      <!-- ======================================================================= -->
-      <!-- SECTION 2: THE PROJECTSPG PLATFORM (Interactive 3-Tab Feature Showcase)-->
-      <!-- Matches uploaded media: 1790540329449, 1790540346632, 1790540364464, 1790540377437 -->
-      <!-- ======================================================================= -->
-      <section id="platform-section" class="w-full py-12 sm:py-20 lg:py-24 relative z-10 bg-gradient-to-b from-[#e8f7f8]/55 via-[#f1f4fb]/60 to-[#f8fafc] border-t border-gray-100 scroll-mt-20 sm:scroll-mt-24">
-        <div class="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-8">
-        
-        <!-- Section Header -->
-        <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-          <h2 class="text-2xl sm:text-4xl lg:text-[46px] font-bold tracking-tight text-gray-950 mb-3 sm:mb-4 font-sans">
-            The ProjectSPG Platform
-          </h2>
-          <p class="text-sm sm:text-base lg:text-lg text-gray-600 font-normal leading-relaxed px-2">
-            End-to-end data de-identification, zero-retention privacy routing, and continuous enterprise compliance.
-          </p>
-        </div>
-
-        <!-- 3 Squarish Category Buttons with Rounded Corners (De-Identify, Privacy, Compliance) -->
-        <div class="grid grid-cols-3 gap-3 sm:gap-6 max-w-4xl mx-auto mb-8 sm:mb-12 px-1">
-          <button id="cat-tab-inference" onclick="selectPlatformCategory('inference')" class="cat-pill py-3.5 sm:py-4.5 px-2 sm:px-6 rounded-md text-center font-medium text-sm sm:text-lg md:text-2xl transition-all duration-200 cursor-pointer text-gray-950 border border-transparent shadow-2xs bg-[#d5f5f6]">
-            De-Identify
-          </button>
-          <button id="cat-tab-compute" onclick="selectPlatformCategory('compute')" class="cat-pill py-3.5 sm:py-4.5 px-2 sm:px-6 rounded-md text-center font-medium text-sm sm:text-lg md:text-2xl transition-all duration-200 cursor-pointer bg-white text-gray-900 border border-gray-200/70 shadow-2xs hover:bg-gray-50/90 hover:text-black">
-            Privacy
-          </button>
-          <button id="cat-tab-shaping" onclick="selectPlatformCategory('shaping')" class="cat-pill py-3.5 sm:py-4.5 px-2 sm:px-6 rounded-md text-center font-medium text-sm sm:text-lg md:text-2xl transition-all duration-200 cursor-pointer bg-white text-gray-900 border border-gray-200/70 shadow-2xs hover:bg-gray-50/90 hover:text-black">
-            Compliance
-          </button>
-        </div>
-
-        <!-- Unified White Category Panel Wrapper -->
-        <div class="w-full bg-white rounded-xl p-6 border border-gray-200/80 shadow-xs">
-
-        <!-- ===================================================================== -->
-        <!-- CATEGORY PANEL 1: DE-IDENTIFY -->
-        <!-- ===================================================================== -->
-        <div id="platform-cat-panel-inference" class="flex flex-col lg:flex-row gap-8 lg:gap-10 items-stretch">
-          
-          <!-- Left Column: De-Identify Sub-items Accordion -->
-          <div class="flex-1 min-w-0 w-full flex flex-col space-y-3">
-            
-            <!-- Item 0: Reversible Tokenization (Active Default) -->
-            <div class="platform-subitem subitem-inference is-active w-full rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden" onclick="selectPlatformSubItem('inference', 0)">
-              <div class="p-4 sm:p-5 flex items-center justify-between">
-                <div class="flex items-center gap-3.5">
-                  <div class="subitem-icon-box w-9 h-9 rounded-xl bg-cyan-50 border border-cyan-100 flex items-center justify-center text-cyan-600 transition-all duration-300">
-                    <i data-lucide="shield-check" class="w-5 h-5"></i>
-                  </div>
-                  <h3 class="subitem-title text-xl sm:text-2xl font-medium tracking-tight text-gray-950 transition-colors">Automatic Data Redaction</h3>
-                </div>
-              </div>
-              <div class="platform-accordion-drawer grid transition-[grid-template-rows] duration-350 ease-out">
-                <div class="platform-accordion-drawer-inner overflow-hidden min-h-0">
-                  <div class="px-4 sm:px-5 pb-5 sm:pb-6 pt-0">
-                    <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 font-normal">
-                      Automatically redact customer PII and confidential records before prompts reach AI models, preventing data leaks without slowing development.
-                    </p>
-                    <button onclick="event.stopPropagation(); switchView('playground')" class="px-5 py-2.5 bg-black hover:bg-gray-800 text-white text-[11px] font-bold tracking-wider uppercase rounded-sm transition shadow-xs cursor-pointer">
-                      TRY IN PLAYGROUND
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Item 1: Format-Preserving Encryption -->
-            <div class="platform-subitem subitem-inference w-full rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden" onclick="selectPlatformSubItem('inference', 1)">
-              <div class="p-4 sm:p-5 flex items-center justify-between">
-                <div class="flex items-center gap-3.5">
-                  <div class="subitem-icon-box w-9 h-9 rounded-xl bg-cyan-50 border border-cyan-100 flex items-center justify-center text-cyan-600 transition-all duration-300">
-                    <i data-lucide="hash" class="w-5 h-5"></i>
-                  </div>
-                  <h3 class="subitem-title text-xl sm:text-2xl font-medium tracking-tight text-gray-950 transition-colors">Context-Preserving Masking</h3>
-                </div>
-              </div>
-              <div class="platform-accordion-drawer grid transition-[grid-template-rows] duration-350 ease-out">
-                <div class="platform-accordion-drawer-inner overflow-hidden min-h-0">
-                  <div class="px-4 sm:px-5 pb-5 sm:pb-6 pt-0">
-                    <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 font-normal">
-                      Disguise sensitive names and numbers while preserving formatting and grammar, letting models reason accurately without seeing real data.
-                    </p>
-                    <button onclick="event.stopPropagation(); switchView('playground')" class="px-5 py-2.5 bg-black hover:bg-gray-800 text-white text-[11px] font-bold tracking-wider uppercase rounded-sm transition shadow-xs cursor-pointer">
-                      LEARN MORE
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Item 2: Global Entity Detectors -->
-            <div class="platform-subitem subitem-inference w-full rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden" onclick="selectPlatformSubItem('inference', 2)">
-              <div class="p-4 sm:p-5 flex items-center justify-between">
-                <div class="flex items-center gap-3.5">
-                  <div class="subitem-icon-box w-9 h-9 rounded-xl bg-cyan-50 border border-cyan-100 flex items-center justify-center text-cyan-600 transition-all duration-300">
-                    <i data-lucide="scan" class="w-5 h-5"></i>
-                  </div>
-                  <h3 class="subitem-title text-xl sm:text-2xl font-medium tracking-tight text-gray-950 transition-colors">Global Privacy Scanner</h3>
-                </div>
-              </div>
-              <div class="platform-accordion-drawer grid transition-[grid-template-rows] duration-350 ease-out">
-                <div class="platform-accordion-drawer-inner overflow-hidden min-h-0">
-                  <div class="px-4 sm:px-5 pb-5 sm:pb-6 pt-0">
-                    <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 font-normal">
-                      Detect and shield regional identifiers across North America, Europe, Asia, Africa, and Latin America with zero manual setup.
-                    </p>
-                    <button onclick="event.stopPropagation(); switchView('playground')" class="px-5 py-2.5 bg-black hover:bg-gray-800 text-white text-[11px] font-bold tracking-wider uppercase rounded-sm transition shadow-xs cursor-pointer">
-                      LEARN MORE
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Item 3: Isolated KMS Token Vault -->
-            <div class="platform-subitem subitem-inference w-full rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden" onclick="selectPlatformSubItem('inference', 3)">
-              <div class="p-4 sm:p-5 flex items-center justify-between">
-                <div class="flex items-center gap-3.5">
-                  <div class="subitem-icon-box w-9 h-9 rounded-xl bg-cyan-50 border border-cyan-100 flex items-center justify-center text-cyan-600 transition-all duration-300">
-                    <i data-lucide="database" class="w-5 h-5"></i>
-                  </div>
-                  <h3 class="subitem-title text-xl sm:text-2xl font-medium tracking-tight text-gray-950 transition-colors">Secure Enterprise Vault</h3>
-                </div>
-              </div>
-              <div class="platform-accordion-drawer grid transition-[grid-template-rows] duration-350 ease-out">
-                <div class="platform-accordion-drawer-inner overflow-hidden min-h-0">
-                  <div class="px-4 sm:px-5 pb-5 sm:pb-6 pt-0">
-                    <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 font-normal">
-                      Keep real data isolated in your dedicated vault, secured by enterprise encryption keys that only your organization controls.
-                    </p>
-                    <button onclick="event.stopPropagation(); switchView('playground')" class="px-5 py-2.5 bg-black hover:bg-gray-800 text-white text-[11px] font-bold tracking-wider uppercase rounded-sm transition shadow-xs cursor-pointer">
-                      LEARN MORE
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Right Column: Visual Showcases for De-Identify -->
-          <div class="w-full lg:w-[480px] xl:w-[540px] shrink-0 flex flex-col justify-stretch">
-            
-            <!-- Mockup 0: Automatic Data Redaction Showcase -->
-            <div class="mockup-inference relative rounded-xl border border-gray-200 overflow-hidden w-full h-full aspect-[10/8] lg:aspect-auto bg-white flex items-center justify-center">
-              <img id="img-platform-inference-0" src="/images/automatic-data-redaction-v3.png" alt="Automatic Data Redaction" class="w-full h-full object-cover block" />
-            </div>
-
-            <!-- Mockup 1: Context-Preserving Masking Showcase -->
-            <div class="mockup-inference hidden relative rounded-xl border border-gray-200 overflow-hidden w-full h-full aspect-[10/8] lg:aspect-auto bg-white flex items-center justify-center">
-              <img id="img-platform-inference-1" src="/images/context-preserving-masking-v3.png" alt="Context-Preserving Masking" class="w-full h-full object-cover block" />
-            </div>
-
-            <!-- Mockup 2: Global Privacy Scanner Showcase -->
-            <div class="mockup-inference hidden relative rounded-xl border border-gray-200 overflow-hidden w-full h-full aspect-[10/8] lg:aspect-auto bg-white flex items-center justify-center">
-              <img id="img-platform-inference-2" src="/images/global-privacy-scanner-v3.png" alt="Global Privacy Scanner" class="w-full h-full object-cover block" />
-            </div>
-
-            <!-- Mockup 3: Secure Enterprise Vault Showcase -->
-            <div class="mockup-inference hidden relative rounded-xl border border-gray-200 overflow-hidden w-full h-full aspect-[10/8] lg:aspect-auto bg-white flex items-center justify-center">
-              <img id="img-platform-inference-3" src="/images/secure-enterprise-vault-v3.png" alt="Secure Enterprise Vault" class="w-full h-full object-cover block" />
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- ===================================================================== -->
-        <!-- CATEGORY PANEL 2: PRIVACY -->
-        <!-- ===================================================================== -->
-        <div id="platform-cat-panel-compute" class="hidden flex flex-col lg:flex-row gap-8 lg:gap-10 items-stretch">
-          
-          <!-- Left Column: Privacy Sub-items Accordion -->
-          <div class="flex-1 min-w-0 w-full flex flex-col space-y-3">
-            
-            <!-- Item 0: Universal OpenAI Wire Gateway (Active Default) -->
-            <div class="platform-subitem subitem-compute is-active w-full rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden" onclick="selectPlatformSubItem('compute', 0)">
-              <div class="p-4 sm:p-5 flex items-center justify-between">
-                <div class="flex items-center gap-3.5">
-                  <div class="subitem-icon-box w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 transition-all duration-300">
-                    <i data-lucide="cpu" class="w-5 h-5"></i>
-                  </div>
-                  <h3 class="subitem-title text-xl sm:text-2xl font-medium tracking-tight text-gray-950 transition-colors">One-Click AI Gateway</h3>
-                </div>
-              </div>
-              <div class="platform-accordion-drawer grid transition-[grid-template-rows] duration-350 ease-out">
-                <div class="platform-accordion-drawer-inner overflow-hidden min-h-0">
-                  <div class="px-4 sm:px-5 pb-5 sm:pb-6 pt-0">
-                    <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 font-normal">
-                      Protect chatbots, agents, and apps in minutes with a single-line URL change — zero code rewrites required.
-                    </p>
-                    <button onclick="event.stopPropagation(); switchView('playground')" class="px-5 py-2.5 bg-black hover:bg-gray-800 text-white text-[11px] font-bold tracking-wider uppercase rounded-sm transition shadow-xs cursor-pointer">
-                      LEARN MORE
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Item 1: Multi-Model Freedom Showcase -->
-            <div class="platform-subitem subitem-compute w-full rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden" onclick="selectPlatformSubItem('compute', 1)">
-              <div class="p-4 sm:p-5 flex items-center justify-between">
-                <div class="flex items-center gap-3.5">
-                  <div class="subitem-icon-box w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 transition-all duration-300">
-                    <i data-lucide="box" class="w-5 h-5"></i>
-                  </div>
-                  <h3 class="subitem-title text-xl sm:text-2xl font-medium tracking-tight text-gray-950 transition-colors">Multi-Model Freedom (BYOK)</h3>
-                </div>
-              </div>
-              <div class="platform-accordion-drawer grid transition-[grid-template-rows] duration-350 ease-out">
-                <div class="platform-accordion-drawer-inner overflow-hidden min-h-0">
-                  <div class="px-4 sm:px-5 pb-5 sm:pb-6 pt-0">
-                    <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 font-normal">
-                      Route prompts across Groq, Gemini, Mistral, and open-source models with your own keys to optimize speed, cost, and quality.
-                    </p>
-                    <button onclick="event.stopPropagation(); switchView('playground')" class="px-5 py-2.5 bg-black hover:bg-gray-800 text-white text-[11px] font-bold tracking-wider uppercase rounded-sm transition shadow-xs cursor-pointer">
-                      LEARN MORE
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Item 2: Real-Time Response Rehydration -->
-            <div class="platform-subitem subitem-compute w-full rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden" onclick="selectPlatformSubItem('compute', 2)">
-              <div class="p-4 sm:p-5 flex items-center justify-between">
-                <div class="flex items-center gap-3.5">
-                  <div class="subitem-icon-box w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 transition-all duration-300">
-                    <i data-lucide="hard-drive" class="w-5 h-5"></i>
-                  </div>
-                  <h3 class="subitem-title text-xl sm:text-2xl font-medium tracking-tight text-gray-950 transition-colors">Seamless Live Rehydration</h3>
-                </div>
-              </div>
-              <div class="platform-accordion-drawer grid transition-[grid-template-rows] duration-350 ease-out">
-                <div class="platform-accordion-drawer-inner overflow-hidden min-h-0">
-                  <div class="px-4 sm:px-5 pb-5 sm:pb-6 pt-0">
-                    <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 font-normal">
-                      Reconstitute original details in real time as AI answers stream back, delivering personalized responses with zero friction.
-                    </p>
-                    <button onclick="event.stopPropagation(); switchView('playground')" class="px-5 py-2.5 bg-black hover:bg-gray-800 text-white text-[11px] font-bold tracking-wider uppercase rounded-sm transition shadow-xs cursor-pointer">
-                      LEARN MORE
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Right Column: Visual Showcases for Privacy -->
-          <div class="w-full lg:w-[480px] xl:w-[540px] shrink-0 flex flex-col justify-stretch">
-            
-            <!-- Mockup 0: One-Click AI Gateway Showcase -->
-            <div class="mockup-compute relative rounded-xl border border-gray-200 overflow-hidden w-full h-full aspect-[10/8] lg:aspect-auto bg-white flex items-center justify-center">
-              <img id="img-platform-compute-0" src="/images/one-click-ai-gateway-v3.png" alt="One-Click AI Gateway" class="w-full h-full object-cover block" />
-            </div>
-
-            <!-- Mockup 1: Multi-Model Freedom (BYOK) Showcase -->
-            <div class="mockup-compute hidden relative rounded-xl border border-gray-200 overflow-hidden w-full h-full aspect-[10/8] lg:aspect-auto bg-white flex items-center justify-center">
-              <img id="img-platform-compute-1" src="/images/multi-model-freedom-v3.png" alt="Multi-Model Freedom (BYOK)" class="w-full h-full object-cover block" />
-            </div>
-
-            <!-- Mockup 2: Seamless Live Rehydration Showcase -->
-            <div class="mockup-compute hidden relative rounded-xl border border-gray-200 overflow-hidden w-full h-full aspect-[10/8] lg:aspect-auto bg-white flex items-center justify-center">
-              <img id="img-platform-compute-2" src="/images/seamless-live-rehydration-v3.png" alt="Seamless Live Rehydration" class="w-full h-full object-cover block" />
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- ===================================================================== -->
-        <!-- CATEGORY PANEL 3: COMPLIANCE -->
-        <!-- ===================================================================== -->
-        <div id="platform-cat-panel-shaping" class="hidden flex flex-col lg:flex-row gap-8 lg:gap-10 items-stretch">
-          
-          <!-- Left Column: Compliance Sub-items Accordion -->
-          <div class="flex-1 min-w-0 w-full flex flex-col space-y-3">
-            
-            <!-- Item 0: Real-Time SIEM Audit Telemetry (Active Default) -->
-            <div class="platform-subitem subitem-shaping is-active w-full rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden" onclick="selectPlatformSubItem('shaping', 0)">
-              <div class="p-4 sm:p-5 flex items-center justify-between">
-                <div class="flex items-center gap-3.5">
-                  <div class="subitem-icon-box w-9 h-9 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 transition-all duration-300">
-                    <i data-lucide="activity" class="w-5 h-5"></i>
-                  </div>
-                  <h3 class="subitem-title text-xl sm:text-2xl font-medium tracking-tight text-gray-950 transition-colors">Real-Time Security Audit Logs</h3>
-                </div>
-              </div>
-              <div class="platform-accordion-drawer grid transition-[grid-template-rows] duration-350 ease-out">
-                <div class="platform-accordion-drawer-inner overflow-hidden min-h-0">
-                  <div class="px-4 sm:px-5 pb-5 sm:pb-6 pt-0">
-                    <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 font-normal">
-                      Track every protected prompt, redacted entity, and model transaction in real time for complete security and audit visibility.
-                    </p>
-                    <button onclick="event.stopPropagation(); switchView('playground')" class="px-5 py-2.5 bg-black hover:bg-gray-800 text-white text-[11px] font-bold tracking-wider uppercase rounded-sm transition shadow-xs cursor-pointer">
-                      LEARN MORE
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Item 1: Enterprise Regulatory Rulepacks -->
-            <div class="platform-subitem subitem-shaping w-full rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden" onclick="selectPlatformSubItem('shaping', 1)">
-              <div class="p-4 sm:p-5 flex items-center justify-between">
-                <div class="flex items-center gap-3.5">
-                  <div class="subitem-icon-box w-9 h-9 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 transition-all duration-300">
-                    <i data-lucide="shield" class="w-5 h-5"></i>
-                  </div>
-                  <h3 class="subitem-title text-xl sm:text-2xl font-medium tracking-tight text-gray-950 transition-colors">Turnkey Regulatory Compliance</h3>
-                </div>
-              </div>
-              <div class="platform-accordion-drawer grid transition-[grid-template-rows] duration-350 ease-out">
-                <div class="platform-accordion-drawer-inner overflow-hidden min-h-0">
-                  <div class="px-4 sm:px-5 pb-5 sm:pb-6 pt-0">
-                    <p class="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 font-normal">
-                      Satisfy HIPAA, GDPR, CCPA, and SOC 2 guardrails instantly, fast-tracking approval from legal and risk committees.
-                    </p>
-                    <button onclick="event.stopPropagation(); switchView('playground')" class="px-5 py-2.5 bg-black hover:bg-gray-800 text-white text-[11px] font-bold tracking-wider uppercase rounded-sm transition shadow-xs cursor-pointer">
-                      LEARN MORE
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Right Column: Visual Showcases for Compliance -->
-          <div class="w-full lg:w-[480px] xl:w-[540px] shrink-0 flex flex-col justify-stretch">
-            
-            <!-- Mockup 0: Real-Time Security Audit Logs Showcase -->
-            <div class="mockup-shaping relative rounded-xl border border-gray-200 overflow-hidden w-full h-full aspect-[10/8] lg:aspect-auto bg-white flex items-center justify-center">
-              <img id="img-platform-shaping-0" src="/images/real-time-security-audit-v3.png" alt="Real-Time Security Audit Logs" class="w-full h-full object-cover block" />
-            </div>
-
-            <!-- Mockup 1: Turnkey Regulatory Compliance Showcase -->
-            <div class="mockup-shaping hidden relative rounded-xl border border-gray-200 overflow-hidden w-full h-full aspect-[10/8] lg:aspect-auto bg-white flex items-center justify-center">
-              <img id="img-platform-shaping-1" src="/images/turnkey-regulatory-compliance-v3.png" alt="Turnkey Regulatory Compliance" class="w-full h-full object-cover block" />
-            </div>
-
-          </div>
-
-        </div>
-
-        </div> <!-- /Unified White Category Panel Wrapper -->
-        </div> <!-- /max-w-[1440px] -->
-
-      </section>
-
-      <!-- ======================================================================= -->
-      <!-- SECTION 3: GROUNDED IN CUTTING-EDGE RESEARCH                            -->
-      <!-- Matches uploaded media: 1790540856043.png & 1790540898787.png           -->
-      <!-- ======================================================================= -->
-      <section id="research-section" class="w-full bg-[#010120] text-white py-10 sm:py-16 lg:py-24 relative border-t border-[#121235] scroll-mt-20 sm:scroll-mt-24">
-        
-        <!-- Ambient Subtle Deep Background Glow -->
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-r from-blue-900/15 via-purple-900/15 to-indigo-900/15 blur-3xl pointer-events-none -z-0"></div>
-
-        <div class="max-w-[1440px] mx-auto px-2.5 sm:px-4 lg:px-6 relative z-10">
-          
-          <!-- Header Row -->
-          <div class="mb-6 sm:mb-10 lg:mb-14">
-            <h2 class="text-2xl sm:text-4xl lg:text-[44px] font-bold tracking-tight text-white mb-2 sm:mb-3 font-sans">
-              How ProjectSPG Works
-            </h2>
-            <p class="text-sm sm:text-base lg:text-lg text-gray-400 font-normal">
-              The 4-step sovereign privacy pipeline — from prompt interception to real-time rehydration.
-            </p>
-          </div>
-
-          <!-- Cards Carousel Container with Horizontal Connector Line -->
-          <div class="relative">
-            
-            <!-- Horizontal Connecting Line passing behind cards -->
-            <div class="hidden lg:block absolute top-[50%] left-0 right-0 h-1.5 bg-[#8b7ff5] -translate-y-1/2 z-0 pointer-events-none"></div>
-
-            <!-- Cards Track: Grid on desktop, stacked on top of each other on mobile -->
-            <div id="research-cards-track" class="grid grid-cols-1 lg:grid-cols-4 gap-3.5 sm:gap-6 relative z-10">
-              
-              <!-- Card 1: Step 01 - Prompt Ingestion & Interception -->
-              <div onclick="handleResearchCardClick(this)" class="research-card group relative rounded-xl lg:rounded-md min-h-[165px] sm:min-h-[220px] lg:min-h-[420px] w-full p-4 sm:p-5 lg:p-7 flex flex-col justify-between transition-all duration-300 cursor-pointer overflow-hidden border border-white/[0.05] hover:border-white/20 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.6),0_0_25px_rgba(139,127,245,0.18)] bg-[#151531]">
-                <!-- Base Solid Dark Underlay -->
-                <div class="absolute inset-0 bg-[#151531] -z-10"></div>
-
-                <!-- Hover Animated Iridescent Frosting -->
-                <div class="research-frosting absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0 pointer-events-none overflow-hidden">
-                  <div class="absolute inset-0 bg-[#3b3452]/50 backdrop-blur-md"></div>
-                  <div class="absolute -top-12 -right-12 w-52 h-52 bg-pink-400/40 rounded-full blur-2xl"></div>
-                  <div class="absolute top-1/3 left-0 w-60 h-60 bg-indigo-300/40 rounded-full blur-2xl"></div>
-                  <div class="absolute -bottom-12 -left-12 w-52 h-52 bg-sky-300/40 rounded-full blur-2xl"></div>
-                  <div class="absolute bottom-4 right-4 w-44 h-44 bg-amber-200/35 rounded-full blur-2xl"></div>
-                  <div class="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25"></div>
-                </div>
-
-                <!-- Top Badge Pill -->
-                <div class="relative z-10 flex justify-center w-full">
-                  <span class="research-badge px-3 py-0.5 sm:px-3.5 sm:py-1 rounded bg-white/10 group-hover:bg-white/20 border border-white/15 text-white/90 text-[10px] font-bold tracking-widest uppercase transition-colors">
-                    STEP 01 • PROMPT
-                  </span>
-                </div>
-
-                <!-- Middle Headline Only -->
-                <div class="relative z-10 my-auto py-2 sm:py-4 lg:py-6 text-center">
-                  <h3 class="text-base sm:text-[19px] lg:text-[21px] font-bold text-white leading-snug group-hover:text-white transition-colors">
-                    Prompt Ingestion &amp; Edge Interception
-                  </h3>
-                </div>
-
-                <!-- Bottom Citation & Hover Button -->
-                <div class="relative z-10 w-full h-8 sm:h-9 lg:h-11 flex items-center justify-center">
-                  <p class="research-author text-[10px] font-mono tracking-widest text-gray-400 uppercase text-center transition-all duration-200 group-hover:opacity-0 group-hover:scale-95">
-                    &lt;1MS SUB-MILLISECOND P99
-                  </p>
-                  <button onclick="switchView('playground')" class="research-btn absolute inset-0 m-auto w-28 sm:w-32 h-7 sm:h-9 rounded bg-white/25 hover:bg-white/35 text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase backdrop-blur-md border border-white/30 transition-all duration-300 shadow-md opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 flex items-center justify-center cursor-pointer">
-                    READ MORE
-                  </button>
-                </div>
-              </div>
-
-              <!-- Card 2: Step 02 - Sovereign De-Identification -->
-              <div onclick="handleResearchCardClick(this)" class="research-card group relative rounded-xl lg:rounded-md min-h-[165px] sm:min-h-[220px] lg:min-h-[420px] w-full p-4 sm:p-5 lg:p-7 flex flex-col justify-between transition-all duration-300 cursor-pointer overflow-hidden border border-white/[0.05] hover:border-white/20 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.6),0_0_25px_rgba(139,127,245,0.18)] bg-[#151531]">
-                <!-- Base Solid Dark Underlay -->
-                <div class="absolute inset-0 bg-[#151531] -z-10"></div>
-
-                <!-- Hover Animated Iridescent Frosting -->
-                <div class="research-frosting absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0 pointer-events-none overflow-hidden">
-                  <div class="absolute inset-0 bg-[#35334d]/50 backdrop-blur-md"></div>
-                  <div class="absolute -top-12 -right-12 w-52 h-52 bg-purple-400/40 rounded-full blur-2xl"></div>
-                  <div class="absolute top-1/4 -left-10 w-56 h-56 bg-amber-300/35 rounded-full blur-2xl"></div>
-                  <div class="absolute -bottom-10 right-4 w-52 h-52 bg-pink-400/35 rounded-full blur-2xl"></div>
-                  <div class="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25"></div>
-                </div>
-
-                <!-- Top Badge Pill -->
-                <div class="relative z-10 flex justify-center w-full">
-                  <span class="research-badge px-3 py-0.5 sm:px-3.5 sm:py-1 rounded bg-white/10 group-hover:bg-white/20 border border-white/15 text-white/90 text-[10px] font-bold tracking-widest uppercase transition-colors">
-                    STEP 02 • DE-IDENTIFY
-                  </span>
-                </div>
-
-                <!-- Middle Headline Only -->
-                <div class="relative z-10 my-auto py-2 sm:py-4 lg:py-6 text-center">
-                  <h3 class="text-base sm:text-[19px] lg:text-[21px] font-bold text-white leading-snug group-hover:text-white transition-colors">
-                    Sovereign De-Identification &amp; Tokenization
-                  </h3>
-                </div>
-
-                <!-- Bottom Citation & Hover Button -->
-                <div class="relative z-10 w-full h-8 sm:h-9 lg:h-11 flex items-center justify-center">
-                  <p class="research-author text-[10px] font-mono tracking-widest text-gray-400 uppercase text-center transition-all duration-200 group-hover:opacity-0 group-hover:scale-95">
-                    BYOK KMS AES-256
-                  </p>
-                  <button onclick="switchView('playground')" class="research-btn absolute inset-0 m-auto w-28 sm:w-32 h-7 sm:h-9 rounded bg-white/25 hover:bg-white/35 text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase backdrop-blur-md border border-white/30 transition-all duration-300 shadow-md opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 flex items-center justify-center cursor-pointer">
-                    READ MORE
-                  </button>
-                </div>
-              </div>
-
-              <!-- Card 3: Step 03 - Zero-Trust AI Inference -->
-              <div onclick="handleResearchCardClick(this)" class="research-card group relative rounded-xl lg:rounded-md min-h-[165px] sm:min-h-[220px] lg:min-h-[420px] w-full p-4 sm:p-5 lg:p-7 flex flex-col justify-between transition-all duration-300 cursor-pointer overflow-hidden border border-white/[0.05] hover:border-white/20 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.6),0_0_25px_rgba(139,127,245,0.18)] bg-[#151531]">
-                <!-- Base Solid Dark Underlay -->
-                <div class="absolute inset-0 bg-[#151531] -z-10"></div>
-
-                <!-- Hover Animated Iridescent Frosting -->
-                <div class="research-frosting absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0 pointer-events-none overflow-hidden">
-                  <div class="absolute inset-0 bg-[#30394f]/50 backdrop-blur-md"></div>
-                  <div class="absolute -top-12 -right-12 w-52 h-52 bg-sky-400/40 rounded-full blur-2xl"></div>
-                  <div class="absolute top-1/3 left-0 w-60 h-60 bg-purple-400/40 rounded-full blur-2xl"></div>
-                  <div class="absolute -bottom-10 left-10 w-52 h-52 bg-pink-400/35 rounded-full blur-2xl"></div>
-                  <div class="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25"></div>
-                </div>
-
-                <!-- Top Badge Pill -->
-                <div class="relative z-10 flex justify-center w-full">
-                  <span class="research-badge px-3 py-0.5 sm:px-3.5 sm:py-1 rounded bg-white/10 group-hover:bg-white/20 border border-white/15 text-white/90 text-[10px] font-bold tracking-widest uppercase transition-colors">
-                    STEP 03 • INFERENCE
-                  </span>
-                </div>
-
-                <!-- Middle Headline Only -->
-                <div class="relative z-10 my-auto py-2 sm:py-4 lg:py-6 text-center">
-                  <h3 class="text-base sm:text-[19px] lg:text-[21px] font-bold text-white leading-snug group-hover:text-white transition-colors">
-                    Zero-Trust Upstream AI Model Inference
-                  </h3>
-                </div>
-
-                <!-- Bottom Citation & Hover Button -->
-                <div class="relative z-10 w-full h-8 sm:h-9 lg:h-11 flex items-center justify-center">
-                  <p class="research-author text-[10px] font-mono tracking-widest text-gray-400 uppercase text-center transition-all duration-200 group-hover:opacity-0 group-hover:scale-95">
-                    GROQ • MISTRAL • OPENAI
-                  </p>
-                  <button onclick="switchView('playground')" class="research-btn absolute inset-0 m-auto w-28 sm:w-32 h-7 sm:h-9 rounded bg-white/25 hover:bg-white/35 text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase backdrop-blur-md border border-white/30 transition-all duration-300 shadow-md opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 flex items-center justify-center cursor-pointer">
-                    READ MORE
-                  </button>
-                </div>
-              </div>
-
-              <!-- Card 4: Step 04 - Real-Time Rehydration -->
-              <div onclick="handleResearchCardClick(this)" class="research-card group relative rounded-xl lg:rounded-md min-h-[165px] sm:min-h-[220px] lg:min-h-[420px] w-full p-4 sm:p-5 lg:p-7 flex flex-col justify-between transition-all duration-300 cursor-pointer overflow-hidden border border-white/[0.05] hover:border-white/20 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.6),0_0_25px_rgba(139,127,245,0.18)] bg-[#151531]">
-                <!-- Base Solid Dark Underlay -->
-                <div class="absolute inset-0 bg-[#151531] -z-10"></div>
-
-                <!-- Hover Animated Iridescent Frosting -->
-                <div class="research-frosting absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0 pointer-events-none overflow-hidden">
-                  <div class="absolute inset-0 bg-[#2d3a4d]/50 backdrop-blur-md"></div>
-                  <div class="absolute -top-12 -right-12 w-52 h-52 bg-emerald-400/35 rounded-full blur-2xl"></div>
-                  <div class="absolute top-1/4 -left-10 w-56 h-56 bg-cyan-300/35 rounded-full blur-2xl"></div>
-                  <div class="absolute -bottom-10 right-4 w-52 h-52 bg-indigo-400/35 rounded-full blur-2xl"></div>
-                  <div class="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25"></div>
-                </div>
-
-                <!-- Top Badge Pill -->
-                <div class="relative z-10 flex justify-center w-full">
-                  <span class="research-badge px-3 py-0.5 sm:px-3.5 sm:py-1 rounded bg-white/10 group-hover:bg-white/20 border border-white/15 text-white/90 text-[10px] font-bold tracking-widest uppercase transition-colors">
-                    STEP 04 • REHYDRATE
-                  </span>
-                </div>
-
-                <!-- Middle Headline Only -->
-                <div class="relative z-10 my-auto py-2 sm:py-4 lg:py-6 text-center">
-                  <h3 class="text-base sm:text-[19px] lg:text-[21px] font-bold text-white leading-snug group-hover:text-white transition-colors">
-                    Real-Time Response &amp; Streaming Rehydration
-                  </h3>
-                </div>
-
-                <!-- Bottom Citation & Hover Button -->
-                <div class="relative z-10 w-full h-8 sm:h-9 lg:h-11 flex items-center justify-center">
-                  <p class="research-author text-[10px] font-mono tracking-widest text-gray-400 uppercase text-center transition-all duration-200 group-hover:opacity-0 group-hover:scale-95">
-                    STREAMING SSE DETOKENIZATION
-                  </p>
-                  <button onclick="switchView('playground')" class="research-btn absolute inset-0 m-auto w-28 sm:w-32 h-7 sm:h-9 rounded bg-white/25 hover:bg-white/35 text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase backdrop-blur-md border border-white/30 transition-all duration-300 shadow-md opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 flex items-center justify-center cursor-pointer">
-                    READ MORE
-                  </button>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- Bottom Testing & Empirical Validation Strip -->
-          <div class="mt-16 pt-10 border-t border-white/10 flex flex-wrap items-center justify-center gap-6 sm:gap-10 md:gap-12 opacity-85">
-            <span class="text-[10.5px] font-bold tracking-widest text-gray-400 uppercase font-sans">
-              TESTED ACROSS
-            </span>
-
-            <div class="h-5 w-px bg-white/15 hidden sm:block"></div>
-
-            <!-- 9.34 MILLION PROMPTS -->
-            <a href="/blog/benchmark" class="flex items-center gap-2 text-white hover:text-[#f0523d] font-bold text-sm sm:text-base tracking-wider font-sans transition-colors cursor-pointer">
-              <span>9.34 MILLION PROMPTS</span>
-            </a>
-
-            <div class="h-5 w-px bg-white/15 hidden sm:block"></div>
-
-            <!-- 1.94 BILLION TOKENS -->
-            <a href="/blog/benchmark" class="flex items-center gap-2 text-white hover:text-[#f0523d] font-bold text-sm sm:text-base tracking-wider font-sans transition-colors cursor-pointer">
-              <span>1.94 BILLION TOKENS</span>
-            </a>
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- ======================================================================= -->
-      <!-- SECTION 4: WHAT'S NEW AT PROJECTSPG (Blog & Updates)                  -->
-      <!-- Matches uploaded media: 1790541881610.png                               -->
-      <!-- ======================================================================= -->
-      <section id="news-section" class="w-full bg-white text-gray-900 py-12 sm:py-20 border-t border-gray-100 scroll-mt-20 sm:scroll-mt-24">
-        <div class="max-w-[1440px] mx-auto px-2.5 sm:px-4 lg:px-6">
-          
-          <!-- Section Header Row -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8 sm:mb-12">
-            <h2 class="text-2xl sm:text-4xl lg:text-[42px] font-bold tracking-tight text-gray-950 font-sans">
-              Learn more about ProjectSPG
-            </h2>
-            <a href="/blog/benchmark" class="self-start sm:self-auto px-4 py-2 rounded-lg bg-gray-100/90 hover:bg-gray-200/90 text-gray-800 text-[11px] font-bold tracking-wider uppercase transition shadow-2xs cursor-pointer flex items-center gap-1.5">
-              <span>ALL BLOG POSTS</span>
-            </a>
-          </div>
-
-          <!-- Two-Column Grid: Large Featured Post on Left, 3 Stacked Posts on Right -->
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            
-            <!-- Left Column: Featured Post (The Open Source AI Stack) -->
-            <div onclick="window.location.href='/blog/stack'" class="lg:col-span-6 group cursor-pointer">
-              <!-- Stack Illustration Card -->
-              <div class="w-full min-h-[250px] sm:min-h-0 sm:aspect-[16/10] bg-[#0f121d] rounded-2xl p-5 sm:p-8 flex flex-col sm:flex-row justify-between border border-gray-800/80 shadow-md relative overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:border-gray-700">
-                <!-- Background Ambient Glow -->
-                <div class="absolute -right-20 -top-20 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
-
-                <div class="flex flex-col sm:flex-row h-full w-full gap-5 sm:gap-0">
-                  <!-- Left Side: Title Typography -->
-                  <div class="w-full sm:w-[42%] flex flex-col justify-center pr-0 sm:pr-3">
-                    <h3 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
-                      The<br class="hidden sm:block"><span class="text-gray-100"> Open</span><br class="hidden sm:block"><span class="text-gray-200"> Model</span><br class="hidden sm:block"><span class="text-gray-300"> AI Stack</span>
-                    </h3>
-                    <p class="text-[10px] font-mono tracking-wider text-gray-400 mt-2 sm:mt-4 uppercase">
-                      the <span class="text-white font-bold">MIGHT</span> stack
-                    </p>
-                  </div>
-
-                  <!-- Right Side: Layered Stack Pills -->
-                  <div class="w-full sm:w-[58%] flex flex-col justify-center gap-2 text-[10px] font-sans">
-                    <!-- Layer 1: models -->
-                    <div class="bg-[#171c2b] border border-gray-800/90 rounded-lg p-2.5 flex items-center justify-between shadow-2xs">
-                      <span class="text-gray-400 font-mono text-[9.5px] uppercase">models</span>
-                      <div class="flex items-center gap-1.5">
-                        <span class="w-2.5 h-2.5 rounded-full bg-orange-400/90 inline-block shadow-xs"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-blue-400/90 inline-block shadow-xs"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-purple-400/90 inline-block shadow-xs"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400/90 inline-block shadow-xs"></span>
-                        <span class="text-[10px] font-bold text-white ml-0.5">∞</span>
-                      </div>
-                    </div>
-
-                    <!-- Layer 2: inference -->
-                    <div class="bg-[#171c2b] border border-gray-800/90 rounded-lg p-2.5 flex items-center justify-between shadow-2xs">
-                      <span class="text-gray-400 font-mono text-[9.5px] uppercase">inference</span>
-                      <div class="flex items-center gap-1.5 sm:gap-2 text-[9.5px] font-semibold text-gray-200 flex-wrap">
-                        <span>• SGLang</span>
-                        <span>• vLLM</span>
-                        <span>• TRT-LLM</span>
-                        <span class="text-[#f0523d] font-bold flex items-center gap-0.5">♥ ProjectSPG</span>
-                      </div>
-                    </div>
-
-                    <!-- Layer 3: gateways & routers -->
-                    <div class="bg-[#171c2b] border border-gray-800/90 rounded-lg p-2.5 flex items-center justify-between shadow-2xs">
-                      <span class="text-gray-400 font-mono text-[9.5px] uppercase truncate mr-1">gateways &amp; routers</span>
-                      <div class="flex items-center gap-2 text-[9.5px] font-semibold text-gray-300">
-                        <span>LiteLLM</span>
-                        <span>OpenRouter</span>
-                        <span>AI Gateway</span>
-                      </div>
-                    </div>
-
-                    <!-- Layer 4: harness -->
-                    <div class="bg-[#171c2b] border border-gray-800/90 rounded-lg p-2.5 flex items-center justify-between shadow-2xs">
-                      <span class="text-gray-400 font-mono text-[9.5px] uppercase">harness</span>
-                      <div class="flex items-center gap-2 text-[9.5px] font-semibold text-gray-300">
-                        <span>opencode</span>
-                        <span>pi</span>
-                        <span>Cursor</span>
-                      </div>
-                    </div>
-
-                    <!-- Layer 5: tools -->
-                    <div class="bg-[#171c2b] border border-gray-800/90 rounded-lg p-2.5 flex items-center justify-between shadow-2xs">
-                      <span class="text-gray-400 font-mono text-[9.5px] uppercase">tools</span>
-                      <div class="flex items-center gap-2.5 text-[9.5px] font-semibold text-gray-300">
-                        <span>MCP</span>
-                        <span>Skills</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Post Meta & Details -->
-              <div class="mt-4">
-                <span class="px-2.5 py-0.5 rounded bg-gray-100 text-gray-700 font-bold text-[10px] tracking-wider uppercase">
-                  INFERENCE &amp; SECURITY
-                </span>
-                <h3 class="text-lg sm:text-2xl font-bold text-gray-950 mt-2 group-hover:text-[#f0523d] transition-colors leading-snug">
-                  The Open Source AI Stack: Why ProjectSPG Ranks #1
-                </h3>
-                <p class="text-xs sm:text-sm text-gray-500 mt-1.5 line-clamp-2 leading-relaxed">
-                  A deep dive into the open model AI stack and a ranked comparison of the leading AI security proxies across latency, reversibility, and sovereign compliance...
-                </p>
-              </div>
-            </div>
-
-            <!-- Right Column: 3 Horizontal Post Rows -->
-            <div class="lg:col-span-6 flex flex-col gap-6 sm:gap-7">
-              
-              <!-- Item 1: Empirical Benchmark & Audit Report -->
-              <div onclick="window.location.href='/blog/benchmark'" class="group flex flex-col sm:flex-row items-start gap-3.5 sm:gap-5 cursor-pointer">
-                <!-- Pastel Gradient Thumbnail with subtle title overlay -->
-                <div class="w-full sm:w-44 md:w-52 aspect-[16/10] shrink-0 rounded-xl overflow-hidden relative shadow-xs border border-gray-200/60 bg-gradient-to-br from-[#ffd5cc] via-[#f7e0ff] to-[#d8e6ff] flex items-center justify-center p-3 text-center transition-all duration-300 group-hover:shadow-md group-hover:scale-[1.02]">
-                  <div class="flex flex-col items-center">
-                    <div class="flex items-center gap-1 mb-1">
-                      <span class="w-2 h-2 rounded-full bg-pink-500"></span>
-                      <span class="text-[9px] font-bold text-gray-800 lowercase tracking-tight">project<span class="text-[#f0523d]">spg</span></span>
-                    </div>
-                    <p class="text-[10px] sm:text-[11px] font-bold text-gray-900 leading-tight">
-                      Empirical Benchmark: 9.33M Prompts Evaluated with 100.00% Fidelity
-                    </p>
-                  </div>
-                </div>
-
-                <!-- Text Details -->
-                <div class="flex-1 min-w-0">
-                  <span class="px-2.5 py-0.5 rounded bg-gray-100 text-gray-700 font-bold text-[10px] tracking-wider uppercase">
-                    BENCHMARK
-                  </span>
-                  <h4 class="text-base sm:text-lg font-bold text-gray-950 mt-1.5 group-hover:text-[#f0523d] transition-colors leading-snug">
-                    Empirical Benchmark: 9,334,805 Prompts Evaluated with 100.00% Fidelity &amp; 86µs Latency
-                  </h4>
-                  <p class="text-xs sm:text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed">
-                    Exhaustive empirical validation across 1.94B tokens proving 100.00% zero-loss de-identification, 17,735 prompts/sec throughput, and 13.3ms HTTPS latency...
-                  </p>
-                </div>
-              </div>
-
-              <!-- Item 2: Global Sovereign AI Privacy: 109 Jurisdictions Supported -->
-              <div onclick="window.location.href='/blog/countries'" class="group flex flex-col sm:flex-row items-start gap-3.5 sm:gap-5 cursor-pointer">
-                <div class="w-full sm:w-44 md:w-52 aspect-[16/10] shrink-0 rounded-xl overflow-hidden relative shadow-xs border border-gray-200/60 bg-gradient-to-br from-[#fed7aa] via-[#fde047]/30 to-[#c7d2fe] flex items-center justify-center p-3 text-center transition-all duration-300 group-hover:shadow-md group-hover:scale-[1.02]">
-                  <div class="flex flex-col items-center">
-                    <div class="flex items-center gap-1 mb-1">
-                      <span class="w-2 h-2 rounded-full bg-orange-500"></span>
-                      <span class="text-[9px] font-bold text-gray-800 lowercase tracking-tight">project<span class="text-[#f0523d]">spg</span></span>
-                    </div>
-                    <p class="text-[10px] sm:text-[11px] font-bold text-gray-900 leading-tight">
-                      Global Sovereign AI Privacy: 109 Jurisdictions Supported
-                    </p>
-                  </div>
-                </div>
-
-                <div class="flex-1 min-w-0">
-                  <span class="px-2.5 py-0.5 rounded bg-gray-100 text-gray-700 font-bold text-[10px] tracking-wider uppercase">
-                    COMPLIANCE
-                  </span>
-                  <h4 class="text-base sm:text-lg font-bold text-gray-950 mt-1.5 group-hover:text-[#f0523d] transition-colors leading-snug">
-                    Global Sovereign AI Privacy: 109 Jurisdictions Supported by ProjectSPG
-                  </h4>
-                  <p class="text-xs sm:text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed">
-                    Protecting sensitive enterprise data across GDPR, India DPDP, Singapore PDPA, HIPAA, and 109 sovereign national jurisdictions without code changes...
-                  </p>
-                </div>
-              </div>
-
-              <!-- Item 3: Enterprise Guardrails for Regulated Industries -->
-              <div onclick="window.location.href='/blog/industries'" class="group flex flex-col sm:flex-row items-start gap-3.5 sm:gap-5 cursor-pointer">
-                <div class="w-full sm:w-44 md:w-52 aspect-[16/10] shrink-0 rounded-xl overflow-hidden relative shadow-xs border border-gray-200/60 bg-gradient-to-br from-[#fecdd3] via-[#e9d5ff] to-[#bfdbfe] flex items-center justify-center p-3 text-center transition-all duration-300 group-hover:shadow-md group-hover:scale-[1.02]">
-                  <div class="flex flex-col items-center">
-                    <div class="flex items-center gap-1 mb-1">
-                      <span class="w-2 h-2 rounded-full bg-purple-500"></span>
-                      <span class="text-[9px] font-bold text-gray-800 lowercase tracking-tight">project<span class="text-[#f0523d]">spg</span></span>
-                    </div>
-                    <p class="text-[10px] sm:text-[11px] font-bold text-gray-900 leading-tight">
-                      Enterprise Guardrails &amp; Threat Models
-                    </p>
-                  </div>
-                </div>
-
-                <div class="flex-1 min-w-0">
-                  <span class="px-2.5 py-0.5 rounded bg-gray-100 text-gray-700 font-bold text-[10px] tracking-wider uppercase">
-                    ENTERPRISE
-                  </span>
-                  <h4 class="text-base sm:text-lg font-bold text-gray-950 mt-1.5 group-hover:text-[#f0523d] transition-colors leading-snug">
-                    Enterprise Guardrails for Regulated Industries: Healthcare, FinTech &amp; Legal
-                  </h4>
-                  <p class="text-xs sm:text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed">
-                    Protecting clinical PHI under HIPAA, financial assets under PCI-DSS, attorney-client privilege, and defense telemetry across frontier LLMs with zero code changes...
-                  </p>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-      </section>
-
-
-
-
-
-      <!-- ======================================================================= -->
-      <!-- UNIFIED WRAPPER: CALL TO ACTION + FOOTER WITH CONTINUOUS 3D BACKDROP      -->
-      <!-- Matches uploaded media: 1790542040866.png & 1791193690709.png             -->
-      <!-- ======================================================================= -->
-      <div class="w-full relative overflow-hidden bg-gradient-to-b from-white via-[#f1f6fc]/80 to-[#e8edf7]">
-        
-        <!-- Continuous 3D Geometric Atmospheric Backdrop extending across CTA and Footer -->
-        <div class="absolute inset-0 pointer-events-none overflow-hidden">
-          <!-- Left Warm Coral Glow extending all the way down through footer -->
-          <div class="absolute -left-24 top-20 sm:top-28 w-[460px] h-[520px] bg-gradient-to-tr from-rose-500/25 via-red-400/20 to-transparent blur-3xl rounded-full"></div>
-          <div class="absolute -left-28 top-[38%] w-[520px] h-[650px] bg-gradient-to-tr from-rose-400/20 via-pink-400/15 to-transparent blur-3xl rounded-full"></div>
-          <div class="absolute -left-20 bottom-10 w-[440px] h-[500px] bg-gradient-to-tr from-rose-300/20 via-pink-300/10 to-transparent blur-3xl rounded-full"></div>
-
-          <!-- Center Frosted Glass 3D Arc / Semi-Circle bridging CTA and floating footer card -->
-          <div class="absolute top-[260px] sm:top-[300px] left-1/2 -translate-x-1/2 w-[720px] sm:w-[960px] h-[440px] rounded-t-full bg-gradient-to-b from-sky-100/40 via-blue-50/20 to-transparent border-t-2 border-l border-r border-white/80 backdrop-blur-xl shadow-2xl">
-            <!-- Inner Glass Highlights -->
-            <div class="absolute top-4 left-1/4 right-1/4 h-0.5 bg-gradient-to-r from-transparent via-white/80 to-transparent"></div>
-          </div>
-
-          <!-- Right Deep Royal Blue 3D Disc extending gracefully behind the white footer card -->
-          <div class="absolute -right-16 top-[240px] sm:top-[280px] w-72 sm:w-[420px] h-72 sm:h-[420px] rounded-[50px] sm:rounded-[68px] bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-900 shadow-[0_25px_60px_rgba(29,78,216,0.45)] transform rotate-[18deg] -skew-x-6 border-t-2 border-l-2 border-sky-300/40"></div>
-
-          <!-- Far Right Blue/Purple Atmosphere continuing down through the footer -->
-          <div class="absolute -right-20 top-20 sm:top-28 w-[500px] h-[550px] bg-gradient-to-tl from-indigo-600/25 via-blue-500/15 to-transparent blur-3xl rounded-full"></div>
-          <div class="absolute -right-24 top-[40%] w-[550px] h-[680px] bg-gradient-to-tl from-blue-600/25 via-indigo-600/20 to-transparent blur-3xl rounded-full"></div>
-          <div class="absolute -right-20 bottom-10 w-[480px] h-[550px] bg-gradient-to-tl from-indigo-500/20 via-blue-500/15 to-transparent blur-3xl rounded-full"></div>
-        </div>
-
-        <!-- SECTION 6: CALL TO ACTION ("Start building on ProjectSPG") -->
-        <section class="w-full relative pt-20 pb-20 sm:pt-32 sm:pb-28 text-center z-10">
-          <div class="max-w-5xl mx-auto px-2.5 sm:px-4 lg:px-6 relative z-10">
-            <h2 class="text-3xl sm:text-5xl lg:text-[54px] font-bold text-gray-950 tracking-tight leading-tight">
-              Start building on ProjectSPG
-            </h2>
-            <p class="text-sm sm:text-lg lg:text-xl text-gray-500 font-normal mt-4 max-w-2xl mx-auto leading-relaxed">
-              From real-time prompt de-identification to enterprise-grade privacy compliance
-            </p>
-            <div class="mt-8 flex justify-center">
-              <button onclick="handleStartBuildingClick()" class="px-7 py-3.5 rounded-xl bg-black hover:bg-gray-800 text-white text-xs font-bold tracking-wider uppercase transition shadow-md hover:shadow-lg cursor-pointer transform hover:-translate-y-0.5">
-                GET STARTED NOW
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <!-- SECTION 7: FOOTER -->
-        <footer class="w-full relative z-10 pt-4 sm:pt-6 pb-10 sm:pb-16">
-
-        <div class="max-w-[1440px] mx-auto px-2 sm:px-4 lg:px-6 relative z-10">
-          
-          <!-- Main White Footer Card with Full Curved Corners & Border -->
-          <div class="w-full bg-white rounded-[28px] sm:rounded-[44px] border border-gray-200/80 shadow-[0_15px_45px_rgba(0,0,0,0.04)] pt-10 sm:pt-16 pb-8 sm:pb-12 px-4 sm:px-8 lg:px-10 relative overflow-hidden mb-6 sm:mb-10">
-            
-            <!-- Top Grid: Brand Logo + Category Columns -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-              
-              <!-- Brand Logo (Left Column) -->
-              <div class="lg:col-span-4 sm:col-span-6">
-                <a href="#landing" onclick="switchView('landing')" class="inline-flex items-center gap-2.5 group cursor-pointer" title="ProjectSPG">
-                  <!-- ProjectSPG Official Brand Logo -->
-                  <div class="w-8 h-8 shrink-0 flex items-center justify-center">
-                    <svg viewBox="0 0 1024 1024" fill="none" class="w-full h-full">
-                      <rect x="307" y="486" width="410" height="52" rx="26" fill="#000000" />
-                      <rect x="16" y="233" width="441" height="557" rx="80" fill="#F0523D" />
-                      <rect x="567" y="233" width="441" height="557" rx="80" fill="#2663EA" />
-                      <circle cx="236.5" cy="511.5" r="68.5" fill="#2663EA" />
-                      <circle cx="787.5" cy="511.5" r="68.5" fill="#F0523D" />
-                    </svg>
-                  </div>
-                  <span class="font-extrabold text-[20px] tracking-tight text-gray-950">project<span class="text-[#f0523d]">spg</span></span>
-                </a>
-              </div>
-
-              <!-- Remaining Columns of Links (3 Columns) -->
-              <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-8 lg:gap-10 text-xs">
-                
-                <!-- Col 1: DEVELOPERS & PLATFORM -->
-                <div>
-                  <div class="border-t border-gray-200/90 pt-3 mb-3.5">
-                    <span class="text-[10px] font-bold tracking-widest uppercase text-gray-900 font-mono">DEVELOPERS &amp; PLATFORM</span>
-                  </div>
-                  <ul class="space-y-2.5 font-medium text-gray-600">
-                    <li><a href="/blog/benchmark" class="hover:text-gray-950 transition">Research &amp; Benchmark</a></li>
-                    <li><a href="/blog/countries" class="hover:text-gray-950 transition">Supported Countries</a></li>
-                    <li><a href="#docs" onclick="switchView('docs')" class="hover:text-gray-950 transition">API Documentation</a></li>
-                  </ul>
-                </div>
-
-                <!-- Col 2: GET STARTED -->
-                <div>
-                  <div class="border-t border-gray-200/90 pt-3 mb-3.5">
-                    <span class="text-[10px] font-bold tracking-widest uppercase text-gray-900 font-mono">GET STARTED</span>
-                  </div>
-                  <ul class="space-y-2.5 font-medium text-gray-600">
-                    <li><a href="#" onclick="switchView('playground')" class="hover:text-gray-950 transition">Interactive Playground</a></li>
-                    <li><a href="#" onclick="switchView('keys')" class="hover:text-gray-950 transition">API Keys & Endpoints</a></li>
-                    <li><a href="#docs" onclick="switchView('docs')" class="hover:text-gray-950 transition">API Documentation</a></li>
-                  </ul>
-                </div>
-
-                <!-- Col 3: RESOURCES -->
-                <div>
-                  <div class="border-t border-gray-200/90 pt-3 mb-3.5">
-                    <span class="text-[10px] font-bold tracking-widest uppercase text-gray-900 font-mono">RESOURCES</span>
-                  </div>
-                  <ul class="space-y-2.5 font-medium text-gray-600">
-                    <li><a href="/blog/benchmark" class="hover:text-gray-950 transition">Blog &amp; Benchmarks</a></li>
-                    <li><a href="/blog/countries" class="hover:text-gray-950 transition">109 Countries Matrix</a></li>
-                    <li><a href="/" class="hover:text-gray-950 transition">About ProjectSPG</a></li>
-                    <li><a href="mailto:priyanujboruah@outlook.com" class="hover:text-gray-950 transition">Support</a></li>
-                  </ul>
-                </div>
-
-              </div>
-
-            </div>
-
-            <!-- Giant Watermark Brand Name (ProjectSPG Signature) -->
-            <div class="select-none pointer-events-none w-full flex items-center justify-center text-center text-[44px] sm:text-[90px] md:text-[135px] lg:text-[180px] font-bold tracking-tight text-gray-100/90 leading-[1.15] py-2 sm:py-4 my-4 sm:my-8 overflow-visible font-sans">
-              <span class="whitespace-nowrap inline-block px-1">project<span class="text-[#f0523d]">spg</span></span>
-            </div>
-
-            <!-- Bottom Legal & Social Row -->
-            <div class="border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500 font-sans">
-              <!-- Left Copyright -->
-              <div class="text-[10px] font-mono text-gray-400 tracking-wider uppercase text-center md:text-left">
-                © 2026 PROJECTSPG. ALL RIGHTS RESERVED.
-              </div>
-
-              <!-- Center Legal Links -->
-              <div class="flex flex-wrap items-center justify-center gap-5 sm:gap-7 text-xs text-gray-600">
-                <a href="/privacy" class="hover:text-gray-950 transition">Privacy Policy</a>
-                <a href="/terms" class="hover:text-gray-950 transition">Terms of Service</a>
-                <button type="button" onclick="openConsentPreferencesModal()" class="hover:text-gray-950 transition cursor-pointer text-xs text-gray-600 font-normal">Consent Preferences</button>
-              </div>
-
-              <!-- Right Social Icons -->
-              <div class="flex items-center gap-4 text-gray-700">
-                <!-- Discord -->
-                <a href="https://discord.gg" target="_blank" rel="noopener noreferrer" class="hover:text-gray-950 transition p-1" title="Discord">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
-                  </svg>
-                </a>
-
-                <!-- X (Twitter) -->
-                <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="hover:text-gray-950 transition p-1" title="X (Twitter)">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                  </svg>
-                </a>
-
-                <!-- LinkedIn -->
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-gray-950 transition p-1" title="LinkedIn">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                  </svg>
-                </a>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </footer>
-      </div>
-
-    </div>
-
-    <!-- ======================================================================= -->
     <!-- VIEW 1: PLAYGROUND (Exact 3-Column Groq Layout) -->
     <!-- ======================================================================= -->
-    <div id="view-playground" class="view-panel hidden border-t border-l border-r border-groq-grayBorder rounded-t-2xl bg-white mx-0 sm:mx-2 lg:mx-3 flex-1 flex flex-col overflow-x-hidden overflow-y-visible lg:overflow-hidden shadow-xs w-full sm:w-auto min-w-0 max-w-full">
+    <div id="view-playground" class="view-panel border-t border-l border-r border-groq-grayBorder rounded-t-2xl bg-white mx-0 sm:mx-2 lg:mx-3 flex-1 flex flex-col overflow-x-hidden overflow-y-visible lg:overflow-hidden shadow-xs w-full sm:w-auto min-w-0 max-w-full">
       
       <!-- Sub-Toolbar (54px height) -->
       <div class="h-auto min-h-[54px] py-2 sm:py-0 border-b border-groq-grayBorder bg-white px-2 sm:px-4 flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 shrink-0 w-full min-w-0 max-w-full">
@@ -4001,7 +2817,7 @@ console.log(data.choices[0].message.content);</div>
     function checkUserInvitationStatus() {}
     function closeInvitationModal() {}
 
-    let activeView = 'landing'; // Default to ProjectSPG Landing Page for unauthenticated/entry visitors
+    let activeView = 'playground'; // Default directly to Playground Console
     let activeDashTab = 'logs';   // Default sub-tab within Dashboard
     let isCodeVisible = true;
     let activeCodeLang = 'python';
@@ -4016,13 +2832,12 @@ console.log(data.choices[0].message.content);</div>
       const inviteParam = urlParams.get('invite') || (window.location.hash.includes('invite=') ? window.location.hash.split('invite=')[1]?.split('&')[0] : '');
 
       const hash = window.location.hash.replace('#', '').split('?')[0];
-      if (['landing', 'playground', 'keys', 'dashboard', 'docs', 'admin-invites'].includes(hash)) {
+      if (['playground', 'keys', 'dashboard', 'docs', 'admin-invites'].includes(hash)) {
         activeView = hash;
       } else {
-        activeView = 'landing';
+        activeView = 'playground';
       }
       switchView(activeView);
-      updateMobileResearchHighlight();
       updateCodeViewer();
       fetchApiLogs();
       fetchApiKeys();
@@ -4032,35 +2847,9 @@ console.log(data.choices[0].message.content);</div>
       if (inviteParam) {
         const cleanCode = decodeURIComponent(inviteParam).trim().toUpperCase();
         sessionStorage.setItem('pendingInviteCode', cleanCode);
-
-        // Pre-fill all invitation code inputs
-        const landingCodeInput = document.getElementById('inviteCodeInput');
-        if (landingCodeInput) landingCodeInput.value = cleanCode;
-        const toastCodeInput = document.getElementById('toast-inv-code-input');
-        if (toastCodeInput) toastCodeInput.value = cleanCode;
         const invCode = document.getElementById('inv-code');
         if (invCode) invCode.value = cleanCode;
-
-        // Switch gatekeeper console to redeem mode
-        toggleGateMode('redeem');
-
-        // Smoothly scroll to the access/invite section
-        setTimeout(() => {
-          const accessSection = document.getElementById('access-section') || document.getElementById('access-form-container');
-          if (accessSection) {
-            accessSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            setTimeout(() => {
-              if (landingCodeInput) {
-                landingCodeInput.focus();
-                landingCodeInput.select();
-              }
-            }, 600);
-          }
-        }, 200);
-      } else if (hash && ['access-section', 'news-section'].includes(hash)) {
-        setTimeout(() => {
-          const el = document.getElementById(hash);
-          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
         }, 200);
       }
 
@@ -4096,7 +2885,7 @@ console.log(data.choices[0].message.content);</div>
 
     function syncBodyOverflow() {
       const mainEl = document.querySelector('main');
-      if (activeView === 'landing' || window.innerWidth < 1024) {
+      if (window.innerWidth < 1024) {
         document.body.classList.remove('overflow-hidden', 'h-screen');
         document.body.classList.add('overflow-y-auto', 'min-h-screen');
         if (mainEl) {
@@ -4114,20 +2903,16 @@ console.log(data.choices[0].message.content);</div>
     }
 
     function switchView(viewName) {
+      if (!viewName || viewName === 'landing') viewName = 'playground';
       activeView = viewName;
       const urlParams = new URLSearchParams(window.location.search);
       const hasInvite = urlParams.has('invite');
-      if (!hasInvite && !window.location.hash.includes('section')) {
+      if (!hasInvite) {
         window.location.hash = viewName;
       }
 
       const globalHeader = document.getElementById('global-header');
-
-      if (viewName === 'landing') {
-        if (globalHeader) globalHeader.classList.add('hidden');
-      } else {
-        if (globalHeader) globalHeader.classList.remove('hidden');
-      }
+      if (globalHeader) globalHeader.classList.remove('hidden');
 
       syncBodyOverflow();
 
@@ -4169,247 +2954,7 @@ console.log(data.choices[0].message.content);</div>
       if (typeof lucide !== 'undefined') {
         setTimeout(() => lucide.createIcons(), 10);
       }
-      if (viewName === 'landing') {
-        setTimeout(updateMobileResearchHighlight, 100);
-      } else {
-        showInvitationToast();
-      }
     }
-
-    function selectPlatformCategory(cat) {
-      const catConfig = {
-        inference: { bg: 'bg-[#d5f5f6]', tab: 'cat-tab-inference' },
-        compute: { bg: 'bg-[#dbeafe]', tab: 'cat-tab-compute' },
-        shaping: { bg: 'bg-[#ede9fe]', tab: 'cat-tab-shaping' }
-      };
-
-      ['inference', 'compute', 'shaping'].forEach(c => {
-        const btn = document.getElementById('cat-tab-' + c);
-        if (btn) {
-          btn.className = 'cat-pill py-3.5 sm:py-4.5 px-2 sm:px-6 rounded-md text-center font-medium text-sm sm:text-lg md:text-2xl transition-all duration-200 cursor-pointer bg-white text-gray-900 border border-gray-200/70 shadow-2xs hover:bg-gray-50/90 hover:text-black';
-        }
-        const panel = document.getElementById('platform-cat-panel-' + c);
-        if (panel) panel.classList.add('hidden');
-      });
-
-      if (catConfig[cat]) {
-        const activeBtn = document.getElementById(catConfig[cat].tab);
-        if (activeBtn) {
-          activeBtn.className = 'cat-pill py-3.5 sm:py-4.5 px-2 sm:px-6 rounded-md text-center font-medium text-sm sm:text-lg md:text-2xl transition-all duration-200 cursor-pointer text-gray-950 border border-transparent shadow-2xs ' + catConfig[cat].bg;
-        }
-      }
-
-      const activePanel = document.getElementById('platform-cat-panel-' + cat);
-      if (activePanel) activePanel.classList.remove('hidden');
-
-      selectPlatformSubItem(cat, 0);
-
-      if (typeof lucide !== 'undefined') {
-        setTimeout(() => lucide.createIcons(), 10);
-      }
-    }
-
-    function toggleLandingMobileMenu() {
-      const menu = document.getElementById('landing-mobile-menu');
-      const iconMenu = document.getElementById('landing-mobile-icon-menu');
-      const iconClose = document.getElementById('landing-mobile-icon-close');
-      if (!menu) return;
-      const isHidden = menu.classList.contains('hidden');
-      if (isHidden) {
-        menu.classList.remove('hidden');
-        if (iconMenu) iconMenu.classList.add('hidden');
-        if (iconClose) iconClose.classList.remove('hidden');
-      } else {
-        menu.classList.add('hidden');
-        if (iconMenu) iconMenu.classList.remove('hidden');
-        if (iconClose) iconClose.classList.add('hidden');
-      }
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
-
-    function closeLandingMobileMenu() {
-      const menu = document.getElementById('landing-mobile-menu');
-      const iconMenu = document.getElementById('landing-mobile-icon-menu');
-      const iconClose = document.getElementById('landing-mobile-icon-close');
-      if (menu) menu.classList.add('hidden');
-      if (iconMenu) iconMenu.classList.remove('hidden');
-      if (iconClose) iconClose.classList.add('hidden');
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
-
-    function selectPlatformSubItem(cat, index) {
-      const subItems = document.querySelectorAll('.subitem-' + cat);
-      subItems.forEach((item, idx) => {
-        if (idx === index) {
-          item.classList.add('is-active');
-        } else {
-          item.classList.remove('is-active');
-        }
-      });
-
-      const mockups = document.querySelectorAll('.mockup-' + cat);
-      mockups.forEach((mock, idx) => {
-        if (idx === index) {
-          mock.classList.remove('hidden');
-        } else {
-          mock.classList.add('hidden');
-        }
-      });
-
-      if (typeof lucide !== 'undefined') {
-        setTimeout(() => lucide.createIcons(), 10);
-      }
-    }
-
-
-    // Auto-highlight research cards on mobile scroll (replaces hover effect for mobile users)
-    let isResearchScrollTicking = false;
-    function updateMobileResearchHighlight() {
-      if (window.innerWidth >= 1024) {
-        document.querySelectorAll('.research-card.mobile-highlight').forEach(el => el.classList.remove('mobile-highlight'));
-        return;
-      }
-
-      const cards = document.querySelectorAll('#research-cards-track .research-card');
-      if (!cards.length) return;
-
-      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      const viewportCenter = viewportHeight / 2;
-
-      let closestCard = null;
-      let minDistance = Infinity;
-
-      cards.forEach(card => {
-        const rect = card.getBoundingClientRect();
-        // Trigger highlight when card is comfortably inside visible viewport area
-        if (rect.bottom > 80 && rect.top < viewportHeight - 80) {
-          const cardCenter = rect.top + rect.height / 2;
-          const distance = Math.abs(cardCenter - viewportCenter);
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestCard = card;
-          }
-        }
-      });
-
-      cards.forEach(card => {
-        if (closestCard && card === closestCard) {
-          card.classList.add('mobile-highlight');
-        } else {
-          card.classList.remove('mobile-highlight');
-        }
-      });
-    }
-
-    function onMobileResearchScroll() {
-      if (!isResearchScrollTicking) {
-        window.requestAnimationFrame(() => {
-          updateMobileResearchHighlight();
-          isResearchScrollTicking = false;
-        });
-        isResearchScrollTicking = true;
-      }
-    }
-
-    function handleResearchCardClick(cardEl) {
-      if (window.innerWidth < 1024 && cardEl) {
-        document.querySelectorAll('.research-card.mobile-highlight').forEach(el => el.classList.remove('mobile-highlight'));
-        cardEl.classList.add('mobile-highlight');
-      }
-    }
-
-    window.addEventListener('scroll', onMobileResearchScroll, { passive: true });
-    window.addEventListener('resize', onMobileResearchScroll, { passive: true });
-    document.addEventListener('scroll', onMobileResearchScroll, { passive: true });
-
-    function switchAccessView(view) {
-      const mode = (view === 'verify' || view === 'redeem') ? 'redeem' : 'request';
-      toggleGateMode(mode);
-      scrollToAccessForm(null, mode);
-    }
-
-    function toggleGateMode(mode) {
-      const reqTab = document.getElementById('gate-tab-request');
-      const redTab = document.getElementById('gate-tab-redeem');
-      const reqPanel = document.getElementById('gate-panel-request');
-      const redPanel = document.getElementById('gate-panel-redeem');
-
-      if (mode === 'request') {
-        if (reqTab) reqTab.className = 'px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition bg-gray-900 text-white cursor-pointer shadow-xs';
-        if (redTab) redTab.className = 'px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-pointer';
-        if (reqPanel) reqPanel.classList.remove('hidden');
-        if (redPanel) redPanel.classList.add('hidden');
-      } else {
-        if (reqTab) reqTab.className = 'px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-pointer';
-        if (redTab) redTab.className = 'px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition bg-gray-900 text-white cursor-pointer shadow-xs';
-        if (reqPanel) reqPanel.classList.add('hidden');
-        if (redPanel) redPanel.classList.remove('hidden');
-      }
-    }
-
-    function scrollToAccessForm(cohort, forceMode) {
-      if (forceMode) {
-        toggleGateMode(forceMode);
-      } else if (cohort) {
-        toggleGateMode('request');
-      }
-      const form = document.getElementById('access-section') || document.getElementById('access-form-container');
-      if (form) {
-        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      if (cohort && document.getElementById('inviteCompliance')) {
-        if (cohort === 'research') document.getElementById('inviteCompliance').value = 'multi';
-        else if (cohort === 'enterprise') document.getElementById('inviteCompliance').value = 'gdpr';
-        else if (cohort === 'sovereign') document.getElementById('inviteCompliance').value = 'multi';
-      }
-    }
-
-    function handleInviteRequest(e) {
-      e.preventDefault();
-      const email = document.getElementById('inviteEmail').value;
-      const org = document.getElementById('inviteOrg').value;
-      const compliance = document.getElementById('inviteCompliance').value;
-      const volume = document.getElementById('inviteVolume').value;
-
-      try {
-        const requests = JSON.parse(localStorage.getItem('spg_access_requests') || '[]');
-        requests.push({ email, org, compliance, volume, timestamp: new Date().toISOString() });
-        localStorage.setItem('spg_access_requests', JSON.stringify(requests));
-      } catch (err) {}
-
-      document.getElementById('inviteRequestForm').classList.add('hidden');
-      document.getElementById('confirmedInviteEmail').innerText = email;
-      document.getElementById('inviteSuccessMessage').classList.remove('hidden');
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function handleRedeemCode() {
-      const codeInput = document.getElementById('inviteCodeInput');
-      const feedback = document.getElementById('redeemFeedback');
-      const code = (codeInput?.value || '').trim().toUpperCase();
-
-      if (!code) {
-        if (feedback) {
-          feedback.innerText = 'Please enter an invitation key.';
-          feedback.className = 'text-xs text-center font-medium mt-2 text-rose-500';
-        }
-        return;
-      }
-
-      if (feedback) {
-        feedback.innerText = 'Verifying invitation key...';
-        feedback.className = 'text-xs text-center font-medium mt-2 text-amber-500';
-      }
-
-      setTimeout(() => {
-        if (feedback) {
-          feedback.innerText = '✓ Invitation Key Verified. Welcome to ProjectSPG Private Access.';
-          feedback.className = 'text-xs text-center font-bold mt-2 text-emerald-600';
-        }
-        setTimeout(() => {
-          openAuthModal();
-        }, 800);
-      }, 500);
     }
 
     function switchDashTab(tabName) {
@@ -6697,7 +5242,7 @@ response = llm.invoke(<span class="syn-string">"Verify order for Alice"</span>)
         const provider = new firebase.auth.GoogleAuthProvider();
         await firebaseAuth.signInWithPopup(provider);
         closeAuthModal();
-        if (activeView === 'landing') {
+        if (activeView === 'playground') {
           switchView('playground');
         }
       } catch (err) {
@@ -6764,7 +5309,7 @@ response = llm.invoke(<span class="syn-string">"Verify order for Alice"</span>)
         }
 
         closeAuthModal();
-        if (activeView === 'landing') {
+        if (activeView === 'playground') {
           switchView('playground');
         }
       } catch (err) {
@@ -6789,7 +5334,7 @@ response = llm.invoke(<span class="syn-string">"Verify order for Alice"</span>)
       }
       const menu = document.getElementById('user-dropdown-menu');
       if (menu) menu.classList.add('hidden');
-      switchView('landing');
+      switchView('playground');
     }
 
     function toggleUserDropdown(e) {
@@ -7343,7 +5888,7 @@ response = llm.invoke(<span class="syn-string">"Verify order for Alice"</span>)
       const modal = document.getElementById('modal-invitation');
       if (modal) modal.classList.add('hidden');
 
-      if (activeView === 'landing') {
+      if (activeView === 'playground') {
         switchView('playground');
       }
     }
@@ -7400,7 +5945,7 @@ response = llm.invoke(<span class="syn-string">"Verify order for Alice"</span>)
       const modal = document.getElementById('modal-invitation');
       if (modal) modal.classList.add('hidden');
 
-      if (activeView === 'landing') {
+      if (activeView === 'playground') {
         switchView('playground');
       }
     }
@@ -7521,8 +6066,8 @@ response = llm.invoke(<span class="syn-string">"Verify order for Alice"</span>)
 
         const pill = document.getElementById('top-tier-pill');
         if (pill) {
-          pill.classList.add('hidden');
-          pill.classList.remove('md:flex');
+          pill.classList.remove('hidden');
+          pill.classList.add('md:flex');
         }
 
         const byokBtn = document.getElementById('btn-tier-byok');
