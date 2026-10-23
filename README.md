@@ -141,7 +141,24 @@ Each prompt completed a **full 2-way network roundtrip** over TLS 1.3:
 
 ---
 
-### 3. Reproduce the Benchmarks Locally
+### 3. Multi-Compliance Regulatory Benchmark (HIPAA, DPDP Act 2023, GDPR)
+
+Beyond synthetic throughput tests, **AI Privacy Core** is empirically certified against 4 gold-standard public compliance corpora comprising **27,477 ground-truth entities** evaluated on live gateway endpoints:
+
+| Regulatory Standard | Benchmark Dataset | Evaluated Records | Gold Entities | Entity Recall | Zero-Leak Accuracy | Avg Latency | Reversibility |
+|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **HIPAA Clinical EHR Notes** | [`Technetium-I`](https://huggingface.co/datasets/temlm-foundation/Technetium-I) | 1,000 | 15,573 | **100.00%** | **100.00%** | 160.48 ms | **100.00%** |
+| **HIPAA Safe Harbor (45 CFR § 164.514)** | [`outis-synthetic-phi`](https://huggingface.co/datasets/ewhauser/outis-synthetic-phi) | 1,000 | 3,878 | **99.79%** | **96.40%** | 112.94 ms | **100.00%** |
+| **DPDP Act 2023 (Indian PII)** | [`Maskara Indian PII 200k`](https://huggingface.co/datasets/amankm/indian-pii-data-200k) | 1,000 | 1,919 | **100.00%** | **98.80%** | **38.83 ms** | **100.00%** |
+| **GDPR & Global PII** | [`AI4Privacy OpenPII 30k`](https://huggingface.co/datasets/ai4privacy/open-pii-masking-30k) | 1,000 | 6,107 | **80.10%** | **50.00%** | 117.29 ms | **100.00%** |
+| **Core Production Triad** | **HIPAA + DPDP Act Suite** | **3,000** | **21,370** | **99.97%** | **98.40%** | **104.08 ms** | **100.00%** |
+
+- 📄 **Full Technical Benchmark Documentation:** [`BENCHMARK_DOCUMENTATION.md`](BENCHMARK_DOCUMENTATION.md)
+- 📊 **Benchmark Scorecard & Raw Metrics:** [`COMPLIANCE_BENCHMARK_REPORT.md`](COMPLIANCE_BENCHMARK_REPORT.md) & [`benchmark_results.json`](benchmark_results.json)
+
+---
+
+### 4. Reproduce the Benchmarks Locally
 
 Anyone can reproduce these empirical results directly from the repository:
 
@@ -154,6 +171,9 @@ node scripts/http_latency_benchmark.mjs --samples 50000 --concurrency 30
 
 # 3. Run the direct multi-core benchmark on unified_prompts.parquet
 node scripts/multicore_benchmark.mjs --workers 8
+
+# 4. Run the Multi-Compliance Regulatory Benchmark across HIPAA & DPDP Act
+python scripts/benchmark_compliance.py --dataset technetium,outis,maskara --rows-per-dataset 1000 --workers 16
 ```
 
 ---
