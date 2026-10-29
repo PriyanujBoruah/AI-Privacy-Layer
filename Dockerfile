@@ -1,31 +1,35 @@
-# Multi-stage lightweight build for AI Privacy Core
+# =================================================================
+# Dockerfile: AI Privacy Layer (Local Deployment Edition)
+# =================================================================
 FROM node:20-alpine AS builder
 
 WORKDIR /app
-COPY package*.json tsconfig.json ./
+
+# Install dependencies
+COPY package*.json ./
 RUN npm ci
 
-COPY src ./src
+# Copy source files and build server bundle
+COPY tsconfig.json ./
+COPY src/ ./src/
 RUN npm run build
 
-# Hardened minimal production runtime container (~35MB)
-# Complies with CIS Docker Benchmark, SOC 2, and non-root execution standards
+# Production runtime stage
 FROM node:20-alpine AS runner
 
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=8787
 
-# Run as unprivileged non-root user for enterprise container security
-USER node
-
-# Copy bundled standalone server from builder (zero node_modules needed in runner)
-COPY --from=builder --chown=node:node /app/dist/server.mjs ./dist/server.mjs
-COPY --chown=node:node package.json ./
+# Copy built bundle and dependencies
+COPY package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
 
 EXPOSE 8787
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+# Healthcheck
+HEALTHCHECK --interval=15s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8787/health || exit 1
 
 CMD ["node", "dist/server.mjs"]

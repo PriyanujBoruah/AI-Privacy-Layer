@@ -5,8 +5,10 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "npx esbuild src/server.ts --bundle --format=esm --platform=node --outfile=dist/server.mjs",
+    "prestart": "npm run build",
     "start": "node dist/server.mjs",
-    "dev": "wrangler dev",
+    "dev": "npm start",
+    "dev:worker": "wrangler dev",
     "deploy": "wrangler deploy",
     "db:setup": "wrangler d1 execute privacy-db --local --file=./schema.sql",
     "test": "vitest run",

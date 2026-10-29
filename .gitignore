@@ -8,6 +8,7 @@ dist/
 # Environment & Credentials
 .env
 .env.*
+!.env.example
 certs/
 *.pem
 *.key
