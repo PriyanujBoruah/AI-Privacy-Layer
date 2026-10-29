@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-privacy-core"
+version = "2.0.0"
+authors = [
+  { name = "Priyanuj Boruah", email = "priyanujboruah@gmail.com" },
+]
+description = "Enterprise Edge-Native Privacy Gateway & Sovereign ID Tokenizer for LLM Pipelines"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "Apache-2.0" }
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Healthcare Industry",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "httpx>=0.23.0",
+]
+
+[project.optional-dependencies]
+langchain = ["langchain-core>=0.1.0"]
+litellm = ["litellm>=1.0.0"]
+all = [
+    "langchain-core>=0.1.0",
+    "litellm>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://priyanujboruah.github.io/AI-Privacy-Core/"
+Documentation = "https://priyanujboruah.github.io/AI-Privacy-Core/"
+Repository = "https://github.com/priyanujboruah/AI-Privacy-Core"

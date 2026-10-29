@@ -1,0 +1,53 @@
+{
+  "execution_overview": {
+    "total_prompts_tested": 500,
+    "successful_requests": 500,
+    "failed_requests": 0,
+    "success_rate_pct": 100.0,
+    "total_time_seconds": 4.89,
+    "throughput_prompts_per_sec": 102.31,
+    "total_tokens_tested": 93109,
+    "avg_tokens_per_prompt": 186.22
+  },
+  "pii_and_sovereign_id_metrics": {
+    "prompts_with_detected_pii": 181,
+    "prompts_with_pii_pct": 36.2,
+    "total_entity_instances_sanitized": 441,
+    "entity_type_breakdown": {
+      "RULE_EMAIL": 200,
+      "RULE_HANDLE_USERNAME": 157,
+      "RULE_BD_NID": 19,
+      "RULE_PHONE": 15,
+      "RULE_CONTEXT_NAME": 11,
+      "RULE_UY_CI": 6,
+      "RULE_PA_CEDULA": 5,
+      "RULE_MT_ID": 5,
+      "RULE_TH_NID": 4,
+      "RULE_SWIFT_BIC": 4,
+      "RULE_RO_CNP": 4,
+      "RULE_BALKAN_JMBG": 2,
+      "RULE_ZA_ID": 2,
+      "RULE_NL_BSN": 2,
+      "RULE_AU_TFN": 2,
+      "RULE_CONTEXT_USERNAME": 2,
+      "RULE_UA_IPN": 1
+    }
+  },
+  "tokenize_latency_ms": {
+    "avg": 16.91,
+    "min": 5.71,
+    "max": 375.26,
+    "p50_median": 14.14,
+    "p90": 22.43,
+    "p95": 24.81,
+    "p99": 56.07
+  },
+  "detokenize_metrics": {
+    "verified": true,
+    "avg_latency_ms": 19.01,
+    "p50_latency_ms": 14.79,
+    "exact_roundtrip_matches": 500,
+    "fidelity_rate_pct": 100.0
+  },
+  "failures": []
+}
