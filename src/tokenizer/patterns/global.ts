@@ -444,7 +444,7 @@ export const GLOBAL_RULES: Rule[] = [
     id: "RULE_HIPAA_NAME_PHYSICIAN",
     type: "PII_NAME",
     category: "global",
-    pattern: /(?:Reviewed\s*by\s*Dr\.|Discussed\s*with\s*Dr\.|The\s*note\s*was\s*signed\s*by\s*Dr\.|by\s*Dr\.|Dr\.)\s+([\p{L}\p{M}'’.-]+(?:\s+[\p{L}\p{M}'’.-]+)+)(?:,\s*(?:MD|DO|NP|PA|RN|PhD|MBBS|FACP)|[:,\.;]|\s|$)/gu,
+    pattern: /(?:Reviewed\s*by\s*Dr\.|Discussed\s*with\s*Dr\.|The\s*note\s*was\s*signed\s*by\s*Dr\.|by\s*Dr\.|Dr\.)\s+([A-Z\p{Lu}][\p{L}\p{M}''.-]+(?:\s+[A-Z\p{Lu}][\p{L}\p{M}''.-]+){1,3})(?:,\s*(?:MD|DO|NP|PA|RN|PhD|MBBS|FACP)|[:,\.;]|\s|$)/gu,
     tokenPrefix: "PERSON",
     priority: 20,
   },
