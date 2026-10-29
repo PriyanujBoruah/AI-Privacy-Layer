@@ -1,4 +1,4 @@
-# AI Privacy Layer: Local Deployment Edition
+# AI Privacy Layer: Local Deployment Version
 
 > **A fast, zero-data-leakage gateway that protects patient and customer data before it reaches cloud LLMs, preserving full context and restoring original data in real time.**
 > **This branch is specifically configured for self-contained, out-of-the-box local deployment with zero mandatory cloud accounts or external database dependencies.**
@@ -189,7 +189,6 @@ The local deployment branch is designed to run instantly on any machine with zer
    The server automatically builds the bundle and starts listening at `http://localhost:8787`:
    - **Interactive Console & Playground:** [http://localhost:8787/dashboard](http://localhost:8787/dashboard)
    - **System Health Status:** [http://localhost:8787/health](http://localhost:8787/health)
-   - **API Base URL:** [http://localhost:8787/v1](http://localhost:8787/v1)
 
 ---
 
