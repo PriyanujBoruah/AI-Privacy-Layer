@@ -4,7 +4,7 @@
 
 - **Hackathon Track:** Open Innovation (Healthcare & Data Privacy)
 - **Problem Statement ID:** ECCLISIA26-004
-- **Project Status:** Verified Working Prototype (Clinically & Empirically Tested)
+- **Project Status:** Verified Frontend Completed (API development in progress)
 - **GitHub Repository:** [https://github.com/PriyanujBoruah/AI-Privacy-Layer](https://github.com/PriyanujBoruah/AI-Privacy-Layer)
 - **License:** Apache 2.0 (Open Source)
 
