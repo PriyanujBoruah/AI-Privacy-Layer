@@ -7,7 +7,6 @@ import { PRIVACY_POLICY_HTML } from "./legal_privacy";
 import { TERMS_OF_SERVICE_HTML } from "./legal_terms";
 import { getApiCallLogs } from "./audit/logger";
 import { LOGO_DATA_URIS, LOGO_FILES } from "./assets/logos";
-import { BLOG_IMAGE_DATA_URIS, BLOG_IMAGE_FILES } from "./assets/images";
 import { PROJECTSPG_LOGO_SVG } from "./assets/brand";
 
 const app = new Hono();
@@ -51,7 +50,7 @@ app.use(
 
 app.options("*", (c) => c.body(null, 204));
 
-// Serve Single-File Enterprise Landing Page & Console
+// Serve Enterprise Privacy Console & Playground
 app.get("/", (c) => c.html(DASHBOARD_HTML));
 app.get("/dashboard", (c) => c.html(DASHBOARD_HTML));
 
@@ -410,32 +409,6 @@ app.get("/logos/:filename", (c) => {
   return c.text("Logo not found", 404);
 });
 
-// Serve static blog illustration images
-app.get("/images/:filename", (c) => {
-  const filename = c.req.param("filename");
-  const normalized = filename.replace(/-v\d+/i, "").toLowerCase();
-  const entry = Object.entries(BLOG_IMAGE_FILES).find(
-    ([_, file]) => {
-      const fLower = file.toLowerCase();
-      return fLower === filename.toLowerCase() || fLower === normalized;
-    }
-  );
-  if (entry) {
-    const dataUri = BLOG_IMAGE_DATA_URIS[entry[0] as keyof typeof BLOG_IMAGE_DATA_URIS];
-    const mimeMatch = dataUri.match(/^data:([^;]+);base64,/);
-    const contentType = mimeMatch ? mimeMatch[1] : "image/png";
-    const base64Data = dataUri.split(",")[1];
-    const binary = Uint8Array.from(atob(base64Data), (char) => char.charCodeAt(0));
-    return new Response(binary, {
-      headers: {
-        "Content-Type": contentType,
-        "Cache-Control": "public, max-age=0, must-revalidate",
-      },
-    });
-  }
-  return c.text("Image not found", 404);
-});
-
 // Health check endpoint
 app.get("/health", (c) => {
   return c.json({
@@ -460,7 +433,7 @@ app.get("/", (c) => {
   if (accept.includes("text/html")) {
     return c.html(DASHBOARD_HTML);
   }
-  return c.text("ProjectSPG — Sovereign Privacy Gateway & Edge De-identification is active. Visit /dashboard in your browser.");
+  return c.text("AI Privacy Layer: Sovereign Privacy Gateway & Edge De-identification is active. Visit /dashboard in your browser.");
 });
 
 export default app;
