@@ -230,6 +230,8 @@ curl -X POST http://localhost:8787/v1/detokenize \
 ## 👥 Hackathon Submission Details
 
 - **Hackathon:** Ecclesia 4.0 Hackathon (Assam down town University)
+- **Team Name:** Terminal Manipulators
+- **Team Members:** Priyanuj Boruah, Reissav Saikia
 - **Problem Statement ID:** ECCLISIA26-004
 - **Track:** Open Innovation (Healthcare & Data Privacy)
 - **Live Interactive Demo:** [https://ai-privacy-layer.boruahpriyanuj2004.workers.dev/](https://ai-privacy-layer.boruahpriyanuj2004.workers.dev/)
