@@ -1,6 +1,5 @@
 /**
- * Logo Assets for Landing Page & Hero Section
- * Sourced directly from "Logo Pack for Landing Page"
+ * Provider Logo Assets (Anthropic, Cloudflare, Google, OpenAI, Groq, Mistral, OpenRouter)
  */
 
 export const LOGO_FILES = {

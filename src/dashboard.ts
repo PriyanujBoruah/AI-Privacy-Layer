@@ -3610,7 +3610,7 @@ console.log(data.choices[0].message.content);</div>
     }
 
     function switchView(viewName) {
-      if (!viewName || viewName === 'landing') viewName = 'playground';
+      if (!viewName) viewName = 'playground';
       activeView = viewName;
       const urlParams = new URLSearchParams(window.location.search);
       const hasInvite = urlParams.has('invite');
@@ -5672,7 +5672,7 @@ console.log(data.choices[0].message.content);</div>
 
         return '<div class="group relative flex-1 flex flex-col justify-end items-center h-full cursor-pointer">' +
           '<div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover:flex flex-col bg-groq-dark text-white text-[11px] rounded-lg py-2 px-3 shadow-xl z-30 pointer-events-none whitespace-nowrap min-w-[130px]">' +
-            '<div class="text-[10px] text-gray-300 font-mono mb-1.5 pb-1 border-b border-gray-700">' + startTimeStr + ' – ' + endTimeStr + '</div>' +
+            '<div class="text-[10px] text-gray-300 font-mono mb-1.5 pb-1 border-b border-gray-700">' + startTimeStr + ' - ' + endTimeStr + '</div>' +
             '<div class="flex items-center justify-between gap-3 text-emerald-400 font-sans"><span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>200 OK:</span><span class="font-mono font-semibold">' + b.c200 + '</span></div>' +
             '<div class="flex items-center justify-between gap-3 text-amber-400 font-sans"><span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>4xx Client:</span><span class="font-mono font-semibold">' + b.c4xx + '</span></div>' +
             '<div class="flex items-center justify-between gap-3 text-rose-400 font-sans"><span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>5xx Server:</span><span class="font-mono font-semibold">' + b.c5xx + '</span></div>' +
@@ -6212,10 +6212,6 @@ console.log(data.choices[0].message.content);</div>
       switchView('playground');
     }
 
-    function handleLandingAuthClick() {
-      switchView('playground');
-    }
-
 
 
     const CONSENT_STORAGE_KEY = 'projectspg_consent_preferences';
@@ -6674,8 +6670,6 @@ console.log(data.choices[0].message.content);</div>
       const menuOrgEl = document.getElementById('user-menu-org');
       const menuOrgTextEl = document.getElementById('user-menu-org-text');
 
-      const landingBtnText = document.getElementById('btn-landing-signin-text');
-      const landingMobileBtnText = document.getElementById('btn-landing-mobile-signin-text');
 
       if (user) {
         if (loginBtn) loginBtn.classList.add('hidden');
@@ -6742,12 +6736,6 @@ console.log(data.choices[0].message.content);</div>
 
         updateTopTierPill(isFull);
 
-        if (landingBtnText) {
-          landingBtnText.textContent = 'Console (' + (isFull ? 'Pro' : 'Free') + ')';
-        }
-        if (landingMobileBtnText) {
-          landingMobileBtnText.textContent = 'Console (' + (isFull ? 'Pro' : 'Free') + ')';
-        }
 
         const byokBtn = document.getElementById('btn-tier-byok');
         const byokLock = document.getElementById('btn-tier-byok-lock');
@@ -6773,8 +6761,6 @@ console.log(data.choices[0].message.content);</div>
 
         if (loginBtn) loginBtn.classList.remove('hidden');
         if (userMenu) userMenu.classList.add('hidden');
-        if (landingBtnText) landingBtnText.textContent = 'Open Console';
-        if (landingMobileBtnText) landingMobileBtnText.textContent = 'Open Console';
 
         const pill = document.getElementById('top-tier-pill');
         if (pill) {
