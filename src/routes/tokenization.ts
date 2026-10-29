@@ -208,21 +208,24 @@ tokenizationApp.post("/detokenize", async (c) => {
   try {
     const body = await c.req.json<{
       sessionId: string;
-      tokenizedText: string;
+      tokenizedText?: string;
+      text?: string;
       purgeAfterRead?: boolean;
       encryptionKey?: string;
     }>();
 
-    if (!body.sessionId || !body.tokenizedText) {
+    const textToRehydrate = body.tokenizedText || body.text;
+
+    if (!body.sessionId || !textToRehydrate) {
       return c.json(
         { error: { type: "invalid_request_error", message: "Fields 'sessionId' and 'tokenizedText' are required." } },
         400
       );
     }
 
-    if (body.tokenizedText.length > MAX_PAYLOAD_BYTES) {
+    if (textToRehydrate.length > MAX_PAYLOAD_BYTES) {
       return c.json(
-        { error: { type: "payload_too_large", message: "Payload tokenizedText exceeds maximum size limit of 1MB." } },
+        { error: { type: "payload_too_large", message: "Payload exceeds maximum size limit of 1MB." } },
         413
       );
     }
@@ -246,11 +249,11 @@ tokenizationApp.post("/detokenize", async (c) => {
       );
     }
 
-    const rehydratedText = rehydrate(body.tokenizedText, tokenMap);
+    const rehydratedText = rehydrate(textToRehydrate, tokenMap);
 
     let tokensResolved = 0;
     for (const token of Object.keys(tokenMap)) {
-      if (body.tokenizedText.includes(token)) {
+      if (textToRehydrate.includes(token)) {
         tokensResolved++;
       }
     }
