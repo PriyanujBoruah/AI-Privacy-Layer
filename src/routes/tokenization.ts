@@ -3,6 +3,7 @@ import { tokenize, rehydrate } from "../tokenizer/engine";
 import { saveTokenSession, getTokenSession, purgeTokenSession } from "../vault/session";
 import { computeSha256Fingerprint } from "../vault/crypto";
 import { recordAuditEvent, recordApiCallLog, AuditEntitySummary } from "../audit/logger";
+import { resolvePolicyCategories } from "../policy";
 
 export interface Env {
   DB?: D1Database;
@@ -34,36 +35,15 @@ function resolveCustomKeywords(c: Context): string[] {
 }
 
 /**
- * Extract Detection Categories from request body or headers
+ * Extract Detection Categories from request body or headers via Policy Engine
  */
 function resolveCategories(c: Context, bodyCategories?: string[], bodyPolicy?: string): string[] {
-  if (Array.isArray(bodyCategories) && bodyCategories.length > 0) {
-    return bodyCategories;
-  }
-  if (bodyPolicy && typeof bodyPolicy === "string") {
-    switch (bodyPolicy.toUpperCase()) {
-      case "DPDP_INDIA":
-        return ["asia_non_sea", "global"];
-      case "HIPAA_DEID":
-        return ["north_america", "global"];
-      case "GDPR_GLOBAL":
-        return ["european_union", "europe_non_eu", "global", "north_america", "asia_non_sea", "south_east_asia", "south_america", "africa", "oceania", "corporate"];
-      default:
-        return ["all"];
-    }
-  }
-  const headerVal = c.req.header("x-detection-categories") || c.req.header("x-categories");
-  if (!headerVal) return ["all"];
-
-  try {
-    const trimmed = headerVal.trim();
-    if (trimmed.startsWith("[")) {
-      return JSON.parse(trimmed);
-    }
-    return trimmed.split(",").map((s: string) => s.trim()).filter(Boolean);
-  } catch {
-    return ["all"];
-  }
+  return resolvePolicyCategories({
+    bodyCategories,
+    bodyPolicy,
+    headerPolicy: c.req.header("x-compliance-policy") || c.req.header("x-policy"),
+    headerCategories: c.req.header("x-detection-categories") || c.req.header("x-categories"),
+  });
 }
 
 /**

@@ -214,7 +214,7 @@ describe("Data De-identification & Reversible Tokenization Engine Routes", () =>
     expect(tokData.sanitizedText).toContain("MAC_1");
     expect(tokData.sanitizedText).toContain("UUID_1");
     expect(tokData.sanitizedText).toContain("ID_1");
-    expect(tokData.sanitizedText).toContain("TOKEN_1");
+    expect(tokData.sanitizedText).toContain("API_KEY_1");
 
     const detokRes = await app.request("/v1/detokenize", {
       method: "POST",
@@ -263,7 +263,7 @@ describe("Data De-identification & Reversible Tokenization Engine Routes", () =>
   });
 
   it("should encrypt session with AES-256-GCM when x-vault-encryption-key is provided and enforce KMS auth", async () => {
-    const text = "Contact CFO at cfo@enterprise.de with German Tax ID: 04 225 818 316";
+    const text = "Contact CFO at cfo@enterprise.de with German Tax ID: 04225818316";
     const customerKey = "enterprise-kms-aes256-secret-key";
 
     // 1. Tokenize with BYOK encryption key

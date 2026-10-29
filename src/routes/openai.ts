@@ -4,6 +4,7 @@ import { StreamTokenBuffer } from "../tokenizer/stream";
 import { saveTokenSession } from "../vault/session";
 import { computeSha256Fingerprint } from "../vault/crypto";
 import { recordAuditEvent, recordApiCallLog, getRecentAuditEvents, AuditEntitySummary } from "../audit/logger";
+import { resolvePolicyCategories } from "../policy";
 import { Env } from "./tokenization";
 
 function unmask(arr: number[]): string {
@@ -70,24 +71,15 @@ function resolveCustomKeywords(c: Context): string[] {
 }
 
 /**
- * Extract Detection Categories from request body or headers
+ * Extract Detection Categories from request body or headers via Policy Engine
  */
-function resolveCategories(c: Context, bodyCategories?: string[]): string[] {
-  if (Array.isArray(bodyCategories) && bodyCategories.length > 0) {
-    return bodyCategories;
-  }
-  const headerVal = c.req.header("x-detection-categories") || c.req.header("x-categories");
-  if (!headerVal) return ["all"];
-
-  try {
-    const trimmed = headerVal.trim();
-    if (trimmed.startsWith("[")) {
-      return JSON.parse(trimmed);
-    }
-    return trimmed.split(",").map((s: string) => s.trim()).filter(Boolean);
-  } catch {
-    return ["all"];
-  }
+function resolveCategories(c: Context, bodyCategories?: string[], bodyPolicy?: string): string[] {
+  return resolvePolicyCategories({
+    bodyCategories,
+    bodyPolicy,
+    headerPolicy: c.req.header("x-compliance-policy") || c.req.header("x-policy"),
+    headerCategories: c.req.header("x-detection-categories") || c.req.header("x-categories"),
+  });
 }
 
 /**
@@ -558,7 +550,7 @@ openaiApp.post("/chat/completions", async (c) => {
   }
 
   const customKeywords = resolveCustomKeywords(c);
-  const categories = resolveCategories(c, body.categories);
+  const categories = resolveCategories(c, body.categories, (body as any).policy);
   const mode = resolveMode(c, body.mode);
   const isStreaming = body.stream === true;
   const requestedModel = body.model || "gpt-4o";
@@ -930,7 +922,7 @@ openaiApp.post("/embeddings", async (c) => {
   }
 
   const customKeywords = resolveCustomKeywords(c);
-  const categories = resolveCategories(c, body.categories);
+  const categories = resolveCategories(c, body.categories, (body as any).policy);
   const mode = resolveMode(c, body.mode);
 
   let sanitizedInput: string | string[];

@@ -1248,7 +1248,7 @@ export const GLOBAL_RULES: Rule[] = [
     id: "RULE_OUTIS_CLINICAL_MRN_ID",
     type: "PHI_ID",
     category: "global",
-    pattern: /(?:Clinical\s*record|Chart\s*number|Encounter\s*identifier|Visit\s*ID|Member\s*ID|Acct|MR#|CSN)\s*[:=]?\s*([A-Za-z0-9/-]{3,30})\b/gi,
+    pattern: /(?:Clinical\s*record|Chart\s*number|Encounter\s*identifier|Visit\s*ID|Member\s*ID|\bAcct\b|\bAccount(?:\s*ID)?\b|MR#|CSN)\s*[:=]?\s*([A-Za-z0-9/-]{3,30})\b/gi,
     tokenPrefix: "ID",
     priority: 25,
   },
